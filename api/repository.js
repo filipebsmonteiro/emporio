@@ -6,8 +6,7 @@ export class Repository {
   }
 
   fetchAll (params) {
-    return [{ id: 1, nome: 'primeiro' }, { id: 2, nome: 'segundo' }]
-    // return this.$axios.get(`${this.endpoint}`, { params })
+    return this.$axios.get(`${this.endpoint}`, { params })
   }
 
   fetch (id) {

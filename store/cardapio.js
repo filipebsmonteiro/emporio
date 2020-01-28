@@ -27,13 +27,11 @@ export const mutations = {
 // Em vez de mudar o estado, as ações confirmam (ou fazem commit de) mutações.
 export const actions = {
   async list ({ commit, state }, params) {
-    // await cardapio.fetchAll(params).then((response) => {
-    //   console.log('Listei')
-    //   const produtos = response.data
-    //   commit('addAll', produtos)
-    console.log(this.$repositories.cardapio.fetchAll(params))
-    await commit('addAll', this.$repositories.cardapio.fetchAll(params))
-    // }
-    // )
+    await this.$repositories.cardapio.fetchAll(params)
+      .then((response) => {
+        const produtos = response.data
+        commit('addAll', produtos)
+      }
+      )
   }
 }
