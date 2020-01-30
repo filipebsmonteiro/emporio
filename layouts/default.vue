@@ -39,7 +39,9 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <nuxt />
+    <div class="container">
+      <nuxt />
+    </div>
   </div>
 </template>
 <script>

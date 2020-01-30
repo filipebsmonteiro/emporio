@@ -11,21 +11,28 @@
         Link with a long name
       </b-nav-item>
     </b-nav>
-    <span v-for="produto in produtos">{{ produto }}</span>
-    <span v-for="prod in get">{{ prod }}</span>
+    <Four :produtos="produtos" />
+    <div id="produtosComponent" :produtos="produtos" />
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
+import Four from './layouts/Four'
 
 export default {
-  layout: 'Default',
-  name: 'Cardapio',
+  layout: 'default',
+  name: 'Index',
+  components: { Four },
   props: {
     layout: {
       type: String,
       default: 'Four'
+    }
+  },
+  data () {
+    return {
     }
   },
   computed: {
@@ -39,8 +46,17 @@ export default {
     }
   },
   mounted () {
-    // this.$store.dispatch('cardapio/list')
+    this.$store.dispatch('cardapio/list')
     // this['cardapio/list']()
+
+    const app = new Vue({
+      el: '#produtosComponent',
+      data: {
+        produtos: this.produtos
+      },
+      template: this.layout
+    })
+    app._init()
   },
   methods: {
     // mistura as actions nos métodos com o operador spread

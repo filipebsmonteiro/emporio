@@ -6,7 +6,8 @@ export class Repository {
   }
 
   fetchAll (params) {
-    return this.$axios.get(`${this.endpoint}`, { params })
+    // return this.$axios.get(`${this.endpoint}`, { params })
+    return this.fakePromisse()
   }
 
   fetch (id) {
@@ -23,6 +24,21 @@ export class Repository {
 
   delete (id) {
     return this.$axios.delete(`${this.endpoint}/${id}`)
+  }
+
+  fakePromisse () {
+    const nome = 'Produto'
+    return Promise.resolve({
+      data: [
+        { id: 1, nome },
+        { id: 2, nome },
+        { id: 3, nome },
+        { id: 4, nome },
+        { id: 5, nome },
+        { id: 6, nome },
+        { id: 7, nome }
+      ]
+    })
   }
 }
 
