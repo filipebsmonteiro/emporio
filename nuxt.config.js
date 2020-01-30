@@ -26,6 +26,7 @@ export default {
   ** Global CSS
   */
   css: [
+    '@assets/scss/custom_store.scss'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -47,8 +48,14 @@ export default {
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/style-resources'
   ],
+  styleResources: {
+    scss: [
+      'assets/scss/custom_store.scss'
+    ]
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

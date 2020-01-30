@@ -11,24 +11,28 @@
         Link with a long name
       </b-nav-item>
     </b-nav>
-    <Four :produtos="produtos" />
-    <div id="produtosComponent" :produtos="produtos" />
+    <Two v-if="layout === 'Two'" :produtos="produtos" />
+    <Four v-if="layout === 'Four'" :produtos="produtos" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
+import Two from './layouts/Two'
 import Four from './layouts/Four'
 
 export default {
   layout: 'default',
   name: 'Index',
-  components: { Four },
+  components: {
+    Two,
+    Four
+  },
   props: {
     layout: {
       type: String,
-      default: 'Four'
+      default: 'Two'
     }
   },
   data () {

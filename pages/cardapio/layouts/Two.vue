@@ -19,7 +19,7 @@
           </b-col>
           <b-col md="6">
             <b-card-body title="Horizontal Card">
-              <b-card-text>
+              <b-card-text class="olaquerida">
                 This is a wider card with supporting text as a natural lead-in to additional content.
                 This content is a little bit longer.
                 {{ produto }}
@@ -61,6 +61,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.olaquerida{
+  background-color: $base-color;
+}
 </style>
