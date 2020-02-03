@@ -3,7 +3,7 @@ import { Repository, createRepository } from './repository'
 class CardapioRepository extends Repository {
   endpoint = 'v1/cardapio'
 
-  getMenu () {
+  getCategories () {
     return Promise.resolve({
       data: [{
         id: 1,
@@ -86,7 +86,7 @@ class CardapioRepository extends Repository {
     })
   }
 
-  getProducts () {
+  getProducts (categoryId) {
     return Promise.resolve({
       data: [{
         data: {

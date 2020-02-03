@@ -9,7 +9,7 @@
       <b-card
         v-for="produto in linha"
         :key="produto.id"
-        title="Card Title"
+        :title="produto.data.nome"
         img-src="~/assets/image/25-600x300.jpg"
         img-alt="Image"
         img-top
@@ -18,12 +18,11 @@
         class="p-0"
       >
         <b-card-text>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
-          {{ produto }}
+          {{ produto.ingredientes }}
         </b-card-text>
 
-        <b-button href="#" variant="primary">
-          Go somewhere
+        <b-button @click="$emit('addToCart', produto)" variant="primary">
+          Adicionar ao Carrinho
         </b-button>
       </b-card>
     </b-card-group>
@@ -59,6 +58,15 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+ /deep/.card-body{
+   display: flex;
+   flex-direction: column;
+   .card-title{
+     align-content: flex-start;
+   }
+   .card-text{
+     flex: 1;
+   }
+ }
 </style>
