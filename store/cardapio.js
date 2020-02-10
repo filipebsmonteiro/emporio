@@ -3,6 +3,7 @@ export const state = () => ({
     list: []
   },
   produtos: {
+    perLine: 4,
     list: []
   }
 })
@@ -15,6 +16,10 @@ export const getters = {
   getProdutos:
     (state) => {
       return state.produtos.list
+    },
+  getProdutosPerLine:
+    (state) => {
+      return state.produtos.perLine
     }
 }
 

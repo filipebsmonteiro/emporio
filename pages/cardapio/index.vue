@@ -8,32 +8,31 @@
         <b-dropdown-item
           v-for="categoria in categoriasAgrupadas[grupo]"
           :key="categoria.id"
-          @click="listProdutos(categoria.id)">
+          @click="this.$store.dispatch('cardapio/listProdutos', categoria.id)"
+        >
           {{ categoria.nome }}
         </b-dropdown-item>
       </b-nav-item-dropdown>
     </b-nav>
-    <Two v-if="layout === 'Two'" :produtos="produtos" />
-    <Four v-if="layout === 'Four'" :produtos="produtos" />
+
+    <ListProducts :productsPerLine="productsPerLine" :products="produtos" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Two from './layouts/Two'
-import Four from './layouts/Four'
+import ListProducts from './layouts/ListProducts'
 
 export default {
   layout: 'default',
   name: 'Index',
   components: {
-    Two,
-    Four
+    ListProducts
   },
   props: {
     layout: {
-      type: String,
-      default: 'Four'
+      type: Number,
+      default: 4
     }
   },
   data () {
@@ -44,12 +43,13 @@ export default {
   computed: {
     ...mapGetters({
       categorias: 'cardapio/getCategorias',
-      produtos: 'cardapio/getProdutos'
+      produtos: 'cardapio/getProdutos',
+      productsPerLine: 'cardapio/getProdutosPerLine'
     })
   },
   async mounted () {
     await this['cardapio/listCategorias']()
-    this.listProdutos(this.categorias[0].id)
+    await this['cardapio/listProdutos'](this.categorias[0].id)
     this.categorias.map((categoria) => {
       const grupo = categoria.grupo ? categoria.grupo : ''
       if (typeof this.categoriasAgrupadas[grupo] !== 'undefined') {
@@ -58,16 +58,12 @@ export default {
       }
       this.categoriasAgrupadas[grupo] = [categoria]
     })
-    console.log(this.categoriasAgrupadas)
   },
   methods: {
     ...mapActions([
       'cardapio/listCategorias',
       'cardapio/listProdutos'
-    ]),
-    listProdutos (idCategoria) {
-      this['cardapio/listProdutos'](idCategoria)
-    }
+    ])
   }
 }
 </script>

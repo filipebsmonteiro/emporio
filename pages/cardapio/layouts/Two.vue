@@ -1,70 +1,57 @@
 <template>
-  <div>
-    <b-card-group
-      v-for="(linha, linhaIndex) in chunk(produtos)"
-      :key="linhaIndex"
-      class="mt-4"
-      deck
-    >
-      <b-card
-        v-for="produto in linha"
-        :key="produto.id"
-        class="overflow-hidden"
-        style="max-width: 540px;"
-        no-body
-      >
-        <b-row no-gutters>
-          <b-col md="6">
-            <b-card-img src="~/assets/image/25-600x300.jpg" class="rounded-0" />
-          </b-col>
-          <b-col md="6">
-            <b-card-body title="Horizontal Card">
-              <b-card-text>
-                This is a wider card with supporting text as a natural lead-in to additional content.
-                This content is a little bit longer.
-                {{ produto }}
-              </b-card-text>
+  <b-card
+    class="overflow-hidden product"
+    no-body
+  >
+    <b-row no-gutters>
+      <b-col md="6" class="product__image">
+        <b-card-img src="~/assets/image/25-600x300.jpg" class="rounded-0" />
+      </b-col>
+      <b-col md="6">
+        <b-card-body title="Horizontal Card">
+          <b-card-text>
+            {{ product.ingredientes }}
+          </b-card-text>
 
-              <b-button @click="$emit('addToCart', produto)" variant="primary">
-                Adicionar ao Carrinho
-              </b-button>
-            </b-card-body>
-          </b-col>
-        </b-row>
-      </b-card>
-    </b-card-group>
-  </div>
+          <b-button @click="$emit('addToCart', product)" variant="primary">
+            Adicionar ao Carrinho
+          </b-button>
+        </b-card-body>
+      </b-col>
+    </b-row>
+  </b-card>
 </template>
 
 <script>
 export default {
   name: 'Two',
   props: {
-    produtos: {
-      type: Array,
-      default: () => []
-    },
-    productsPerLine: {
-      type: Number,
-      default: 2
+    product: {
+      type: Object,
+      default: () => {
+        return {
+          id: 0,
+          data: {
+            nome: ''
+          },
+          ingredientes: ''
+        }
+      }
     }
   },
   methods: {
-    chunk (arr) {
-      const chunks = []
-      let i = 0
-      const n = arr.length
-
-      while (i < n) {
-        chunks.push(arr.slice(i, i += this.productsPerLine))
-      }
-
-      return chunks
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.product{
+  max-width: 540px;
+  &__{
+    &image {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+}
 </style>

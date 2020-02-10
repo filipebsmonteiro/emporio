@@ -1,59 +1,41 @@
 <template>
-  <div>
-    <b-card-group
-      v-for="(linha, linhaIndex) in chunk(produtos)"
-      :key="linhaIndex"
-      class="mt-4"
-      deck
-    >
-      <b-card
-        v-for="produto in linha"
-        :key="produto.id"
-        :title="produto.data.nome"
-        img-src="~/assets/image/25-600x300.jpg"
-        img-alt="Image"
-        img-top
-        tag="article"
-        style="max-width: 20rem;"
-        class="p-0"
-      >
-        <b-card-text>
-          {{ produto.ingredientes }}
-        </b-card-text>
+  <b-card
+    :key="product.id"
+    :title="product.data.nome"
+    img-src="~/assets/image/25-600x300.jpg"
+    img-alt="Image"
+    img-top
+    tag="article"
+    class="p-0 col-auto"
+  >
+    <b-card-text>
+      {{ product.ingredientes }}
+    </b-card-text>
 
-        <b-button @click="$emit('addToCart', produto)" variant="primary">
-          Adicionar ao Carrinho
-        </b-button>
-      </b-card>
-    </b-card-group>
-  </div>
+    <b-button @click="$emit('addToCart', product)" variant="primary">
+      Adicionar ao Carrinho
+    </b-button>
+  </b-card>
 </template>
 
 <script>
 export default {
   name: 'Four',
   props: {
-    produtos: {
-      type: Array,
-      default: () => []
-    },
-    productsPerLine: {
-      type: Number,
-      default: 4
+    product: {
+      type: Object,
+      default: () => {
+        return {
+          id: 0,
+          data: {
+            nome: ''
+          },
+          ingredientes: ''
+        }
+      }
     }
   },
   methods: {
-    chunk (arr) {
-      const chunks = []
-      let i = 0
-      const n = arr.length
-
-      while (i < n) {
-        chunks.push(arr.slice(i, i += this.productsPerLine))
-      }
-
-      return chunks
-    }
   }
 }
 </script>
