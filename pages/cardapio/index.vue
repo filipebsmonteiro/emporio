@@ -8,7 +8,7 @@
         <b-dropdown-item
           v-for="categoria in categoriasAgrupadas[grupo]"
           :key="categoria.id"
-          @click="this.$store.dispatch('cardapio/listProdutos', categoria.id)"
+          @click="loadProducts(categoria.id)"
         >
           {{ categoria.nome }}
         </b-dropdown-item>
@@ -63,7 +63,10 @@ export default {
     ...mapActions([
       'cardapio/listCategorias',
       'cardapio/listProdutos'
-    ])
+    ]),
+    async loadProducts (id) {
+      await this['cardapio/listProdutos'](id)
+    }
   }
 }
 </script>
