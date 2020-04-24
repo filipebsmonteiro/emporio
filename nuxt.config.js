@@ -26,13 +26,14 @@ export default {
   ** Global CSS
   */
   css: [
-    '@assets/scss/custom_store.scss'
+    '@assets/scss/argon.scss'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/repository', ssr: true }
+    { src: '~/plugins/repository', ssr: true },
+    { src: '~/plugins/components', ssr: true }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -53,7 +54,7 @@ export default {
   ],
   styleResources: {
     scss: [
-      'assets/scss/custom_store.scss'
+      'assets/scss/argon.scss'
     ]
   },
   /*
