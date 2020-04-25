@@ -1,4 +1,4 @@
-import { Repository, createRepository } from './repository'
+import { Repository, createRepository } from '../repository'
 
 class ProdutoRepository extends Repository {
   endpoint = 'produto'

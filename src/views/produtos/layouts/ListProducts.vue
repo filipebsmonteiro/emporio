@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card-group
-      v-for="(line, lineIndex) in chunk(products)"
+      v-for="(line, lineIndex) in chunk(produtos)"
       :key="lineIndex"
       class="mt-4 row"
       deck
@@ -11,7 +11,7 @@
         v-bind:is="componentName"
         v-for="produto in line"
         :key="produto.id"
-        :product="produto"
+        :produto="produto"
       />
     </b-card-group>
   </div>
@@ -20,21 +20,22 @@
 <script>
   import Two from './Two'
   import Four from './Four'
+
   export default {
     name: 'ListProducts',
     props: {
-      products: {
+      produtos: {
         type: Array,
         default: () => []
       },
-      productsPerLine: {
+      produtosPorLinha: {
         type: Number,
         default: 4
       }
     },
     computed: {
       componentName () {
-        switch (this.productsPerLine) {
+        switch (this.produtosPorLinha) {
           case 2:
             return Two
           case 4:
@@ -50,7 +51,7 @@
         let i = 0
         const n = arr.length
         while (i < n) {
-          chunks.push(arr.slice(i, i += this.productsPerLine))
+          chunks.push(arr.slice(i, i += this.produtosPorLinha))
         }
         return chunks
       }

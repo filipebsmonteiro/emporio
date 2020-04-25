@@ -1,31 +1,39 @@
 <template>
   <div>
-    <b-nav fill class="mt-1 rounded categorias">
-      <b-nav-item-dropdown v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo" right>
-        <template v-slot:button-content>
-          {{ grupo }}
-        </template>
-        <b-dropdown-item
-          v-for="categoria in categoriasAgrupadas[grupo]"
-          :key="categoria.id"
-          @click="loadProducts(categoria.id)"
-        >
-          {{ categoria.nome }}
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
-    </b-nav>
-
-    <ListProducts :productsPerLine="productsPerLine" :products="produtos" />
+    <SiteNavbar/>
+    <div class="container">
+      <base-nav id="navbar-main" class="navbar-top navbar-dark bg-gradient-gray-dark rounded" expand>
+        <ul class="navbar-nav align-items-center" v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo">
+          <li class="nav-item dropdown">
+            <base-dropdown class="nav-link">
+              <template slot="title">{{ grupo }}</template>
+              <template>
+                <div v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="dropdown-item">
+                  <span @click="loadProducts(categoria.id)">
+                    {{ categoria.nome }}
+                  </span>
+                </div>
+              </template>
+            </base-dropdown>
+          </li>
+        </ul>
+      </base-nav>
+      <b-overlay :show="isLoadingProduto">
+        <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
+      </b-overlay>
+    </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import ListProducts from './layouts/ListProducts'
+  import { mapActions, mapGetters } from 'vuex'
+  import ListProducts from '@/views/produtos/layouts/ListProducts'
+  import SiteNavbar from '@/layout/SiteNavbar'
+
   export default {
-    layout: 'default',
     name: 'Index',
     components: {
+      SiteNavbar,
       ListProducts
     },
     props: {
@@ -34,37 +42,40 @@
         default: 4
       }
     },
-    data () {
-      return {
-        categoriasAgrupadas: {}
-      }
-    },
     computed: {
       ...mapGetters({
-        categorias: 'cardapio/getCategorias',
-        produtos: 'cardapio/getProdutos',
-        productsPerLine: 'cardapio/getProdutosPerLine'
-      })
+        categorias: 'produto/categoria/getAll',
+        produtos: 'produto/getAll',
+        isLoadingProduto: 'produto/isLoading',
+        isLoadingCategoria: 'produto/categoria/isLoading'
+      }),
+      categoriasAgrupadas() {
+        if (this.categorias && Array.isArray(this.categorias)) {
+          let Agrupadas = {}
+          this.categorias.map(categoria => {
+            const grupo = categoria.grupo ? categoria.grupo : ''
+            if (typeof Agrupadas[grupo] !== 'undefined') {
+              Agrupadas[grupo].push(categoria)
+              return
+            }
+            Agrupadas[grupo] = [categoria]
+          })
+          return Agrupadas
+        }
+        return []
+      }
     },
     async mounted () {
-      await this['cardapio/listCategorias']()
-      await this['cardapio/listProdutos'](this.categorias[0].id)
-      this.categorias.map((categoria) => {
-        const grupo = categoria.grupo ? categoria.grupo : ''
-        if (typeof this.categoriasAgrupadas[grupo] !== 'undefined') {
-          this.categoriasAgrupadas[grupo].push(categoria)
-          return
-        }
-        this.categoriasAgrupadas[grupo] = [categoria]
-      })
+      await this['produto/categoria/listAll']()
+      await this.loadProducts(this.categorias[0].id)
     },
     methods: {
       ...mapActions([
-        'cardapio/listCategorias',
-        'cardapio/listProdutos'
+        'produto/categoria/listAll',
+        'produto/listAll'
       ]),
       async loadProducts (id) {
-        await this['cardapio/listProdutos'](id)
+        await this['produto/listAll']([['Cat_produtos_idCat_produtos', '=', id]])
       }
     }
   }

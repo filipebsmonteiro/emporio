@@ -6,8 +6,9 @@ import endereco from './modules/endereco'
 import fidelidade from './modules/fidelidade'
 import ingrediente from './modules/ingrediente'
 import loja from './modules/loja'
-import produto from './modules/produto'
+import produto from './modules/produto/produto'
 import formapagamento from './modules/formapagamento'
+import pedido from './modules/pedido'
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export const store = new Vuex.Store({
     ingrediente,
     loja,
     produto,
-    formapagamento
+    formapagamento,
+    pedido
   }
 })

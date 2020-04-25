@@ -43,7 +43,12 @@ export default new Router({
           path: '/tables',
           name: 'tables',
           component: () => import('./views/dist/Tables.vue')
-        }
+        },
+        {
+          path: '/docs/produtos',
+          name: 'docs.produtos',
+          component: () => import('./views/docs/Index')
+        },
       ].concat(
         produtoRoutes,
         ingredienteRoutes,
@@ -68,14 +73,9 @@ export default new Router({
     },
     {
       path: '/',
-      redirect: 'categorias',
+      redirect: 'produtod',
       component: Content,
       children: [
-        {
-          path: '/docs/produtos',
-          name: 'docs.produtos',
-          component: () => import('./views/docs/Index')
-        },
         {
           path: '/produtos',
           name: 'produtos',

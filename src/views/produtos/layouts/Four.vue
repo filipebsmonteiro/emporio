@@ -1,18 +1,25 @@
 <template>
   <b-card
-    :key="product.id"
-    :title="product.data.nome"
-    img-src="~/assets/image/25-600x300.jpg"
-    img-alt="Image"
+    :key="produto.id"
+    :title="produto.nome"
+    img-src="https://image.shutterstock.com/image-photo/dieting-260nw-113112424.jpg"
+    :img-alt="produto.nome"
     img-top
     tag="article"
-    class="p-0 col-auto"
+    class="p-0 col-auto shadow"
   >
+    <template v-if="!produto.imagem" v-slot:header>
+      <span class="b-avatar rounded">
+        <span class="b-avatar-custom">
+          <i class="fas fa-camera-retro fa-2x m-auto"/>
+        </span>
+      </span>
+    </template>
     <b-card-text>
-      {{ product.ingredientes }}
+      {{ produto.ingredientes }}
     </b-card-text>
 
-    <b-button @click="$emit('addToCart', product)" variant="primary">
+    <b-button @click="$emit('addToCart', produto)" variant="primary">
       Adicionar ao Carrinho
     </b-button>
   </b-card>
@@ -22,7 +29,7 @@
   export default {
     name: 'Four',
     props: {
-      product: {
+      produto: {
         type: Object,
         default: () => {
           return {

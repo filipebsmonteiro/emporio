@@ -1,5 +1,5 @@
 <template>
-  <b-table :items="produtos" :fields="fields" tbody-tr-class="p-2" striped borderless responsive>
+  <b-table :items="produtosComputed" :fields="fields" tbody-tr-class="p-2" striped borderless responsive>
     <template v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
@@ -12,7 +12,7 @@
       <b-input-group class="w-auto m-0">
         <b-input
           type="number"
-          :min="linha.item.minimo_unidade || 1"
+          :min="linha.item.minimo_unidade"
           :step="linha.item.intervalo"
           v-model="linha.item.quantidade"
         />
@@ -27,9 +27,9 @@
     <template v-slot:cell(detalhes)="linha">
       <base-button type="link" @click="linha.toggleDetails"><u>Detalhes</u></base-button>
     </template>
-    <template v-slot:row-details="row">
+    <template v-slot:row-details="linha">
       <b-card class="shadow" no-body>
-        <detalhes-produto />
+        <detalhes-produto :produto="linha.item" />
       </b-card>
     </template>
     <template v-slot:cell(preco)="linha">
@@ -43,27 +43,30 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
   import DetalhesProduto from '@/views/carrinho/DetalhesProduto'
 
   export default {
     name: 'Produto',
     components: { DetalhesProduto },
+    props: {
+      produtos: {
+        type: Array,
+        default: () => []
+      }
+    },
     computed: {
-      ...mapGetters({
-        store_produtos: 'produto/getAll'
-      }),
-      produtos () {
-        if (this.store_produtos && Array.isArray(this.store_produtos)) {
+      produtosComputed () {
+        if (this.produtos && Array.isArray(this.produtos)) {
           // TODO: Mapear produtos do carrinho com produtos Do Banco
-          return this.store_produtos.map(produto => {
+          return this.produtos.map(produto => {
+            const intervalo = produto.intervalo ? produto.intervalo: 1
+            const minimo_unidade = produto.minimo_unidade ? produto.minimo_unidade : 1
+            const quantidade = produto.quantidade ? produto.quantidade : minimo_unidade
             return {
               ...produto,
-              //unidade_medida: 'kg',
-              //intervalo: '0.5',
-              //minimo_unidade: '2.5',
-              quantidade: 1,
-              valor: produto.valor
+              intervalo,
+              minimo_unidade,
+              quantidade
             }
           })
         }
@@ -83,14 +86,6 @@
         ]
       }
     },
-    methods: {
-      ...mapActions([
-        'produto/listAll'
-      ])
-    },
-    async mounted () {
-      await this['produto/listAll']()
-    }
   }
 </script>
 

@@ -1,19 +1,19 @@
 <template>
   <b-card
-    class="overflow-hidden product"
+    class="overflow-hidden product shadow"
     no-body
   >
     <b-row no-gutters>
       <b-col md="6" class="product__image">
-        <b-card-img src="~/assets/image/25-600x300.jpg" class="rounded-0" />
+        <b-card-img src="https://image.shutterstock.com/image-photo/dieting-260nw-113112424.jpg" class="rounded-0"/>
       </b-col>
       <b-col md="6">
         <b-card-body title="Horizontal Card">
           <b-card-text>
-            {{ product.ingredientes }}
+            {{ produto.ingredientes }}
           </b-card-text>
 
-          <b-button @click="$emit('addToCart', product)" variant="primary">
+          <b-button @click="$emit('addToCart', produto)" variant="primary">
             Adicionar ao Carrinho
           </b-button>
         </b-card-body>
@@ -26,7 +26,7 @@
   export default {
     name: 'Two',
     props: {
-      product: {
+      produto: {
         type: Object,
         default: () => {
           return {
@@ -39,15 +39,15 @@
         }
       }
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 
 <style lang="scss" scoped>
-  .product{
+  .product {
     max-width: 540px;
-    &__{
+
+    &__ {
       &image {
         margin-top: auto;
         margin-bottom: auto;

@@ -1,19 +1,26 @@
 <template>
   <div>
-    <h1>Detalhes</h1>
-    <p>Não adianta nem tentar me esquecer</p>
-    <p>Durante muito tempo em sua vida</p>
-    <p>Eu vou viver</p>
-    <p>Detalhes tão pequenos de nós dois</p>
-    <p>São coisas muito grandes pra esquecer</p>
-    <p>E a toda hora vão estar presentes</p>
-    <p>Você vai ver</p>
+    <b-list-group>
+      <b-list-group-item
+        v-for="(mult, i) in produto.multiplos" :key="i"
+        class="d-flex justify-content-between align-items-center bg-transparent">
+        {{ mult.multiplo.nome }}:
+        {{ mult.quantidade > 1 ? mult.quantidade + ' - ' : null }}{{ mult.ingrediente.nome }}
+        <span v-if="mult.valor > 0">{{ mult.valor | formatMoney }}</span>
+      </b-list-group-item>
+    </b-list-group>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'DetalhesProduto'
+    name: 'DetalhesProduto',
+    props: {
+      produto: {
+        type: Object,
+        default: () => {}
+      }
+    }
   }
 </script>
 

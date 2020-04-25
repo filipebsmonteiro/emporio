@@ -9,7 +9,7 @@
         <Agendamento/>
       </div>
     </div>
-    <Produto class="mt-4"/>
+    <Produto class="mt-4" :produtos="produtos"/>
     <div class="row mt-5">
       <div class="col">
         <b-form-group label="Observações deste Pedido" label-for="observacoes">
@@ -96,7 +96,8 @@
     components: { Cupom, Agendamento, Produto, Endereco },
     computed: {
       ...mapGetters({
-        store_formaspagamento: 'formapagamento/getAll'
+        store_formaspagamento: 'formapagamento/getAll',
+        store_pedidos: 'pedido/getAll'
       }),
       subtotal () {
         return 50
@@ -128,16 +129,20 @@
         vlrResgatar: 2,
         taxa_entrega: 15,
         fidelidade_discount: 1.4,
-        cupom_discount: 4
+        cupom_discount: 4,
+        produtos: []
       }
     },
     methods: {
       ...mapActions([
-        'formapagamento/listAll'
+        'formapagamento/listAll',
+        'pedido/listAll'
       ])
     },
     async mounted () {
       await this['formapagamento/listAll']()
+      await this['pedido/listAll']()
+      this.produtos = this.store_pedidos[9].produtos
     }
   }
 </script>

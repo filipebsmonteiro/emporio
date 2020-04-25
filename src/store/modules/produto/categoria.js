@@ -1,7 +1,7 @@
-import ProdutoRepository from '@/services/Produto.js'
+import CategoriaRepository from '@/services/Produto/Categoria'
 
 export default {
-  name: 'produto',
+  name: 'categoria',
   namespaced: true,
   state: {
     list: [],
@@ -33,14 +33,14 @@ export default {
   actions: {
     async listOne ({ commit }, id) {
       commit('setLoading', true)
-      await ProdutoRepository.fetch(id).then(response => {
+      await CategoriaRepository.fetch(id).then(response => {
         commit('setCurrent', response.data)
       })
       commit('setLoading', false)
     },
     async listAll ({ commit }, params) {
       commit('setLoading', true)
-      await ProdutoRepository.fetchAll(params).then(response => {
+      await CategoriaRepository.fetchAll(params).then(response => {
         commit('setAll', response.data)
       })
       commit('setLoading', false)
