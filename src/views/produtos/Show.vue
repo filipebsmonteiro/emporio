@@ -51,13 +51,24 @@
         'produto/categoria/listAll',
         'produto/listOne'
       ]),
+      adicionarCarrinho() {
+        this.$swal({
+          type: 'success',
+          title: `Produto adicionado ao Carrinho com Sucesso`,
+          text: 'Deseja continuar comprando?',
+          footer: '<a href>Ir para o carrinho</a>',
+          focusConfirm: false,
+          confirmButtonText: 'Continuar!',
+          confirmButtonAriaLabel: 'Thumbs up, great!',
+        })
+      }
     },
     async mounted () {
-        await this['produto/listOne'](this.$route.params.id)
-        this.quantidade = this.produto.minimo_unidade
-        // eslint-disable-next-line no-console
-        console.log(this.produto)
-      },
+      await this['produto/listOne'](this.$route.params.id)
+      this.quantidade = this.produto.minimo_unidade
+
+
+    },
   }
 </script>
 
