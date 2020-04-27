@@ -73,18 +73,23 @@ export default new Router({
     },
     {
       path: '/',
-      redirect: 'produtod',
+      redirect: 'produtos',
       component: SiteLayout,
       children: [
         {
           path: '/produtos',
           name: 'produtos',
-          component: () => import('./views/produtos/IndexSide')
+          component: () => import('./views/produtos/Index')
         },
         {
           path: '/produtos/categoria/:id',
           name: 'produtos.categoria',
           component: () => import('./views/produtos/Index')
+        },
+        {
+          path: '/produto/:id',
+          name: 'produto.show',
+          component: () => import('./views/produtos/Show')
         },
         {
           path: '/carrinho',

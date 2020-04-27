@@ -18,14 +18,12 @@ body {
 }
 
 #navbar-categorias{
-  nav {
-    background: linear-gradient(87deg, $navcat-bg-start 0, $navcat-bg-end 100%) !important;
-    border-left: $navcat-border-left-px $navcat-border-type $navcat-border-color;
-    border-top: $navcat-border-top-px $navcat-border-type $navcat-border-color;
-    border-right: $navcat-border-right-px $navcat-border-type $navcat-border-color;
-    border-bottom: $navcat-border-bottom-px $navcat-border-type $navcat-border-color;
-    .nav-link {
-      color: $navbar-text-color;
-    }
+  background: linear-gradient(87deg, $navcat-bg-start 0, $navcat-bg-end 100%) !important;
+  border-left: $navcat-border-left-px $navcat-border-type $navcat-border-color;
+  border-top: $navcat-border-top-px $navcat-border-type $navcat-border-color;
+  border-right: $navcat-border-right-px $navcat-border-type $navcat-border-color;
+  border-bottom: $navcat-border-bottom-px $navcat-border-type $navcat-border-color;
+  .nav-link {
+    color: $navbar-text-color;
   }
 }

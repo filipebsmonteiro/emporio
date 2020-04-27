@@ -33,8 +33,8 @@
           </router-link>
         </li>
         <li class="nav-item mt--1 mb--2">
-          <span class="nav-link badge ml--1 mt-1 position-absolute">24</span>
           <router-link class="nav-link p-0" :to="{name: 'carrinho'}">
+            <span class="nav-link badge ml--1 mt-1 position-absolute">24</span>
             <i class="ni ni-cart ni-2x"/>
           </router-link>
         </li>

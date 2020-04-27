@@ -2,6 +2,7 @@
   <b-card
     :key="produto.id"
     :title="produto.nome"
+
     tag="article"
     class="p-0 col-md-6 col-lg shadow product"
     body-class="p-3"
@@ -21,11 +22,14 @@
       </div>
     </template>
     <b-card-text class="flex-fill">
-      {{ produto.ingredientes }}
+      <div class="w-100 d-flex justify-content-between align-items-end">
+        <span class="product__preco">{{ produto.preco | formatMoney }}</span>
+        <small class="ml-3"> {{ produto.unidade_medida ? ` ${produto.minimo_unidade} ${produto.unidade_medida}` : null }}</small>
+      </div>
     </b-card-text>
-    <b-button @click="$emit('addToCart', produto)" variant="primary">
+    <router-link :to="{name: 'produto.show', params: {id: produto.id}}" class="btn btn-primary product__button">
       Adicionar ao Carrinho
-    </b-button>
+    </router-link>
   </b-card>
 </template>
 
@@ -77,6 +81,17 @@
     /deep/.card-body{
       display: flex !important;
       flex-direction: column !important;
+      .card-title{
+        margin: 0.25rem !important;
+      }
+    }
+    &__{
+      &preco{
+        white-space: nowrap !important;
+      }
+      &button{
+        white-space: nowrap !important;
+      }
     }
   }
 </style>

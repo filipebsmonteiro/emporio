@@ -15,9 +15,9 @@
             {{ produto.ingredientes }}
           </b-card-text>
 
-          <b-button @click="$emit('addToCart', produto)" variant="primary" class="product__button">
+          <router-link :to="{name: 'produto.show', params: {id: produto.id}}" class="btn btn-primary product__button">
             Adicionar ao Carrinho
-          </b-button>
+          </router-link>
         </b-card-body>
       </b-col>
     </b-row>
@@ -48,8 +48,7 @@
 <style lang="scss" scoped>
   .product {
     max-width: 540px;
-
-    &__ {
+    &__{
       &image {
         margin-top: auto;
         margin-bottom: auto;
