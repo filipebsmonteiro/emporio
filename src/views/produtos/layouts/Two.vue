@@ -1,19 +1,21 @@
 <template>
-  <b-card
-    class="overflow-hidden product shadow"
-    no-body
-  >
+  <b-card class="overflow-hidden product shadow" no-body>
     <b-row no-gutters>
       <b-col md="6" class="product__image">
-        <b-card-img src="https://image.shutterstock.com/image-photo/dieting-260nw-113112424.jpg" class="rounded-0"/>
+        <b-card-img v-if="produto.imagem" :src="'/img/produtos/' + produto.imagem" class="rounded-0"/>
+        <span v-else class="b-avatar rounded">
+          <span class="b-avatar-custom">
+            <i class="fas fa-camera-retro fa-2x m-auto"/>
+          </span>
+        </span>
       </b-col>
-      <b-col md="6">
-        <b-card-body title="Horizontal Card">
-          <b-card-text>
+      <b-col md="6" class="d-flex">
+        <b-card-body :title="produto.nome" class="d-flex flex-column p-3">
+          <b-card-text class="flex-fill">
             {{ produto.ingredientes }}
           </b-card-text>
 
-          <b-button @click="$emit('addToCart', produto)" variant="primary">
+          <b-button @click="$emit('addToCart', produto)" variant="primary" class="product__button">
             Adicionar ao Carrinho
           </b-button>
         </b-card-body>
@@ -51,6 +53,9 @@
       &image {
         margin-top: auto;
         margin-bottom: auto;
+      }
+      &button{
+        white-space: nowrap !important;
       }
     }
   }

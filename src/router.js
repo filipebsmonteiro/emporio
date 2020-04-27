@@ -4,7 +4,7 @@ import DashboardLayout from '@/layout/DashboardLayout'
 import AuthLayout from '@/layout/AuthLayout'
 import produtoRoutes from '@/views/painel/produto/routes'
 import ingredienteRoutes from '@/views/painel/ingrediente/routes'
-import Content from '@/layout/Content'
+import SiteLayout from '@/layout/SiteLayout'
 Vue.use(Router)
 
 export default new Router({
@@ -74,12 +74,12 @@ export default new Router({
     {
       path: '/',
       redirect: 'produtod',
-      component: Content,
+      component: SiteLayout,
       children: [
         {
           path: '/produtos',
           name: 'produtos',
-          component: () => import('./views/produtos/Index')
+          component: () => import('./views/produtos/IndexSide')
         },
         {
           path: '/produtos/categoria/:id',
@@ -88,7 +88,7 @@ export default new Router({
         },
         {
           path: '/carrinho',
-          name: '/carrinho',
+          name: 'carrinho',
           component: () => import('./views/carrinho/Index')
         },
       ]

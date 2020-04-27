@@ -1,27 +1,33 @@
 <template>
   <div>
-    <div id="navbar-categorias" class="container">
-      <base-nav
-        v-if="this.$route.name !== 'produtos.categoria'"
-        class="navbar-top rounded mt-3" expand>
-        <ul class="navbar-nav" v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo">
-          <li class="nav-item dropdown">
-            <base-dropdown class="nav-link">
-              <template slot="title">{{ grupo }}</template>
-              <template>
-                <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="dropdown-item">
+    <div id="navbar-categorias" class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <base-nav
+            v-if="this.$route.name !== 'produtos.categoria'"
+            class="navbar-top rounded mt-3 sticky-top" flex-column expand>
+            <ul class="navbar-nav mr-auto" v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo">
+              <li class="nav-item dropdown">
+                <base-dropdown class="nav-link">
+                  <template slot="title">{{ grupo }}</template>
+                  <template>
+                    <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="dropdown-item">
                   <span @click="loadProducts(categoria.id)">
                     {{ categoria.nome }}
                   </span>
-                </b-button>
-              </template>
-            </base-dropdown>
-          </li>
-        </ul>
-      </base-nav>
-      <b-overlay :show="isLoadingProduto">
-        <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
-      </b-overlay>
+                    </b-button>
+                  </template>
+                </base-dropdown>
+              </li>
+            </ul>
+          </base-nav>
+        </div>
+        <div class="col-md-9">
+          <b-overlay :show="isLoadingProduto">
+            <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
+          </b-overlay>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,7 +42,7 @@
     props: {
       layout: {
         type: Number,
-        default: 4
+        default: 2
       }
     },
     computed: {
@@ -84,4 +90,7 @@
 </script>
 
 <style lang="scss" scoped>
+  .sticky-top{
+    top: 1rem;
+  }
 </style>

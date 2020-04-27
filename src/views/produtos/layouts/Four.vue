@@ -2,23 +2,27 @@
   <b-card
     :key="produto.id"
     :title="produto.nome"
-    img-src="https://image.shutterstock.com/image-photo/dieting-260nw-113112424.jpg"
-    :img-alt="produto.nome"
-    img-top
     tag="article"
-    class="p-0 col-auto shadow"
+    class="p-0 col-md-6 col-lg shadow product"
+    body-class="p-3"
   >
-    <template v-if="!produto.imagem" v-slot:header>
-      <span class="b-avatar rounded">
+    <!--:img-src="'/img/produtos/' + produto.imagem"
+    img-top
+    < !-- https://image.shutterstock.com/image-photo/dieting-260nw-113112424.jpg -->
+    <template v-slot:header>
+      <div class="product__imagem jumbotron mb-0"
+           :style="{'background-image': `url('/img/produtos/${produto.imagem}')`}">
+        <span v-if="produto.imagem"/>
+        <span v-else class="b-avatar rounded w-100 m-auto">
         <span class="b-avatar-custom">
-          <i class="fas fa-camera-retro fa-2x m-auto"/>
+          <i class="fas fa-camera-retro fa-2x"/>
         </span>
       </span>
+      </div>
     </template>
-    <b-card-text>
+    <b-card-text class="flex-fill">
       {{ produto.ingredientes }}
     </b-card-text>
-
     <b-button @click="$emit('addToCart', produto)" variant="primary">
       Adicionar ao Carrinho
     </b-button>
@@ -48,14 +52,31 @@
 </script>
 
 <style lang="scss" scoped>
-  /deep/.card-body{
-    display: flex;
-    flex-direction: column;
-    .card-title{
-      align-content: flex-start;
+  .jumbotron{
+    //background-image: url('/img/produtos/1-7.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 10rem;
+    background-position: center center;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius:  0px;
+
+    @media (max-width: 576px) {
+      height: 15rem;
     }
-    .card-text{
-      flex: 1;
+  }
+  .product{
+    @media (max-width: 576px) {
+      margin-left: 1.5rem !important;
+      margin-right: 1.5rem !important;
+    }
+    /deep/.card-header{
+      padding: 0px !important;
+    }
+    /deep/.card-body{
+      display: flex !important;
+      flex-direction: column !important;
     }
   }
 </style>

@@ -20,7 +20,7 @@
             </navbar-toggle-button>
 
             <div class="collapse navbar-collapse"
-                 :class="{show: toggled}"
+                 :class="{show: toggled, 'flex-column': flexColumn}"
                  :id="contentId"
                  v-click-outside="closeMenu">
 
@@ -71,6 +71,10 @@
       showToggleButton: {
         type: Boolean,
         default: true
+      },
+      flexColumn: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
