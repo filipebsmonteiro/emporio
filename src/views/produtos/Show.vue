@@ -63,7 +63,8 @@
     methods: {
       ...mapActions([
         'produto/categoria/listAll',
-        'produto/listOne'
+        'produto/listOne',
+        'carrinho/setQuantidade'
       ]),
       quantidadeFormatter(value) {
         if (this.produto.unidade_medida) {
@@ -91,19 +92,22 @@
         this.multiplos = [...this.multiplos, multiplo]
       },
       adicionarCarrinho() {
-        let carrinho = JSON.parse(this.$localStorage.get('carrinho', null))
         const produto = {
           produto: this.produto.id,
           quantidade: this.quantidade,
           multiplos: this.multiplos
         }
 
+        let carrinho = this.$localStorage.get('carrinho', null)
         if (carrinho){
-          carrinho = [...carrinho, produto]
-          this.$localStorage.set('carrinho', JSON.stringify(carrinho))
+          const carrinhoParsed = JSON.parse(carrinho)
+          carrinho = [...carrinhoParsed, produto]
         }else {
-          this.$localStorage.set('carrinho', JSON.stringify([produto]))
+          carrinho = [produto]
         }
+        this.$localStorage.set('carrinho', JSON.stringify(carrinho))
+
+        this['carrinho/setQuantidade'](carrinho.length)
 
         this.$swal({
           icon: 'success',
