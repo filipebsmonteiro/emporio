@@ -19,7 +19,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import { BootstrapVue } from 'bootstrap-vue'
-import VueSweetalert2 from 'vue-sweetalert2';
+import VueSweetalert2 from 'vue-sweetalert2'
+import VueLocalStorage from 'vue-localstorage'
 import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import { store } from './store'
@@ -30,6 +31,7 @@ Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(ArgonDashboard)
 Vue.use(VueSweetalert2)
+Vue.use(VueLocalStorage)
 new Vue({
   router,
   store,

@@ -6,7 +6,12 @@ import Vue from 'vue'
 
 
 Vue.filter('formatMoney', (value) => {
-  return `R$ ${value.toFixed(2).replace('.', ',')}`
+  if (value){
+    return `R$ ${value.toFixed(2).replace('.', ',')}`
+  }
+  if (value === 0 || value === '0'){
+    return `R$ ${value.toFixed(2).replace('.', ',')}`
+  }
 });
 Vue.filter('formatDate', (value) => {
   return value

@@ -16,7 +16,7 @@
           </b-card-text>
 
           <router-link :to="{name: 'produto.show', params: {id: produto.id}}" class="btn btn-primary product__button">
-            Adicionar ao Carrinho
+            Pedir
           </router-link>
         </b-card-body>
       </b-col>
