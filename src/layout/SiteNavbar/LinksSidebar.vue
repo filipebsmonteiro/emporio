@@ -34,7 +34,7 @@
         </li>
         <li class="nav-item mt--1 mb--2">
           <router-link class="nav-link p-0" :to="{name: 'carrinho'}">
-            <span class="nav-link badge ml--1 mt-1 position-absolute">24</span>
+            <span class="nav-link badge ml--1 mt-1 position-absolute" v-if="carrinho.length">{{ carrinho.length }}</span>
             <i class="ni ni-cart ni-2x"/>
           </router-link>
         </li>
@@ -56,6 +56,14 @@
         type: String,
         default: ''
       }
+    },
+    data() {
+      return {
+        carrinho: []
+      }
+    },
+    mounted() {
+      this.carrinho = JSON.parse(this.$localStorage.get('carrinho', []))
     }
   }
 </script>

@@ -91,7 +91,7 @@
         this.multiplos = [...this.multiplos, multiplo]
       },
       adicionarCarrinho() {
-        let carrinho = this.$localStorage.get('carrinho')
+        let carrinho = JSON.parse(this.$localStorage.get('carrinho', null))
         const produto = {
           produto: this.produto.id,
           quantidade: this.quantidade,
@@ -100,9 +100,9 @@
 
         if (carrinho){
           carrinho = [...carrinho, produto]
-          this.$localStorage.set('carrinho', carrinho)
+          this.$localStorage.set('carrinho', JSON.stringify(carrinho))
         }else {
-          this.$localStorage.set('carrinho', [produto])
+          this.$localStorage.set('carrinho', JSON.stringify([produto]))
         }
 
         this.$swal({
@@ -122,8 +122,6 @@
     async mounted () {
       await this['produto/listOne'](this.$route.params.id)
       this.quantidade = this.produto.minimo_unidade
-      // eslint-disable-next-line no-console
-      console.log(this.$localStorage.get('carrinho'))
     },
   }
 </script>
