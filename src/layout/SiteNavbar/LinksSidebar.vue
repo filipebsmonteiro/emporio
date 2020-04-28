@@ -75,7 +75,7 @@
       ])
     },
     mounted () {
-      const carrinho = JSON.parse(this.$localStorage.get('carrinho', null))
+      const carrinho = JSON.parse(this.$localStorage.get('carrinho', '[]'))
       this['carrinho/setQuantidade'](carrinho.length)
     }
   }

@@ -73,8 +73,6 @@
         return value
       },
       updateMultiplos(multiplo) {
-        // eslint-disable-next-line no-console
-        console.log(multiplo)
         const exists = this.multiplos.find(m => m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente)
         if (exists) {
           if (multiplo.quantidade === 0){
@@ -92,6 +90,28 @@
         this.multiplos = [...this.multiplos, multiplo]
       },
       adicionarCarrinho() {
+        let isValid = true
+        this.produto.multiplos.map(multBackEnd => {
+          if (multBackEnd.obrigatorio){
+            let soma = 0
+            this.multiplos.map(multSelected => {
+              soma = multSelected.multiplo === multBackEnd.id ? soma + multSelected.quantidade : soma
+            })
+
+            if (soma < multBackEnd.quantidade_min) {
+              isValid = false
+              this.$notify({
+                type: 'danger',
+                title: `Selecione ao menos ${multBackEnd.quantidade_min} ${multBackEnd.nome}`,
+                verticalAlign: 'bottom',
+                horizontalAlign: 'center'
+              })
+            }
+          }
+        })
+
+        if (!isValid) return
+
         const produto = {
           produto: this.produto.id,
           quantidade: this.quantidade,

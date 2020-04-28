@@ -2,7 +2,7 @@
   <div
     @click="tryClose"
     data-notify="container"
-    class="alert alert-notify alert-dismissible"
+    class="alert alert-notify alert-dismissible w-50"
     :class="[
       { 'alert-with-icon': icon },
       verticalAlign,
