@@ -2,11 +2,15 @@
   <div>
     <b-list-group>
       <b-list-group-item
-        v-for="(mult, i) in produto.multiplos" :key="i"
+        v-for="(detalhe, i) in detalhes" :key="i"
         class="d-flex justify-content-between align-items-center bg-transparent">
-        {{ mult.multiplo.nome }}:
-        {{ mult.quantidade > 1 ? mult.quantidade + ' - ' : null }}{{ mult.ingrediente.nome }}
-        <span v-if="mult.valor > 0">{{ mult.valor | formatMoney }}</span>
+        <b>{{ detalhe.multiplo }}:</b>
+        <div>
+          <span :class="{'mr-3': detalhe.valor > 0, 'mr-6': detalhe.valor === 0 }">
+            {{ detalhe.quantidade > 1 ? detalhe.quantidade + ' - ' : null }}{{ detalhe.ingrediente }}
+          </span>
+          <span v-if="detalhe.valor > 0">{{ detalhe.valor | formatMoney }}</span>
+        </div>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -16,7 +20,7 @@
   export default {
     name: 'DetalhesProduto',
     props: {
-      produto: {
+      detalhes: {
         type: Object,
         default: () => {}
       }

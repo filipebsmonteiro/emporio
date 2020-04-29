@@ -7,8 +7,8 @@
      </b-card-header>
      <b-collapse id="accordion-agendamento" accordion="my-accordion" role="tabpanel">
        <b-card-body>
-         <b-form-datepicker v-model="date" :date-disabled-fn="dateDisabled" class="mb-2" />
-         <b-form-timepicker v-model="time" placeholder="Escolha o Horário" locale="en" />
+         <b-form-datepicker v-model="date" placeholder="Selecione o Dia" :date-disabled-fn="dateDisabled" class="mb-2"/>
+         <b-form-timepicker v-model="time" placeholder="Escolha o Horário" locale="en" minutes-step="30"/>
        </b-card-body>
      </b-collapse>
    </b-card>

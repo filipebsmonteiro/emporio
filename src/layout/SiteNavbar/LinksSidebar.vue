@@ -23,12 +23,12 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'produtos'}">
+          <router-link class="nav-link" :to="{name: 'cliente'}">
             <span class="heading">Meu Perfil</span>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'produtos'}">
+          <router-link class="nav-link" :to="{name: ''}">
             <span class="heading">Sair</span>
           </router-link>
         </li>

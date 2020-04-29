@@ -1,4 +1,6 @@
 //import CarrinhoRepository from '@/services/Carrinho.js'
+class a {}
+const CarrinhoRepository = new a()
 
 export default {
   name: 'carrinho',

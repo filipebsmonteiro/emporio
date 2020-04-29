@@ -1,5 +1,5 @@
 <template>
-  <b-table :items="produtosComputed" :fields="fields" tbody-tr-class="p-2" striped borderless responsive>
+  <b-table :items="produtos" :fields="fields" tbody-tr-class="p-2" striped borderless responsive>
     <template v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
@@ -25,16 +25,18 @@
 
     </template>
     <template v-slot:cell(detalhes)="linha">
-      <base-button type="link" @click="linha.toggleDetails"><u>Detalhes</u></base-button>
+      <base-button v-if="linha.item.multiplos.length > 0"
+                   type="link" @click="linha.toggleDetails">
+        <u>Detalhes</u>
+      </base-button>
     </template>
     <template v-slot:row-details="linha">
       <b-card class="shadow" no-body>
-        <detalhes-produto :produto="linha.item" />
+        <detalhes-produto :detalhes="linha.item.detalhes" />
       </b-card>
     </template>
-    <template v-slot:cell(preco)="linha">
-      {{ /* TODO: Valor promocional e multiplicar pela quantidade */ }}
-      {{ (linha.item.quantidade * linha.item.preco) | formatMoney }}
+    <template v-slot:cell(valor)="linha">
+      {{ (linha.item.quantidade * linha.item.valor) | formatMoney }}
     </template>
     <template v-slot:cell(id)>
       <base-button type="danger" size="sm" icon="fas fa-trash" icon-only/>
@@ -54,25 +56,6 @@
         default: () => []
       }
     },
-    computed: {
-      produtosComputed () {
-        if (this.produtos && Array.isArray(this.produtos)) {
-          // TODO: Mapear produtos do carrinho com produtos Do Banco
-          return this.produtos.map(produto => {
-            const intervalo = produto.intervalo ? produto.intervalo: 1
-            const minimo_unidade = produto.minimo_unidade ? produto.minimo_unidade : 1
-            const quantidade = produto.quantidade ? produto.quantidade : minimo_unidade
-            return {
-              ...produto,
-              intervalo,
-              minimo_unidade,
-              quantidade
-            }
-          })
-        }
-        return []
-      }
-    },
     data () {
       return {
         fields: [
@@ -81,7 +64,7 @@
           { key: 'nome', label: 'Produto' },
           { key: 'categoria', label: 'Tipo' },
           { key: 'detalhes', label: 'Detalhes' },
-          { key: 'preco', label: 'Valor' },
+          { key: 'valor', label: 'Valor' },
           { key: 'id', label: 'Remover' },
         ]
       }

@@ -96,6 +96,41 @@ export default new Router({
           name: 'carrinho',
           component: () => import('./views/carrinho/Index')
         },
+        {
+          path: '/cliente',
+          name: 'cliente',
+          component: () => import('./views/cliente/Detalhes')
+        },
+        {
+          path: '/cliente/editar',
+          name: 'cliente.editar',
+          component: () => import('./views/cliente/Form')
+        },
+        {
+          path: '/enderecos',
+          name: 'endereco.index',
+          component: () => import('./views/endereco/Index')
+        },
+        {
+          path: '/endereco/:id/editar',
+          name: 'endereco.editar',
+          component: () => import('./views/endereco/Form')
+        },
+        {
+          path: '/pedidos',
+          name: 'pedido.index',
+          component: () => import('./views/pedidos/Index')
+        },
+        {
+          path: '/pedido/:id',
+          name: 'pedido.show',
+          component: () => import('./views/pedidos/Show')
+        },
+        {
+          path: '/fidelidades',
+          name: 'fidelidade.index',
+          component: () => import('./views/fidelidade/Index')
+        },
       ]
     }
 ]
