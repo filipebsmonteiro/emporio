@@ -13,41 +13,70 @@
       </div>
       <template>
         <form @submit.prevent>
-          <h6 class="heading-small text-muted mb-4">User information</h6>
+          <h6 class="heading-small text-muted mb-4">Meus Dados</h6>
           <div class="pl-lg-4">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-4">
                 <base-input alternative=""
-                            label="Username"
-                            placeholder="Username"
+                            label="Nome"
+                            placeholder="Nome"
                             input-classes="form-control-alternative"
-                            v-model="model.username"
+                            v-model="model.nome"
                 />
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-4">
                 <base-input alternative=""
-                            label="Email address"
+                            label="CPF"
+                            placeholder="000.000.000-00"
+                            input-classes="form-control-alternative"
+                            v-model="model.cpf"
+                />
+              </div>
+              <div class="col-lg-4">
+                <base-input alternative=""
+                            label="Sexo"
+                            type="é Uma SELECT"
                             placeholder="jesse@example.com"
                             input-classes="form-control-alternative"
-                            v-model="model.email"
+                            v-model="model.sexo"
                 />
               </div>
             </div>
             <div class="row">
               <div class="col-lg-6">
                 <base-input alternative=""
-                            label="First name"
-                            placeholder="First name"
+                            label="Telefone"
+                            placeholder="Telefone"
                             input-classes="form-control-alternative"
-                            v-model="model.firstName"
+                            v-model="model.phone"
                 />
               </div>
               <div class="col-lg-6">
                 <base-input alternative=""
-                            label="Last name"
-                            placeholder="Last name"
+                            label="Data de Nascimento"
+                            placeholder="Nascimento"
                             input-classes="form-control-alternative"
-                            v-model="model.lastName"
+                            type="date"
+                            v-model="model.nascimento"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <base-input alternative=""
+                            label="Email"
+                            placeholder="nome@email.com"
+                            input-classes="form-control-alternative"
+                            v-model="model.email"
+                />
+              </div>
+              <div class="col-lg-6">
+                <base-input alternative=""
+                            label="Senha"
+                            type="password"
+                            placeholder=" + + + +"
+                            input-classes="form-control-alternative"
+                            v-model="model.password"
                 />
               </div>
             </div>

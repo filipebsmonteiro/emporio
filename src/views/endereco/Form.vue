@@ -13,42 +13,50 @@
       </div>
       <template>
         <form @submit.prevent>
-          <!-- Address -->
-          <h6 class="heading-small text-muted mb-4">Contact information</h6>
           <div class="pl-lg-4">
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-lg-4">
                 <base-input alternative=""
-                            label="Address"
-                            placeholder="Home Address"
+                            label="CEP"
+                            placeholder="Digite"
                             input-classes="form-control-alternative"
-                            v-model="model.address"
+                            v-model="model.cep"
+                />
+              </div>
+              <div class="col-lg-4">
+                <base-input alternative=""
+                            label="Cidade"
+                            placeholder="Cidade"
+                            input-classes="form-control-alternative"
+                            v-model="model.cidade"
+                />
+              </div>
+              <div class="col-lg-4">
+                <base-input alternative=""
+                            label="Bairro"
+                            placeholder="Bairro"
+                            input-classes="form-control-alternative"
+                            v-model="model.bairro"
                 />
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-4">
+              <div class="col-md-12">
                 <base-input alternative=""
-                            label="City"
-                            placeholder="City"
+                            label="Logradouro"
+                            placeholder="Logradouro"
                             input-classes="form-control-alternative"
-                            v-model="model.city"
+                            v-model="model.logradouro"
                 />
               </div>
-              <div class="col-lg-4">
+            </div>
+            <div class="row">
+              <div class="col-md-12">
                 <base-input alternative=""
-                            label="Country"
-                            placeholder="Country"
+                            label="Referência"
+                            placeholder="Referência"
                             input-classes="form-control-alternative"
-                            v-model="model.country"
-                />
-              </div>
-              <div class="col-lg-4">
-                <base-input alternative=""
-                            label="Postal code"
-                            placeholder="Postal code"
-                            input-classes="form-control-alternative"
-                            v-model="model.zipCode"
+                            v-model="model.referencia"
                 />
               </div>
             </div>

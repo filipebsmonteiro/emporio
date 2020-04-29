@@ -28,7 +28,7 @@
               <template slot="option" slot-scope="option">
                 <span v-if="option.imagem" class="b-avatar rounded size-3 mr-2 ml-0">
                   <span class="b-avatar-custom">
-                    <img :src="option.imagem" />
+                    <img :src="`/img/pagamento/${option.imagem}`" />
                   </span>
                 </span>
                 {{ option.label }}
