@@ -63,7 +63,7 @@
                 <h3 class="mb-0">Últimos Pedidos</h3>
               </div>
               <div class="col-4 text-right">
-                <router-link :to="{name: 'cliente.pedidos'}" class="btn btn-sm btn-primary">
+                <router-link :to="{name: 'pedido.index'}" class="btn btn-sm btn-primary">
                   Visualizar Todos
                 </router-link>
               </div>
@@ -79,11 +79,16 @@
                 {{ linha.item.valor | formatMoney }}
               </template>
               <template v-slot:cell(status)="linha">
-                <b-badge variant="success">Saiu para entrega</b-badge>
+                <b-badge variant="success">{{ linha.item.status }}</b-badge>
               </template>
               <template v-slot:cell(id)="linha">
                 <div class="w-100 d-flex justify-content-between">
-                  <base-button size="sm" icon="fas fa-eye fa-2x" icon-only @click="$router.push({name: ''})"/>
+                  <base-button
+                    size="sm"
+                    icon="fas fa-eye fa-2x"
+                    @click="$router.push({name: 'pedido.show', params: { referencia: linha.item.referencia }})"
+                    icon-only
+                  />
                 </div>
               </template>
             </b-table>
@@ -98,10 +103,10 @@
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
-    name: 'detalhes',
+    name: 'Detalhes',
     computed: {
       ...mapGetters({
-        pedidos: 'pedidos/getAll'
+        pedidos: 'pedido/getAll'
       }),
     },
     data() {
@@ -116,17 +121,15 @@
     },
     methods: {
       ...mapActions([
-        'pedidos/listAll'
+        'pedido/listAll'
       ]),
     },
     mounted() {
-      this['pedidos/listAll']({ limit: 4, orderBy: 'created_at', orderDirection: 'desc' })
-      //TODO: Remover essa linha abaixo
-      this.$store.commit('pedidos/setAll', [{},{},{},{}])
+      //this['pedido/listAll']({ limit: 4, orderBy: 'created_at', orderDirection: 'desc' })
+      this['pedido/listAll']()
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>

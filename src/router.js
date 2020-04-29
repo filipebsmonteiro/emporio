@@ -122,7 +122,7 @@ export default new Router({
           component: () => import('./views/pedidos/Index')
         },
         {
-          path: '/pedido/:id',
+          path: '/pedido/:referencia',
           name: 'pedido.show',
           component: () => import('./views/pedidos/Show')
         },

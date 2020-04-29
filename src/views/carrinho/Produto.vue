@@ -38,8 +38,8 @@
     <template v-slot:cell(valor)="linha">
       {{ (linha.item.quantidade * linha.item.valor) | formatMoney }}
     </template>
-    <template v-slot:cell(id)>
-      <base-button type="danger" size="sm" icon="fas fa-trash" icon-only/>
+    <template v-slot:cell(id)="linha">
+      <base-button type="danger" size="sm" icon="fas fa-trash" @click="$emit('remove', linha.item.time)" icon-only/>
     </template>
   </b-table>
 </template>

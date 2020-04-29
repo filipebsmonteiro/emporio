@@ -33,6 +33,7 @@
   import { mapActions, mapGetters } from 'vuex'
   import MultipleChoice from '@/views/Ingredientes/Multiplos/MultipleChoice'
   import SimpleChoice from '@/views/Ingredientes/Multiplos/SimpleChoice'
+  import moment from 'moment'
 
   export default {
     name: 'Show',
@@ -113,6 +114,7 @@
         if (!isValid) return
 
         const produto = {
+          time: moment().format(),
           produto: this.produto.id,
           quantidade: this.quantidade,
           multiplos: this.multiplos

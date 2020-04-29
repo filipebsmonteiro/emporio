@@ -15,7 +15,7 @@
           <Agendamento/>
         </div>
       </div>
-      <Produto class="mt-4" :produtos="produtos"/>
+      <Produto class="mt-4" :produtos="produtos" @remove="removeCartItem"/>
       <div class="row mt-5">
         <div class="col">
           <b-form-group label="Observações deste Pedido" label-for="observacoes">
@@ -195,8 +195,14 @@
     methods: {
       ...mapActions([
         'formapagamento/listAll',
-        'produto/listAll'
-      ])
+        'produto/listAll',
+        'carrinho/setQuantidade'
+      ]),
+      removeCartItem(time) {
+        this.carrinho = this.carrinho.filter(item => item.time !== time)
+        this.$localStorage.set('carrinho', this.carrinho)
+        this['carrinho/setQuantidade'](this.carrinho.length)
+      }
     },
     async mounted () {
       await this['formapagamento/listAll']()
