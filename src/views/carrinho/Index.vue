@@ -12,7 +12,7 @@
         </div>
         <div class="col"/>
         <div class="col">
-          <Agendamento/>
+          <Agendamento v-if="allowed.agendameto"/>
         </div>
       </div>
       <Produto class="mt-4" :produtos="produtos" @remove="removeCartItem"/>
@@ -24,7 +24,7 @@
         </div>
         <div class="col">
           <b-form-group label="Forma de Pagamento" label-for="formas-pagamentos">
-            <SelectComponent :options="formaspagamento">
+            <SelectComponent :options="formaspagamento" @input="evt => {forma_pagamento = evt.value}">
               <template slot="option" slot-scope="option">
                 <span v-if="option.imagem" class="b-avatar rounded size-3 mr-2 ml-0">
                   <span class="b-avatar-custom">
@@ -34,9 +34,10 @@
                 {{ option.label }}
               </template>
             </SelectComponent>
-            <!--b-form-select id="formas-pagamentos" v-model="forma_pagamento" :options="formaspagamento"/-->
           </b-form-group>
-          <b-form-group label="Troco" description="Ex.: Compra de 47,00 peça troco para 50,00">
+          <b-form-group v-if="forma_pagamento && forma_pagamento === 1"
+                        label="Troco"
+                        description="Ex.: Compra de 47,00 peça troco para 50,00">
             <b-input v-model="troco"/>
           </b-form-group>
         </div>
@@ -44,14 +45,14 @@
       <div class="row mb-3">
         <div class="col">
 
-          <b-form-group label="Fidelidade">
-            <b-input type="number" step="0.01" v-model="vlrResgatar"/>
+          <b-form-group v-if="allowed.fidelidade && fidelidade > 0" label="Fidelidade">
+            <b-input type="number" step="0.01" :max="fidelidade" v-model="fidelidade_field"/>
             <template v-slot:description>
-              Valor disponível: {{ valorResgate | formatMoney }}
+              Valor disponível: {{ fidelidade | formatMoney }}
             </template>
           </b-form-group>
 
-          <Cupom/>
+          <Cupom v-if="allowed.cupom" @validated="evt => {cupom_field = evt}"/>
 
         </div>
         <div class="col">
@@ -67,14 +68,16 @@
               <span>{{ taxa_entrega | formatMoney }}</span>
             </b-list-group-item>
 
-            <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
+            <b-list-group-item v-if="fidelidade_field && fidelidade_field > 0"
+                               class="d-flex justify-content-between align-items-center bg-transparent">
               Fidelidade:
-              <span>{{ fidelidade_discount | formatMoney }}</span>
+              <span>{{ fidelidade_field | formatMoney }}</span>
             </b-list-group-item>
 
-            <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
+            <b-list-group-item v-if="cupom_field"
+                               class="d-flex justify-content-between align-items-center bg-transparent">
               Cupom:
-              <span>{{ cupom_discount | formatMoney }}</span>
+              <span>{{ cupom_field | formatMoney }}</span>
             </b-list-group-item>
 
             <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
@@ -103,9 +106,17 @@
     components: { Cupom, Agendamento, Produto, Endereco },
     computed: {
       ...mapGetters({
+        fidelidade: 'fidelidade/getCurrent',
         store_formaspagamento: 'formapagamento/getAll',
         store_produtos: 'produto/getAll'
       }),
+      allowed() {
+        return {
+          agendameto: parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO),
+          cupom: parseInt(process.env.VUE_APP_PERMITE_CUPONS),
+          fidelidade: parseInt(process.env.VUE_APP_PERMITE_FIDELIDADE)
+        }
+      },
       produtos() {
         return this.carrinho.map(cartProd => {
           let produto = cartProd
@@ -159,10 +170,12 @@
       })
       },
       subtotal () {
-        return 0
+        return this.produtos.reduce(function (prev, cur) {
+          return prev + cur.valor
+        }, 0)
       },
       total () {
-        return this.subtotal + this.taxa_entrega + this.fidelidade_discount + this.cupom_discount
+        return this.subtotal + this.taxa_entrega + this.fidelidade_field
       },
       formaspagamento () {
         if (this.store_formaspagamento && Array.isArray(this.store_formaspagamento)){
@@ -180,20 +193,18 @@
     data () {
       return {
         agendamento: '',
-        canResgate: true,
         carrinho: [],
-        cupom_discount: 4,
-        fidelidade_discount: 1.4,
-        forma_pagamento: {},
-        observacoes: '',
+        cupom_field: null,
+        fidelidade_field: null,
+        forma_pagamento: null,
+        observacoes: null,
         taxa_entrega: 15,
-        troco: 0,
-        valorResgate: 2,
-        vlrResgatar: 2
+        troco: null,
       }
     },
     methods: {
       ...mapActions([
+        'fidelidade/listOne',
         'formapagamento/listAll',
         'produto/listAll',
         'carrinho/setQuantidade'
@@ -206,6 +217,8 @@
     },
     async mounted () {
       await this['formapagamento/listAll']()
+      //TODO: REMOVER DADOS MOCKADOS CLIENTE
+      await this['fidelidade/listOne'](1)
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
       if (this.carrinho.length > 0){

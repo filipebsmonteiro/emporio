@@ -1,16 +1,34 @@
 <template>
   <div class="container">
-    <b-table :fields="fields" :items="enderecos" responsive>
-      <template v-slot:cell(id)>
-        <base-button
-          size="sm"
-          type="link"
-          icon="fas fa-edit fa-2x"
-          @click="$router.push({ name: 'endereco.editar', params: {id: 1} })"
-          icon-only
-        />
+    <b-card no-body>
+      <template v-if="retiradaAllowed" v-slot:header>
+        <b-form-group label-cols-lg="2"
+                      label="Retirar na Loja"
+                      label-size="lg"
+                      class="mb-0">
+          <b-form-select :options="lojas" @change="selectLoja"/>
+        </b-form-group>
       </template>
-    </b-table>
+      <b-table :fields="fields" :items="enderecos" responsive>
+        <template v-slot:cell(id)="{ item: { id }}">
+          <base-button
+            size="sm"
+            type="link"
+            icon="fas fa-edit fa-2x"
+            @click="$router.push({ name: 'endereco.editar', params: {id} })"
+            icon-only
+          />
+        </template>
+        <template v-slot:cell(select)="{ item: { id }}">
+          <base-button
+            size="sm"
+            type="link"
+            class="bg-custom color-custom border-custom"
+            @click="selectEndereco(id)"
+          >Selecionar</base-button>
+        </template>
+      </b-table>
+    </b-card>
   </div>
 </template>
 
@@ -21,8 +39,23 @@
     name: 'Index',
     computed: {
       ...mapGetters({
-        enderecos: 'endereco/getAll'
-      })
+        enderecos: 'endereco/getAll',
+        store_lojas: 'loja/getAll'
+      }),
+      retiradaAllowed() {
+        return parseInt(process.env.VUE_APP_PERMITE_RETIRADA_LOJA)
+      },
+      lojas() {
+        if (this.store_lojas && Array.isArray(this.store_lojas)) {
+          return this.store_lojas.map(loja => {
+            return {
+              text: `${loja.Logradouro} ${loja.Bairro}, ${loja.Cidade}`,
+              value: loja.id
+            }
+          })
+        }
+        return []
+      }
     },
     data() {
       return {
@@ -32,16 +65,31 @@
           { key: 'Cidade', label: 'Cidade' },
           { key: 'Referencia', label: 'Referencia' },
           { key: 'id', label: 'Editar' },
+          { key: 'select', label: 'Selecionar' },
         ]
       }
     },
     methods: {
       ...mapActions([
-        'endereco/listAll'
-      ])
+        'endereco/listAll',
+        'loja/listAll'
+      ]),
+      selectEndereco(id) {
+        this.$localStorage.remove('loja_id')
+        this.$localStorage.remove('endereco_id')
+        this.$localStorage.set('endereco_id', id)
+        this.$router.push({ name: 'produtos' })
+      },
+      selectLoja(id) {
+        this.$localStorage.remove('loja_id')
+        this.$localStorage.remove('endereco_id')
+        this.$localStorage.set('loja_id', id)
+        this.$router.push({ name: 'produtos' })
+      }
     },
-    mounted () {
-      this['endereco/listAll']()
+    async mounted () {
+      await this['endereco/listAll']()
+      await this['loja/listAll']()
     }
   }
 </script>

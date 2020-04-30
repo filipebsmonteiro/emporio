@@ -43,7 +43,7 @@
                 Editar Perfil
               </base-button>
               <base-button size="sm" class="bg-custom border-custom color-custom mt-0"
-                           @click="$router.push({name: ''})" block>
+                           @click="$router.push({name: 'fidelidade.index'})" block>
                 Fidelidade
               </base-button>
             </div>

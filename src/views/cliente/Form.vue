@@ -12,7 +12,7 @@
         </div>
       </div>
       <template>
-        <form @submit.prevent>
+        <form @submit="onSubmit">
           <h6 class="heading-small text-muted mb-4">Meus Dados</h6>
           <div class="pl-lg-4">
             <div class="row">
@@ -81,7 +81,7 @@
               </div>
             </div>
           </div>
-          <hr class="my-4" />
+          <hr class="my-4"/>
         </form>
       </template>
     </card>
@@ -89,11 +89,85 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex'
+  import ClienteRepository from '@/services/Cliente'
+
   export default {
     name: 'Form',
-    data() {
+    computed: {
+      ...mapGetters({
+        cliente: 'cliente/current'
+      })
+    },
+    data () {
       return {
-        model:{}
+        model: {
+          nome: '',
+          CPF: '',
+          phone: '',
+          email: '',
+          password: '',
+          nascimento: '',
+          sexo: '',
+        }
+      }
+    },
+    methods: {
+      ...mapActions([
+        'cliente/listOne'
+      ]),
+      async onSubmit(evt) {
+        evt.preventDefault()
+        if (this.$route.params.id) {
+          this.update()
+        } else {
+          this.create()
+        }
+      },
+      create() {
+        ClienteRepository.post(this.credential).then(response => {
+          this.$notify({
+            type: 'success',
+            title: `Dados Salvos com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({name: 'cliente'})
+        }).catch(error => {
+          this.$notify({
+            type: 'danger',
+            title: `Erro ao Cadastrar os Dados!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+        })
+      },
+      update() {
+        ClienteRepository.put(this.credential_id, this.credential).then(response => {
+          this.$notify({
+            type: 'success',
+            title: `Dados Atualizados com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({name: 'cliente'})
+        }).catch(error => {
+          this.$notify({
+            type: 'danger',
+            title: `Erro ao Editar os Dados!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+        })
+      }
+    },
+    async mounted () {
+      if (this.$route.params.id) {
+        await this['cliente/listOne'](this.$route.params.id)
+        this.model = {
+          ...this.model,
+          ...this.cliente
+        }
       }
     }
   }

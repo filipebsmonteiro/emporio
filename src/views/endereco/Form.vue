@@ -20,7 +20,7 @@
                             label="CEP"
                             placeholder="Digite"
                             input-classes="form-control-alternative"
-                            v-model="model.cep"
+                            v-model="model.CEP"
                 />
               </div>
               <div class="col-lg-4">
@@ -28,7 +28,7 @@
                             label="Cidade"
                             placeholder="Cidade"
                             input-classes="form-control-alternative"
-                            v-model="model.cidade"
+                            v-model="model.Cidade"
                 />
               </div>
               <div class="col-lg-4">
@@ -36,7 +36,7 @@
                             label="Bairro"
                             placeholder="Bairro"
                             input-classes="form-control-alternative"
-                            v-model="model.bairro"
+                            v-model="model.Bairro"
                 />
               </div>
             </div>
@@ -46,7 +46,7 @@
                             label="Logradouro"
                             placeholder="Logradouro"
                             input-classes="form-control-alternative"
-                            v-model="model.logradouro"
+                            v-model="model.Logradouro"
                 />
               </div>
             </div>
@@ -56,7 +56,7 @@
                             label="Referência"
                             placeholder="Referência"
                             input-classes="form-control-alternative"
-                            v-model="model.referencia"
+                            v-model="model.Referencia"
                 />
               </div>
             </div>
@@ -69,16 +69,88 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex'
+  import EnderecoRepository from '@/services/Endereco'
+
   export default {
     name: 'Form',
-    data() {
+    computed: {
+      ...mapGetters({
+        endereco: 'endereco/getCurrent'
+      })
+    },
+    data () {
       return {
-        model:{}
+        model: {
+          CEP: '',
+          Logradouro: '',
+          Bairro: '',
+          Cidade: '',
+          Referencia: '',
+        }
+      }
+    },
+    methods: {
+      ...mapActions([
+        'endereco/listOne'
+      ]),
+      async onSubmit(evt) {
+        evt.preventDefault()
+        if (this.$route.params.id) {
+          this.update()
+        } else {
+          this.create()
+        }
+      },
+      create() {
+        EnderecoRepository.post(this.credential).then(response => {
+          this.$notify({
+            type: 'success',
+            title: `Dados Salvos com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({name: 'endereco.index'})
+        }).catch(error => {
+          this.$notify({
+            type: 'danger',
+            title: `Erro ao Cadastrar os Dados!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+        })
+      },
+      update() {
+        EnderecoRepository.put(this.credential_id, this.credential).then(response => {
+          this.$notify({
+            type: 'success',
+            title: `Dados Atualizados com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({name: 'endereco.index'})
+        }).catch(error => {
+          this.$notify({
+            type: 'danger',
+            title: `Erro ao Editar os Dados!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+        })
+      }
+    },
+    async mounted () {
+      if (this.$route.params.id) {
+        await this['endereco/listOne'](this.$route.params.id)
+        this.model = {
+          ...this.model,
+          ...this.endereco
+        }
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>
+

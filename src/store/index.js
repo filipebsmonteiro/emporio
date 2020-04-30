@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import carrinho from './modules/carrinho'
+import cliente from './modules/cliente'
 import cupom from './modules/cupom'
 import endereco from './modules/endereco'
 import fidelidade from './modules/fidelidade'
@@ -16,6 +17,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   modules: {
     carrinho,
+    cliente,
     cupom,
     endereco,
     fidelidade,
