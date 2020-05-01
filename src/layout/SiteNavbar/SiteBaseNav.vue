@@ -36,13 +36,9 @@
         type: Object,
         default: () => {
           return {
-            logo: 'LogoCenter',
-            logoSize: 'logo-md',
-            container: false
-            //logo: 'LogoLeft',
-            //logo: 'LogoRight',
-            //logoSize: 'logo-sm',
-            //logoSize: 'logo-lg',
+            logo: `${process.env.VUE_APP_LAYOUT_MENU_POSITION}`,
+            logoSize: `logo-${process.env.VUE_APP_LAYOUT_MENU_LOGO}`,
+            container: !parseInt(process.env.VUE_APP_LAYOUT_MENU_FULL)
           }
         }
       }

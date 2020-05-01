@@ -1,19 +1,10 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-3">
-        <Categorias v-if="this.$route.name !== 'produtos.categoria'"
-                    class="sticky-top"
-                    @clickCategoria="loadProducts"
-                    flex-column
-        />
-      </div>
-      <div class="col-md-9">
-        <b-overlay :show="isLoadingProduto">
-          <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
-        </b-overlay>
-      </div>
-    </div>
+  <div class="container">
+    <Categorias v-if="this.$route.name !== 'produtos.categoria'"
+                class="sticky-top" @clickCategoria="loadProducts"/>
+    <b-overlay :show="isLoadingProduto">
+      <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
+    </b-overlay>
   </div>
 </template>
 
@@ -23,12 +14,12 @@
   import Categorias from '@/views/produtos/Categorias'
 
   export default {
-    name: 'IndexSideBar',
+    name: 'IndexSimple',
     components: { Categorias, ListProducts },
     props: {
       layout: {
         type: Number,
-        default: 4
+        default: parseInt(process.env.VUE_APP_LAYOUT_PRODUTOS)
       }
     },
     computed: {
@@ -54,7 +45,4 @@
 </script>
 
 <style lang="scss" scoped>
-  .sticky-top{
-    top: 1rem;
-  }
 </style>

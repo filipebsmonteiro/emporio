@@ -1,9 +1,20 @@
 <template>
-  <div class="container">
-    <Categorias v-if="this.$route.name !== 'produtos.categoria'" class="sticky-top" @clickCategoria="loadProducts"/>
-    <b-overlay :show="isLoadingProduto">
-      <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
-    </b-overlay>
+  <div :class="{'container-fluid': catLayout === 'Side', 'container': catLayout === 'Top'}">
+    <div :class="{'row': catLayout === 'Side'}">
+      <div :class="{'col-md-3': catLayout === 'Side'}">
+        <Categorias
+          v-if="this.$route.name !== 'produtos.categoria'"
+          :class="{'sticky-top': catLayout === 'Side'}"
+          @clickCategoria="loadProducts"
+          :flex-column="catLayout === 'Side'"
+        />
+      </div>
+      <div :class="{'col-md-9': catLayout === 'Side'}">
+        <b-overlay :show="isLoadingProduto">
+          <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
+        </b-overlay>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,7 +29,7 @@
     props: {
       layout: {
         type: Number,
-        default: 4
+        default: parseInt(process.env.VUE_APP_LAYOUT_PRODUTOS)
       }
     },
     computed: {
@@ -26,6 +37,12 @@
         produtos: 'produto/getAll',
         isLoadingProduto: 'produto/isLoading',
       }),
+      catLayout() {
+        if (process.env.VUE_APP_LAYOUT_CATEGORIAS === 'Side')
+          return 'Side'
+
+        return 'Top'
+      }
     },
     methods: {
       ...mapActions([
@@ -44,4 +61,7 @@
 </script>
 
 <style lang="scss" scoped>
+  .sticky-top{
+    top: 1rem;
+  }
 </style>
