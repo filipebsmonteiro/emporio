@@ -23,16 +23,19 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'cliente'}">
+          <router-link v-if="logged" class="nav-link" :to="{name: 'cliente'}">
             <span class="heading">Meu Perfil</span>
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link class="nav-link" :to="{name: ''}">
+        <li class="nav-item" @click="logout">
+          <router-link v-if="logged" class="nav-link" :to="{name: ''}">
             <span class="heading">Sair</span>
           </router-link>
+          <router-link v-else class="nav-link" :to="{name: 'cliente.login'}">
+            <span class="heading">Login</span>
+          </router-link>
         </li>
-        <li class="nav-item mt--1 mb--2">
+        <li :class="{'nav-item mt--1 mb--2': true, 'mr-5': !logged}">
           <router-link class="nav-link p-0" :to="{name: 'carrinho'}">
             <span v-if="quantidade > 0"
               :class="{
@@ -55,6 +58,8 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import Auth from '@/services/Auth'
+  import TokenService from '@/api/token'
 
   export default {
     name: 'LinksSidebar',
@@ -67,12 +72,37 @@
     computed: {
       ...mapGetters({
         quantidade: 'carrinho/getQuantidade'
-      })
+      }),
+      logged() {
+        if (TokenService._getToken()){
+          return true
+        }
+        return false
+      }
     },
     methods: {
       ...mapActions([
         'carrinho/setQuantidade'
-      ])
+      ]),
+      logout() {
+        Auth.logout().then(() => {
+          TokenService._clearTokenAndExpiration()
+          this.$notify({
+            type: 'Success',
+            title: `Logout realizado com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({ name: 'cliente.login' })
+        }).catch(() => {
+            this.$notify({
+              type: 'danger',
+              title: `Erro ao Sair!`,
+              verticalAlign: 'bottom',
+              horizontalAlign: 'center'
+            })
+          })
+      }
     },
     mounted () {
       const carrinho = JSON.parse(this.$localStorage.get('carrinho', '[]'))

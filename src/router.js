@@ -56,16 +56,16 @@ export default new Router({
     },
     {
       path: '/',
-      redirect: 'login',
+      redirect: 'dist/login',
       component: AuthLayout,
       children: [
         {
-          path: '/login',
-          name: 'login',
+          path: 'dist/login',
+          name: 'dist.login',
           component: () => import('./views/dist/Login.vue')
         },
         {
-          path: '/register',
+          path: 'dist/register',
           name: 'register',
           component: () => import('./views/dist/Register.vue')
         }
@@ -95,6 +95,16 @@ export default new Router({
           path: '/carrinho',
           name: 'carrinho',
           component: () => import('./views/carrinho/Index')
+        },
+        {
+          path: '/login',
+          name: 'cliente.login',
+          component: () => import('./views/cliente/Login')
+        },
+        {
+          path: '/cliente/create',
+          name: 'cliente.create',
+          component: () => import('./views/cliente/Form')
         },
         {
           path: '/cliente',

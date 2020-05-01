@@ -192,7 +192,7 @@
     },
     data () {
       return {
-        agendamento: '',
+        agendamento: null,
         carrinho: [],
         cupom_field: null,
         fidelidade_field: null,
