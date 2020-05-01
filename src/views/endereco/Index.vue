@@ -2,12 +2,14 @@
   <div class="container">
     <b-card no-body>
       <template v-if="retiradaAllowed" v-slot:header>
-        <b-form-group label-cols-lg="2"
+        <b-form-group v-if="lojas.length > 1"
+                      label-cols-lg="2"
                       label="Retirar na Loja"
                       label-size="lg"
                       class="mb-0">
           <b-form-select :options="lojas" @change="selectLoja"/>
         </b-form-group>
+        <b-button v-else variant="primary" @click="selectLoja(lojas[0].id)" size="sm">Retirar na Loja</b-button>
       </template>
       <b-table :fields="fields" :items="enderecos" responsive>
         <template v-slot:cell(id)="{ item: { id }}">
@@ -19,12 +21,12 @@
             icon-only
           />
         </template>
-        <template v-slot:cell(select)="{ item: { id }}">
+        <template v-slot:cell(select)="{ item }">
           <base-button
             size="sm"
             type="link"
             class="bg-custom color-custom border-custom"
-            @click="selectEndereco(id)"
+            @click="selectEndereco(item)"
           >Selecionar</base-button>
         </template>
       </b-table>
@@ -40,7 +42,8 @@
     computed: {
       ...mapGetters({
         enderecos: 'endereco/getAll',
-        store_lojas: 'loja/getAll'
+        store_lojas: 'loja/getAll',
+        loja: 'loja/getCurrent',
       }),
       retiradaAllowed() {
         return parseInt(process.env.VUE_APP_PERMITE_RETIRADA_LOJA)
@@ -72,18 +75,22 @@
     methods: {
       ...mapActions([
         'endereco/listAll',
+        'endereco/listResponsavel',
         'loja/listAll'
       ]),
-      selectEndereco(id) {
+      async selectEndereco(item) {
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
-        this.$localStorage.set('endereco_id', id)
-        this.$router.push({ name: 'produtos' })
+        this.$localStorage.set('endereco_id', item.id)
+        await this['endereco/listResponsavel'](item.CEP)
+        this.$localStorage.set('loja_id', this.loja.id)
+        //this.$router.push({ name: 'produtos' })
       },
       selectLoja(id) {
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
         this.$localStorage.set('loja_id', id)
+        this.$localStorage.set('endereco_id', 1)
         this.$router.push({ name: 'produtos' })
       }
     },
