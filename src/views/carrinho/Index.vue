@@ -12,10 +12,10 @@
         </div>
         <div class="col"/>
         <div class="col">
-          <Agendamento v-if="allowed.agendameto"/>
+          <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
         </div>
       </div>
-      <Produto class="mt-4" :produtos="produtos" @remove="removeCartItem"/>
+      <Produto class="mt-4" :produtos="produtos" @remove="removeCartItem" @updqtd="updateProdQtd"/>
       <div class="row mt-5">
         <div class="col">
           <b-form-group label="Observações deste Pedido" label-for="observacoes">
@@ -38,7 +38,7 @@
           <b-form-group v-if="forma_pagamento && forma_pagamento === 1"
                         label="Troco"
                         description="Ex.: Compra de 47,00 peça troco para 50,00">
-            <b-input v-model="troco"/>
+            <b-form-input type="number" step="0.01" v-model="troco"/>
           </b-form-group>
         </div>
       </div>
@@ -77,7 +77,7 @@
             <b-list-group-item v-if="cupom_field"
                                class="d-flex justify-content-between align-items-center bg-transparent">
               Cupom:
-              <span>{{ cupom_field | formatMoney }}</span>
+              <span>{{ cupom_field.description }}</span>
             </b-list-group-item>
 
             <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
@@ -87,9 +87,7 @@
           </b-list-group>
         </div>
       </div>
-      <base-button type="success" icon="fas fa-save" block>
-      Finalizar Pedido
-    </base-button>
+      <base-button type="success" icon="fas fa-save" @click="persist" block>Finalizar Pedido</base-button>
     </div>
   </div>
 </template>
@@ -213,6 +211,29 @@
         this.carrinho = this.carrinho.filter(item => item.time !== time)
         this.$localStorage.set('carrinho', this.carrinho)
         this['carrinho/setQuantidade'](this.carrinho.length)
+      },
+      updateProdQtd(item) {
+        this.carrinho.map(p => {
+          if (p.produto === item.produto){
+            p.quantidade = item.quantidade
+          }
+        })
+      },
+      persist() {
+        /*
+          agendamento: this.agendamento,
+          cupom_field: this.cupom_field.value,
+          fidelidade_field: this.fidelidade_field,
+          forma_pagamento: this.forma_pagamento,
+          observacoes: this.observacoes,
+          produtos: this.carrinho
+          troco: this.troco
+         *
+         */
+        // eslint-disable-next-line no-console
+        console.log({
+          taxa_entrega: this.taxa_entrega,
+        })
       }
     },
     async mounted () {

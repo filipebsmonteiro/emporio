@@ -26,16 +26,25 @@ export const axios = axiosPackage.create({
 );*/
 
 axios.interceptors.response.use(response => { return response },
-  async error => {
+  error => {
     const originalRequest = error.config;
 
     if (error.response.status === 401) {
       if (originalRequest.url === TokenService._getRefreshEndPoint()) {
         window.location.href = `${window.location.origin}/login`
+        //TokenService._clearTokenAndExpiration()
         return Promise.reject(error);
       }
 
-      await TokenService._refreshToken()
+      axios.post(TokenService._getRefreshEndPoint())
+        .then(res => {
+          if (res.status === 200 || res.status === 201) {
+            TokenService._setToken(res.data.access_token)
+            TokenService._setExpiration(res.data.expires_in)
+
+            axios.defaults.headers.common['Authorization'] = TokenService._getToken()
+          }
+        })
 
       // Try Againg the Request.
       return axios(originalRequest);

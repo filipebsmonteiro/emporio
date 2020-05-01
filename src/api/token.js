@@ -1,4 +1,4 @@
-import { axios } from './index'
+import { axios as mainAXIOS } from './index'
 import moment from 'moment'
 
 class TokenService {
@@ -6,9 +6,11 @@ class TokenService {
   token = null
   expiration = null
   moment = null
+  axios = null
 
-  constructor ($moment = null)  {
-    this.moment = $moment
+  constructor ()  {
+    this.moment = moment
+    this.axios = mainAXIOS
     this.token = localStorage.getItem('access_token')
     this.expiration = localStorage.getItem('token_expiration')
     if (this.expiration) {
@@ -20,7 +22,6 @@ class TokenService {
   _setToken (token) {
     this.token = `Bearer ${token}`
     localStorage.setItem('access_token', this.token)
-    axios.defaults.headers['Authorization'] = this._getToken()
   }
 
   _setExpiration (seconds) {
@@ -51,15 +52,7 @@ class TokenService {
   }
 
   _refreshToken () {
-    axios.post(this._getRefreshEndPoint())
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          this._setToken(res.data.access_token)
-          this._setExpiration(res.data.expires_in)
 
-          axios.defaults.headers.common['Authorization'] = this._getToken()
-        }
-      })
   }
 
   _clearTokenAndExpiration () {
@@ -68,6 +61,6 @@ class TokenService {
   }
 }
 
-export default new TokenService(moment)
+export default new TokenService()
 
 export const create = TokenService

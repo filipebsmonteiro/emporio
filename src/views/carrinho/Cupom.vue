@@ -7,6 +7,9 @@
     <b-form-invalid-feedback :state="!(message && !isValid)" class="mt--3 mb-3">
       {{ message }}
     </b-form-invalid-feedback>
+    <b-form-valid-feedback :state="message && isValid" class="mt--3 mb-3">
+      {{ message }}
+    </b-form-valid-feedback>
     <base-button
       variant="outline-primary"
       :disabled="isValid || text === ''" block
@@ -31,8 +34,9 @@
       validaCupom() {
         Cupom.valida({text: this.text})
           .then(response => {
-            // eslint-disable-next-line no-console
-            console.log(response)
+            this.isValid = true
+            this.message = response.data.message
+            this.$emit('validated', {...response.data, value: this.text})
           })
           .catch(erro => {
             if (erro.response.status === 400) {

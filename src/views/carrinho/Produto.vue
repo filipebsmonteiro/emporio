@@ -8,17 +8,18 @@
         </span>
       </span>
     </template>
-    <template v-slot:cell(quantidade)="linha">
+    <template v-slot:cell(quantidade)="{ item }">
       <b-input-group class="w-auto m-0">
         <b-input
           type="number"
-          :min="linha.item.minimo_unidade"
-          :step="linha.item.intervalo"
-          v-model="linha.item.quantidade"
+          :min="item.minimo_unidade"
+          :step="item.intervalo"
+          v-model="item.quantidade"
+          @change="$emit('updqtd', { produto: item.produto, quantidade: item.quantidade})"
         />
-        <template v-if="linha.item.unidade_medida" v-slot:append>
+        <template v-if="item.unidade_medida" v-slot:append>
           <b-input-group-text>
-            <strong>{{ linha.item.unidade_medida }}</strong>
+            <strong>{{ item.unidade_medida }}</strong>
           </b-input-group-text>
         </template>
       </b-input-group>
