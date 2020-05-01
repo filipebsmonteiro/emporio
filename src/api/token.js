@@ -1,4 +1,3 @@
-import { axios as mainAXIOS } from './index'
 import moment from 'moment'
 
 class TokenService {
@@ -6,11 +5,9 @@ class TokenService {
   token = null
   expiration = null
   moment = null
-  axios = null
 
   constructor ()  {
     this.moment = moment
-    this.axios = mainAXIOS
     this.token = localStorage.getItem('access_token')
     this.expiration = localStorage.getItem('token_expiration')
     if (this.expiration) {
@@ -22,17 +19,16 @@ class TokenService {
   _setToken (token) {
     this.token = `Bearer ${token}`
     localStorage.setItem('access_token', this.token)
+    return this._getToken()
   }
 
   _setExpiration (seconds) {
     this.expiration = this.moment().add(seconds, 'seconds')
     localStorage.setItem('token_expiration', this.expiration.format())
+    return this._getExpiration()
   }
 
   _getToken () {
-    if (this._minutesRemaining() && this._minutesRemaining() <= 5) {
-      this._refreshToken()
-    }
     return this.token
   }
 
@@ -51,11 +47,20 @@ class TokenService {
     return this.refresh_endpoint
   }
 
-  _refreshToken () {
-
+  async _refreshToken ($axios) {
+    await $axios.post(this._getRefreshEndPoint())
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          this._setToken(res.data.access_token)
+          this._setExpiration(res.data.expires_in)
+          return this._getToken()
+        }
+      })
   }
 
   _clearTokenAndExpiration () {
+    this.token = null
+    this.expiration = null
     localStorage.removeItem('access_token')
     localStorage.removeItem('token_expiration')
   }

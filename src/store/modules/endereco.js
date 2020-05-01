@@ -45,19 +45,19 @@ export default {
       })
       commit('setLoading', false)
     },
-    async listResponsavel ({ commit }, CEP) {
+    async listResponsavel ({ commit }, { CEP, vm }) {
       commit('setLoading', true)
       await EnderecoRepository.fetchLojaResponsavel(CEP).then(response => {
         commit('loja/setCurrent', response.data, { root: true })
-      })/*.catch(erro => {
-        this.$notify({
+      }).catch(erro => {
+        vm.$notify({
           type: 'danger',
           title: `Erro ao Selecionar!`,
-          text: erro.response.data.message,
+          message: erro.response.data.message,
           verticalAlign: 'bottom',
           horizontalAlign: 'center'
         })
-      })*/
+      })
       commit('setLoading', false)
     }
   }

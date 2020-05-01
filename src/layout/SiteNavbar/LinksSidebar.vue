@@ -27,8 +27,8 @@
             <span class="heading">Meu Perfil</span>
           </router-link>
         </li>
-        <li class="nav-item" @click="logout">
-          <router-link v-if="logged" class="nav-link" :to="{name: ''}">
+        <li class="nav-item">
+          <router-link v-if="logged" class="nav-link" :to="{name: ''}" @click="logout">
             <span class="heading">Sair</span>
           </router-link>
           <router-link v-else class="nav-link" :to="{name: 'cliente.login'}">

@@ -81,16 +81,19 @@
       async selectEndereco(item) {
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
-        this.$localStorage.set('endereco_id', item.id)
-        await this['endereco/listResponsavel'](item.CEP)
-        this.$localStorage.set('loja_id', this.loja.id)
-        //this.$router.push({ name: 'produtos' })
+        await this['endereco/listResponsavel']({ CEP: item.CEP, vm: this })
+        if (Object.keys( this.loja ).length > 0 && this.loja.constructor !== Object){
+          this.$localStorage.set('endereco_id', item.id)
+          this.$localStorage.set('loja_id', this.loja.id)
+          this.$router.push({ name: 'produtos' })
+        }
       },
       selectLoja(id) {
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
-        this.$localStorage.set('loja_id', id)
+        // Endereço 1 Reservado para retirada na Loja
         this.$localStorage.set('endereco_id', 1)
+        this.$localStorage.set('loja_id', id)
         this.$router.push({ name: 'produtos' })
       }
     },

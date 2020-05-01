@@ -60,7 +60,7 @@
       }
     },
     methods: {
-      login() {
+      async login() {
         if (this.model.email === '' || this.model.password === ''){
           this.$notify({
             type: 'danger',
@@ -71,10 +71,10 @@
           return
         }
 
-        Auth.login(this.model)
-          .then(response => {
-            TokenService._setToken(response.data.access_token)
-            TokenService._setExpiration(response.data.expires_in)
+        await Auth.login(this.model)
+          .then( async response => {
+            await TokenService._setToken(response.data.access_token)
+            await TokenService._setExpiration(response.data.expires_in)
             this.$router.push({ name: 'produtos' })
           })
           .catch(() => {
