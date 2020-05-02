@@ -6,13 +6,19 @@
           <div class="card-body">
             <div class="text-center">
               <h3>
-                Nome do CLiente<span class="font-weight-light">, 31 anos</span>
+                {{ cliente.nome }}
+                <span class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
               </h3>
-              <div class="h5 font-weight-300">
-                <i class="ni location_pin mr-2"></i>Cidade, Bairro
+
+              <div v-if="enderecos.length > 0" class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i>{{ `${enderecos[0].Cidade}, ${enderecos[0].Bairro}` }}
               </div>
+              <div v-else class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i>Sem Endereços cadastrados
+              </div>
+
               <div class="h5 mt-4">
-                <i class="ni business_briefcase-24 mr-2"></i>Cadastrado desde: {{ '2020-03-20' | formatDate(false) }}
+                <i class="ni business_briefcase-24 mr-2"></i>Cadastrado desde: {{ cliente.created_at | formatDate(false) }}
               </div>
             </div>
             <!--div class="row">
@@ -39,7 +45,7 @@
             </base-button>
             <div class="d-flex justify-content-between mt-3 mb-3">
               <base-button size="sm" class="bg-custom border-custom color-custom"
-                           @click="$router.push({name: 'cliente.editar'})" block>
+                           @click="$router.push({name: 'cliente.auto_editar'})" block>
                 Editar Perfil
               </base-button>
               <base-button size="sm" class="bg-custom border-custom color-custom mt-0"
@@ -72,21 +78,21 @@
           <template>
             <p v-if="pedidos.length === 0" class="m-auto">Ops Não Temos Nada Aqui ainda</p>
             <b-table :fields="fields" :items="pedidos">
-              <template v-slot:cell(data)="linha">
-                {{ linha.item.created_at | formatDate }}
+              <template v-slot:cell(data)="{ item: { created_at: date } }">
+                {{ date.date | formatDate }}
               </template>
-              <template v-slot:cell(valor)="linha">
-                {{ linha.item.valor | formatMoney }}
+              <template v-slot:cell(valor)="{ item }">
+                {{ item.valor | formatMoney }}
               </template>
-              <template v-slot:cell(status)="linha">
-                <b-badge variant="success">{{ linha.item.status }}</b-badge>
+              <template v-slot:cell(status)="{ item }">
+                <b-badge variant="success">{{ item.status }}</b-badge>
               </template>
-              <template v-slot:cell(id)="linha">
+              <template v-slot:cell(id)="{ item }">
                 <div class="w-100 d-flex justify-content-between">
                   <base-button
                     size="sm"
                     icon="fas fa-eye fa-2x"
-                    @click="$router.push({name: 'pedido.show', params: { referencia: linha.item.referencia }})"
+                    @click="$router.push({name: 'pedido.show', params: { referencia: item.referencia }})"
                     icon-only
                   />
                 </div>
@@ -106,7 +112,9 @@
     name: 'Detalhes',
     computed: {
       ...mapGetters({
-        pedidos: 'pedido/getAll'
+        cliente: 'cliente/getCurrent',
+        pedidos: 'pedido/getAll',
+        enderecos: 'endereco/getAll',
       }),
     },
     data() {
@@ -121,12 +129,15 @@
     },
     methods: {
       ...mapActions([
-        'pedido/listAll'
+        'endereco/listAll',
+        'pedido/listAll',
+        'cliente/listMe',
       ]),
     },
     mounted() {
-      //this['pedido/listAll']({ limit: 4, orderBy: 'created_at', orderDirection: 'desc' })
-      this['pedido/listAll']()
+      this['endereco/listAll']()
+      this['pedido/listAll']() //{ limit: 4, orderBy: 'created_at', orderDirection: 'desc' }
+      this['cliente/listMe']()
     }
   }
 </script>

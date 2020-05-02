@@ -113,7 +113,7 @@ export default new Router({
         },
         {
           path: '/cliente/editar',
-          name: 'cliente.editar',
+          name: 'cliente.auto_editar',
           component: () => import('./views/cliente/Form')
         },
         {

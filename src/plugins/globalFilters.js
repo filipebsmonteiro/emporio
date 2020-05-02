@@ -21,3 +21,11 @@ Vue.filter('formatDate', (value, time=true) => {
   }
   return moment(String(value)).format('DD/MM/YYYY H:mm:ss')
 });
+Vue.filter('ageFromBirthday', (value, datetime=false) => {
+  if (value) {
+    const timestamp = datetime ? value : `${value} 00:00:00`
+    const birthday = moment(String(timestamp))
+    return moment().diff(birthday, 'years')
+  }
+  return null
+});

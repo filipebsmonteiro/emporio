@@ -1,4 +1,5 @@
 import ClienteRepository from '@/services/Cliente.js'
+import Auth from '@/services/Auth'
 
 export default {
   name: 'cliente',
@@ -31,6 +32,13 @@ export default {
     }
   },
   actions: {
+    async listMe ({ commit }) {
+      commit('setLoading', true)
+      await Auth.me().then(response => {
+        commit('setCurrent', response.data)
+      })
+      commit('setLoading', false)
+    },
     async listOne ({ commit }, id) {
       commit('setLoading', true)
       await ClienteRepository.fetch(id).then(response => {

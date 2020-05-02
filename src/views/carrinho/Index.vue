@@ -199,7 +199,7 @@
         fidelidade_field: null,
         forma_pagamento: null,
         observacoes: null,
-        taxa_entrega: 15,
+        taxa_entrega: null,
         troco: null,
       }
     },
@@ -239,7 +239,6 @@
           console.log(response.data)
 
         }).catch(error => {
-          // eslint-disable-next-line no-console
           const data = error.response.data
           if ( data.errors && data.message === "The given data was invalid.") {
             if (data.errors.endereco_id) {

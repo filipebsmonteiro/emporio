@@ -4,11 +4,11 @@
       <div slot="header" class="bg-white border-0">
         <div class="row align-items-center">
           <div class="col-8">
-            <h3 v-if="$route.params.id" class="mb-0">Editar Meus Dados</h3>
+            <h3 v-if="$route.name === 'cliente.auto_editar'" class="mb-0">Editar Meus Dados</h3>
             <h3 v-else class="mb-0">Novo Cliente</h3>
           </div>
           <div class="col-4 text-right">
-            <a href="#!" class="btn btn-primary">Salvar</a>
+            <b-btn variant="primary" @click="onSubmit">Salvar</b-btn>
           </div>
         </div>
       </div>
@@ -97,7 +97,7 @@
     name: 'Form',
     computed: {
       ...mapGetters({
-        cliente: 'cliente/current'
+        cliente: 'cliente/getCurrent'
       })
     },
     data () {
@@ -115,18 +115,33 @@
     },
     methods: {
       ...mapActions([
-        'cliente/listOne'
+        'cliente/listMe'
       ]),
+      validaRetornoErro(error) {
+        const data = error.response ? error.response.data : null
+        if ( data.errors && data.message === "The given data was invalid.") {
+          Object.keys(data.errors).map(campo => {
+            data.errors[campo].map(msg => {
+              this.$notify({
+                type: 'danger',
+                title: msg,
+                verticalAlign: 'bottom',
+                horizontalAlign: 'center'
+              })
+            })
+          });
+        }
+      },
       async onSubmit(evt) {
         evt.preventDefault()
-        if (this.$route.params.id) {
+        if (this.$route.name === 'cliente.auto_editar') {
           this.update()
         } else {
           this.create()
         }
       },
       create() {
-        ClienteRepository.post(this.credential).then(response => {
+        ClienteRepository.post(this.credential).then(() => {
           this.$notify({
             type: 'success',
             title: `Dados Salvos com Sucesso!`,
@@ -135,16 +150,11 @@
           })
           this.$router.push({name: 'cliente'})
         }).catch(error => {
-          this.$notify({
-            type: 'danger',
-            title: `Erro ao Cadastrar os Dados!`,
-            verticalAlign: 'bottom',
-            horizontalAlign: 'center'
-          })
+          this.validaRetornoErro(error)
         })
       },
       update() {
-        ClienteRepository.put(this.credential_id, this.credential).then(response => {
+        ClienteRepository.put(this.cliente.id, this.model).then(() => {
           this.$notify({
             type: 'success',
             title: `Dados Atualizados com Sucesso!`,
@@ -153,18 +163,14 @@
           })
           this.$router.push({name: 'cliente'})
         }).catch(error => {
-          this.$notify({
-            type: 'danger',
-            title: `Erro ao Editar os Dados!`,
-            verticalAlign: 'bottom',
-            horizontalAlign: 'center'
-          })
+          // eslint-disable-next-line no-console
+          this.validaRetornoErro(error)
         })
       }
     },
     async mounted () {
-      if (this.$route.params.id) {
-        await this['cliente/listOne'](this.$route.params.id)
+      if (this.$route.name === 'cliente.auto_editar') {
+        await this['cliente/listMe'](this.$route.params.id)
         this.model = {
           ...this.model,
           ...this.cliente
