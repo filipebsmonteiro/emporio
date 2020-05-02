@@ -4,10 +4,10 @@
       <div slot="header" class="bg-white border-0">
         <div class="row align-items-center">
           <div class="col-8">
-            <h3 class="mb-0">Editar Endereço</h3>
+            <h3 class="mb-0">Endereço</h3>
           </div>
           <div class="col-4 text-right">
-            <a href="#!" class="btn btn-primary">Salvar</a>
+            <b-button variant="primary" @click="onSubmit">Salvar</b-button>
           </div>
         </div>
       </div>
@@ -87,6 +87,7 @@
           Bairro: '',
           Cidade: '',
           Referencia: '',
+          Ufs_idUfs: 1,
         }
       }
     },
@@ -94,6 +95,21 @@
       ...mapActions([
         'endereco/listOne'
       ]),
+      validaRetornoErro(error) {
+        const data = error.response ? error.response.data : null
+        if ( data.errors && data.message === "The given data was invalid.") {
+          Object.keys(data.errors).map(campo => {
+            data.errors[campo].map(msg => {
+              this.$notify({
+                type: 'danger',
+                title: msg,
+                verticalAlign: 'bottom',
+                horizontalAlign: 'center'
+              })
+            })
+          });
+        }
+      },
       async onSubmit(evt) {
         evt.preventDefault()
         if (this.$route.params.id) {
@@ -103,7 +119,7 @@
         }
       },
       create() {
-        EnderecoRepository.post(this.credential).then(response => {
+        EnderecoRepository.post(this.credential).then(() => {
           this.$notify({
             type: 'success',
             title: `Dados Salvos com Sucesso!`,
@@ -112,16 +128,11 @@
           })
           this.$router.push({name: 'endereco.index'})
         }).catch(error => {
-          this.$notify({
-            type: 'danger',
-            title: `Erro ao Cadastrar os Dados!`,
-            verticalAlign: 'bottom',
-            horizontalAlign: 'center'
-          })
+          this.validaRetornoErro(error)
         })
       },
       update() {
-        EnderecoRepository.put(this.credential_id, this.credential).then(response => {
+        EnderecoRepository.put(this.$route.params.id, this.model).then(() => {
           this.$notify({
             type: 'success',
             title: `Dados Atualizados com Sucesso!`,
@@ -130,12 +141,7 @@
           })
           this.$router.push({name: 'endereco.index'})
         }).catch(error => {
-          this.$notify({
-            type: 'danger',
-            title: `Erro ao Editar os Dados!`,
-            verticalAlign: 'bottom',
-            horizontalAlign: 'center'
-          })
+          this.validaRetornoErro(error)
         })
       }
     },
