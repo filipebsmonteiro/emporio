@@ -1,15 +1,14 @@
 <template>
   <div>
     <h1>Endereço de Entrega</h1>
-    <div v-if="endereco && endereco.CEP">
+    <div v-if="$localStorage.get('loja_id') && $localStorage.get('loja_id') === '1'">
+      Retirada na Loja<br/>
+    </div>
+    <div v-else>
       CEP : {{ endereco.CEP }}<br/>
       Logradouro : {{ endereco.Logradouro }}<br/>
       Bairro : {{ endereco.Bairro }}<br/>
       Cidade : {{ endereco.Cidade }}
-    </div>
-    <div v-else>
-      Retirada na Loja:<br/>
-      Logradouro : {{ endereco.Logradouro }}<br/>
     </div>
   </div>
 </template>
@@ -21,29 +20,29 @@
     name: 'Endereco',
     computed: {
       ...mapGetters({
-        enderecos: 'endereco/getAll',
-        endereco: 'endereco/getCurrent'
+        store_endereco: 'endereco/getCurrent'
       }),
       endereco() {
-        return {
-          CEP: 0,
-          Logradouro: "Comércio Local Sul 406 BL D Loja 23/27",
-          Lojas_idLojas: 1
+        if (!this.store_endereco.CEP){
+          return {
+            CEP: 0,
+            Logradouro: "",
+            Lojas_idLojas: 1
+          }
         }
+        return this.store_endereco
       }
     },
     methods: {
       ...mapActions([
-        'endereco/listAll',
         'endereco/listOne'
       ])
     },
     async mounted() {
-      await this['endereco/listAll']()
-      await this['endereco/listOne'](1)
+      await this['endereco/listOne'](this.$localStorage.get('endereco_id'))
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 </style>

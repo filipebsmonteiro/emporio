@@ -3,7 +3,7 @@
     <b-card-group
       v-for="(line, lineIndex) in chunk(produtos)"
       :key="lineIndex"
-      class="mt-4 row"
+      class="mt-4"
       deck
     >
       <!-- eslint-disable-next-line vue/require-component-is -->

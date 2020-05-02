@@ -98,6 +98,7 @@
   import Agendamento from '@/views/carrinho/Agendamento'
   import Cupom from '@/views/carrinho/Cupom'
   import { mapActions, mapGetters } from 'vuex'
+  import Pedido from '@/services/Pedido'
 
   export default {
     name: 'Index',
@@ -122,6 +123,7 @@
           if (!backendProd) return produto
 
           const categoria       = backendProd.categoria ? backendProd.categoria.nome : null
+          const imagem          = backendProd.imagem ? backendProd.imagem: null
           const intervalo       = backendProd.intervalo ? backendProd.intervalo: 1
           const minimo_unidade  = backendProd.minimo_unidade ? backendProd.minimo_unidade : 1
           const nome            = backendProd.nome
@@ -158,6 +160,7 @@
             categoria,
             detalhes,
             intervalo,
+            imagem,
             minimo_unidade,
             nome,
             unidade_medida,
@@ -169,7 +172,7 @@
       },
       subtotal () {
         return this.produtos.reduce(function (prev, cur) {
-          return prev + cur.valor
+          return prev + (cur.valor * cur.quantidade)
         }, 0)
       },
       total () {
@@ -209,7 +212,7 @@
       ]),
       removeCartItem(time) {
         this.carrinho = this.carrinho.filter(item => item.time !== time)
-        this.$localStorage.set('carrinho', this.carrinho)
+        this.$localStorage.set('carrinho', JSON.stringify(this.carrinho))
         this['carrinho/setQuantidade'](this.carrinho.length)
       },
       updateProdQtd(item) {
@@ -220,19 +223,52 @@
         })
       },
       persist() {
-        /*
+        Pedido.post({
+          endereco_id: this.$localStorage.get('endereco_id'),
+          loja_id: this.$localStorage.get('loja_id'),
           agendamento: this.agendamento,
-          cupom_field: this.cupom_field.value,
+          cupom_field: this.cupom_field,
           fidelidade_field: this.fidelidade_field,
           forma_pagamento: this.forma_pagamento,
+          troco: this.troco,
           observacoes: this.observacoes,
           produtos: this.carrinho
-          troco: this.troco
-         *
-         */
-        // eslint-disable-next-line no-console
-        console.log({
-          taxa_entrega: this.taxa_entrega,
+        }).then(response => {
+
+          // eslint-disable-next-line no-console
+          console.log(response.data)
+
+        }).catch(error => {
+          // eslint-disable-next-line no-console
+          const data = error.response.data
+          if ( data.errors && data.message === "The given data was invalid.") {
+            if (data.errors.endereco_id) {
+              this.$swal({
+                type: 'danger',
+                title: `Local de Entrega`,
+                text: 'Você ainda não selecionou o Local de entrega!',
+                focusConfirm: true,
+                confirmButtonText: 'Selecionar endereço!',
+              }).then(result => {
+                if (result.value) {
+                  this.$router.push({name: 'endereco.index'})
+                }
+              })
+              delete data.errors.endereco_id
+              delete data.errors.loja_id
+            }
+
+            Object.keys(data.errors).map(campo => {
+              data.errors[campo].map(msg => {
+                this.$notify({
+                  type: 'danger',
+                  title: msg,
+                  verticalAlign: 'bottom',
+                  horizontalAlign: 'center'
+                })
+              })
+            });
+          }
         })
       }
     },
@@ -243,10 +279,7 @@
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
       if (this.carrinho.length > 0){
-        await this['produto/listAll']([
-          'ids',
-          this.carrinho.map(p => p.produto)
-        ])
+        await this['produto/listAll']({ ids: this.carrinho.map(p => p.produto) })
       }
     }
   }

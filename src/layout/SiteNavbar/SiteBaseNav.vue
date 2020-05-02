@@ -11,7 +11,7 @@
       </slot>
       <b-sidebar id="sidebar-main" bg-variant="white" text-variant="danger" :visible="sidebarShow" shadow>
         <div class="px-3 py-2">
-          <LinksSidebar/>
+          <LinksSidebar :show-toogle-button="false"/>
         </div>
       </b-sidebar>
     </div>

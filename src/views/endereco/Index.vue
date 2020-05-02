@@ -9,7 +9,8 @@
                       class="mb-0">
           <b-form-select :options="lojas" @change="selectLoja"/>
         </b-form-group>
-        <b-button v-else variant="primary" @click="selectLoja(lojas[0].id)" size="sm">Retirar na Loja</b-button>
+        <b-button v-else variant="primary" @click="selectLoja(store_lojas[0].id)"
+                  size="sm">Retirar na Loja</b-button>
       </template>
       <b-table :fields="fields" :items="enderecos" responsive>
         <template v-slot:cell(id)="{ item: { id }}">

@@ -3,7 +3,7 @@
     <template v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
-          <img v-if="linha.item.imagem" :src="linha.item.imagem" />
+          <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`" />
           <i v-else class="fas fa-camera-retro fa-2x m-auto"/>
         </span>
       </span>

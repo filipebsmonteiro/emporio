@@ -4,7 +4,7 @@
     :title="produto.nome"
 
     tag="article"
-    class="p-0 col-md-6 col-lg shadow product"
+    class="p-0 shadow product"
     body-class="p-3"
   >
     <!--:img-src="'/img/produtos/' + produto.imagem"

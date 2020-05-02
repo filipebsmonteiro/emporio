@@ -49,7 +49,7 @@
       </ul>
     </div>
 
-    <b-button class="bg-transparent d-md-none nav-link ml-auto mt--2 pl-2 pt-1 pr-2 pb-1"
+    <b-button v-if="showToogleButton" class="bg-transparent d-md-none nav-link ml-auto mt--2 pl-2 pt-1 pr-2 pb-1"
               data-toggle="collapse" @click="$emit('toggle')">
       <i class="fas fa-bars fa-2x"/>
     </b-button>
@@ -67,6 +67,10 @@
       itemsClasses: {
         type: String,
         default: ''
+      },
+      showToogleButton: {
+        type: Boolean,
+        default: true
       }
     },
     computed: {
