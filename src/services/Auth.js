@@ -8,7 +8,7 @@ class AuthRepository extends Repository {
   }
 
   login(params) {
-    return this.$axios.post(`login`, params)
+    return this.$axios.post(`${this.endpoint}/login`, params)
   }
 
   logout() {

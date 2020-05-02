@@ -23,6 +23,7 @@
                             placeholder="Nome"
                             input-classes="form-control-alternative"
                             v-model="model.nome"
+                            required
                 />
               </div>
               <div class="col-lg-4">
@@ -31,6 +32,7 @@
                             placeholder="000.000.000-00"
                             input-classes="form-control-alternative"
                             v-model="model.cpf"
+                            required
                 />
               </div>
               <div class="col-lg-4">
@@ -40,6 +42,7 @@
                             placeholder="jesse@example.com"
                             input-classes="form-control-alternative"
                             v-model="model.sexo"
+                            required
                 />
               </div>
             </div>
@@ -69,6 +72,7 @@
                             placeholder="nome@email.com"
                             input-classes="form-control-alternative"
                             v-model="model.email"
+                            required
                 />
               </div>
               <div class="col-lg-6">
@@ -78,6 +82,7 @@
                             placeholder=" + + + +"
                             input-classes="form-control-alternative"
                             v-model="model.password"
+                            required
                 />
               </div>
             </div>
@@ -141,7 +146,7 @@
         }
       },
       create() {
-        ClienteRepository.post(this.credential).then(() => {
+        ClienteRepository.post(this.model).then(() => {
           this.$notify({
             type: 'success',
             title: `Dados Salvos com Sucesso!`,

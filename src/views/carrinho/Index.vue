@@ -222,8 +222,8 @@
           }
         })
       },
-      persist() {
-        Pedido.post({
+      async persist() {
+        await Pedido.post({
           endereco_id: this.$localStorage.get('endereco_id'),
           loja_id: this.$localStorage.get('loja_id'),
           agendamento: this.agendamento,
@@ -233,10 +233,21 @@
           troco: this.troco,
           observacoes: this.observacoes,
           produtos: this.carrinho
-        }).then(response => {
+        }).then(async response => {
 
-          // eslint-disable-next-line no-console
-          console.log(response.data)
+          await this.$localStorage.remove('carrinho')
+          await this.$swal({
+            type: 'success',
+            icon: 'success',
+            title: `Pedido Realizado com Sucesso!`,
+            text: 'Deseja acompanhar o Status do seu Pedido?',
+            focusConfirm: true,
+            confirmButtonText: 'Acompanhar!',
+          }).then(result => {
+            if (result.value) {
+              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.referencia }})
+            }
+          })
 
         }).catch(error => {
           const data = error.response.data

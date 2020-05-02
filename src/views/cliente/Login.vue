@@ -36,7 +36,7 @@
               <a href="#" class="text-light"><small>Esqueceu a Senha?</small></a>
             </div>
             <div class="col-6 text-right">
-              <router-link to="/register" class="text-light"><small>Criar uma Conta</small></router-link>
+              <router-link :to="{ name: 'cliente.create' }" class="text-light"><small>Criar uma Conta</small></router-link>
             </div>
           </div>
         </div>
