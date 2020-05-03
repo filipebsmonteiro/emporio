@@ -7,18 +7,18 @@
 
     <div v-if="pedido.status != 'Cancelado' && pedido.status != 'Concluido'">
       <div class="row mt-5">
-        <div class="col"><h3>Realizado</h3></div>
+        <div class="col text-center"><h3>Realizado</h3></div>
         <div class="col"/>
         <div class="col text-center"><h3>Em Fabricação</h3></div>
         <div class="col"/>
-        <div class="col"><h3>Enviado</h3></div>
+        <div class="col text-center"><h3>Enviado</h3></div>
       </div>
       <div class="row mt-2">
         <div :class="{
-          'col': true,
+          'col text-center': true,
           'img-transparent': !['Pedido Realizado', 'Em Fabricação', 'Enviado'].includes(pedido.status)
         }">
-          <img src="/img/pedido/icon-cart.png" class="w-100" alt="">
+          <img src="/img/pedido/icon-cart.png">
         </div>
         <div :class="{
           'col d-flex': true,
@@ -27,10 +27,10 @@
           <i class="fas fa-arrow-right fa-5x m-auto"/>
         </div>
         <div :class="{
-          'col': true,
+          'col text-center': true,
           'img-transparent': !['Em Fabricação', 'Enviado'].includes(pedido.status)
         }">
-          <img src="/img/pedido/icon-feature.png" class="w-100" alt="">
+          <img src="/img/pedido/icon-feature.png">
         </div>
         <div :class="{
           'col d-flex': true,
@@ -39,10 +39,10 @@
           <i class="fas fa-arrow-right fa-5x m-auto"/>
         </div>
         <div :class="{
-          'col': true,
+          'col text-center': true,
           'img-transparent': !['Enviado'].includes(pedido.status)
         }">
-          <img src="/img/pedido/icon-delivery.png" class="w-100" alt="">
+          <img src="/img/pedido/icon-delivery.png">
         </div>
       </div>
     </div>
@@ -63,14 +63,42 @@
       <p>{{ pedido.agendamento | formatDate }}</p>
     </div>
 
-    <TableProduto class="mt-4 mb-5" :produtos="pedido.produtos"/>
+    <TableProduto class="mt-5 mb-5" :produtos="pedido.produtos"/>
 
-    <div class="row">
+    <div class="row mt-4 mb-5" :produtos="pedido.produtos">
       <div class="col">
         <h3>Pagamentos</h3>
+        <b-list-group>
+          <b-list-group-item class="d-flex justify-content-between">
+            <span><b>SubTotal:</b></span>
+            <span>{{ pedido.valor | formatMoney }}</span>
+          </b-list-group-item>
+          <b-list-group-item class="d-flex justify-content-between">
+            <span><b>Taxa de Entrega:</b></span>
+            <span>{{ pedido.taxa_entrega | formatMoney }}</span>
+          </b-list-group-item>
+          <b-list-group-item class="d-flex justify-content-between bg-success">
+            <span><b>Valor do Pagamento:</b></span>
+            <span>{{ pedido.valor + pedido.taxa_entrega | formatMoney }}</span>
+          </b-list-group-item>
+          <b-list-group-item class="d-flex justify-content-between">
+            <span><b>Forma de Pagamento:</b></span>
+            <span>{{ pedido.forma_pagamento.nome }}</span>
+          </b-list-group-item>
+          <b-list-group-item v-if="pedido.forma_pagamento.id === 1" class="d-flex justify-content-between">
+            <span><b>Troco para:</b></span>
+            <span>{{ pedido.forma_pagamento.pivot.troco | formatMoney }}</span>
+          </b-list-group-item>
+        </b-list-group>
       </div>
-      <div class="col"></div>
+      <div class="col">
+        <div v-if="pedido.observacoes">
+          <h3>Observações</h3>
+          <p>{{ pedido.observacoes }}</p>
+        </div>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -89,7 +117,8 @@
         return {
           ...this.pedidos,
           //status: 'Concluido',
-          agendamento: '2020-08-02 13:30:00'
+          //agendamento: '2020-08-02 13:30:00',
+          //observacoes: 'asdfasdfasdf k kkkkk kkkkkkkkk kkkkkkkk',
         }
       }
     },
@@ -103,8 +132,14 @@
         'pedido/listOne'
       ]),
     },
-    mounted() {
-      this['pedido/listOne'](this.$route.params.referencia)
+    async mounted() {
+      await this['pedido/listOne'](this.$route.params.referencia)
+
+      this.pusher.subscribe(`pedido-update-${this.$route.params.referencia}`, channel => {
+        channel.bind('pedidoEvent', () => {
+          window.location.reload()
+        })
+      })
     }
   }
 </script>

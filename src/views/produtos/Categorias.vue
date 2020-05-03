@@ -2,7 +2,7 @@
   <b-overlay :show="isLoading" class="w-100">
   <base-nav
     id="navbar-categorias"
-    class="navbar-top rounded" :flex-column="flexColumn" expand>
+    :class="{'navbar-top rounded': true, 'sticky-top': flexColumn }" :flex-column="flexColumn" expand>
       <ul class="navbar-nav mr-auto" v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo">
         <li class="nav-item dropdown">
           <base-dropdown class="nav-link">
@@ -19,7 +19,6 @@
       </ul>
     </base-nav>
   </b-overlay>
-
 
 </template>
 

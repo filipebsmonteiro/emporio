@@ -28,7 +28,7 @@
             size="sm"
             type="primary"
             icon="fas fa-eye fa-2x"
-            @click="$router.push({ name: 'pedido.show', params: {id: linha.item.referencia} })"
+            @click="$router.push({ name: 'pedido.show', params: { referencia: linha.item.referencia} })"
             icon-only
           />
         </template>

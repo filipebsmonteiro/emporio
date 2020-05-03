@@ -21,6 +21,7 @@ import router from './router'
 import { BootstrapVue } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLocalStorage from 'vue-localstorage'
+import VuePusher from 'vue-pusher';
 import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import { store } from './store'
@@ -32,6 +33,14 @@ Vue.use(BootstrapVue)
 Vue.use(ArgonDashboard)
 Vue.use(VueSweetalert2)
 Vue.use(VueLocalStorage)
+Vue.use(VuePusher, {
+  api_key: process.env.VUE_APP_PUSHER_KEY,
+  options: {
+    cluster: 'us2',
+    secret: 'a4a7f0cb258b2b6ca69a'
+    //encrypted: true,
+  }
+});
 new Vue({
   router,
   store,

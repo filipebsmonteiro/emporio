@@ -1,7 +1,7 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-lg-5 col-md-7">
-      <div class="card bg-secondary shadow border-0">
+  <div class="row w-100 justify-content-center">
+    <div class="col-lg-5 col-md-7 mt-lg-5">
+      <div class="card bg-secondary shadow border-0 mt-5">
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
             <small>Acesse com suas Credenciais ou Facebook</small>
@@ -25,10 +25,10 @@
             </base-checkbox>
             <div class="text-center">
               <base-button type="primary" class="my-4" @click="login">Entrar</base-button>
-              <a href="#" class="btn btn-facebook btn-icon">
+              <!--a href="#" class="btn btn-facebook btn-icon">
                 <span class="btn-inner--icon"><i class="fas fa-facebook"/></span>
                 <span class="btn-inner--text">Facebook</span>
-              </a>
+              </a-->
             </div>
           </form>
           <div class="row mt-3">

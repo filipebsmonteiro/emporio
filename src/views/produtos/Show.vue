@@ -65,7 +65,7 @@
       ...mapActions([
         'produto/categoria/listAll',
         'produto/listOne',
-        'carrinho/setQuantidade'
+        'mainbar/setQuantidade'
       ]),
       quantidadeFormatter(value) {
         if (this.produto.unidade_medida) {
@@ -129,7 +129,7 @@
         }
         this.$localStorage.set('carrinho', JSON.stringify(carrinho))
 
-        this['carrinho/setQuantidade'](carrinho.length)
+        this['mainbar/setQuantidade'](carrinho.length)
 
         this.$swal({
           icon: 'success',

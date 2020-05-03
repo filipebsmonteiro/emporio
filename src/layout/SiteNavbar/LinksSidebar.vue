@@ -27,11 +27,13 @@
             <span class="heading">Meu Perfil</span>
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link v-if="logged" class="nav-link" :to="{name: ''}" @click="logout">
+        <li v-if="logged" class="nav-item" @click="logout">
+          <router-link class="nav-link" :to="{name: ''}">
             <span class="heading">Sair</span>
           </router-link>
-          <router-link v-else class="nav-link" :to="{name: 'cliente.login'}">
+        </li>
+        <li v-else class="nav-item">
+          <router-link class="nav-link" :to="{name: 'cliente.login'}">
             <span class="heading">Login</span>
           </router-link>
         </li>
@@ -75,28 +77,18 @@
     },
     computed: {
       ...mapGetters({
-        quantidade: 'carrinho/getQuantidade'
+        quantidade: 'mainbar/getQuantidade',
+        logged: 'mainbar/isLogged'
       }),
-      logged() {
-        if (TokenService._getToken()){
-          return true
-        }
-        return false
-      }
     },
     methods: {
       ...mapActions([
-        'carrinho/setQuantidade'
+        'mainbar/setQuantidade',
+        'mainbar/checkLogged',
       ]),
       logout() {
         Auth.logout().then(() => {
           TokenService._clearTokenAndExpiration()
-          this.$notify({
-            type: 'Success',
-            title: `Logout realizado com Sucesso!`,
-            verticalAlign: 'bottom',
-            horizontalAlign: 'center'
-          })
           this.$router.push({ name: 'cliente.login' })
         }).catch(() => {
             this.$notify({
@@ -110,7 +102,11 @@
     },
     mounted () {
       const carrinho = JSON.parse(this.$localStorage.get('carrinho', '[]'))
-      this['carrinho/setQuantidade'](carrinho.length)
+      this['mainbar/setQuantidade'](carrinho.length)
+      this.$router.beforeEach(($to, $from, $next) => {
+        this['mainbar/checkLogged']()
+        $next()
+      })
     }
   }
 </script>

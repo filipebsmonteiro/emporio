@@ -208,12 +208,12 @@
         'fidelidade/listOne',
         'formapagamento/listAll',
         'produto/listAll',
-        'carrinho/setQuantidade'
+        'mainbar/setQuantidade'
       ]),
       removeCartItem(time) {
         this.carrinho = this.carrinho.filter(item => item.time !== time)
         this.$localStorage.set('carrinho', JSON.stringify(this.carrinho))
-        this['carrinho/setQuantidade'](this.carrinho.length)
+        this['mainbar/setQuantidade'](this.carrinho.length)
       },
       updateProdQtd(item) {
         this.carrinho.map(p => {

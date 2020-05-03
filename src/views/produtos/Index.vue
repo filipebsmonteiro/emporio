@@ -4,7 +4,7 @@
       <div :class="{'col-md-3': catLayout === 'Side'}">
         <Categorias
           v-if="this.$route.name !== 'produtos.categoria'"
-          :class="{'sticky-top': catLayout === 'Side'}"
+          :class="{'position-sticky sticky-top': catLayout === 'Side'}"
           @clickCategoria="loadProducts"
           :flex-column="catLayout === 'Side'"
         />
