@@ -1,7 +1,7 @@
 <template>
   <div :class="{'container rounded': sidebar.container}">
     <div id="navbar-main">
-      <Component :is="sidebar.logo" :class="sidebar.logoSize" @toggle="sidebarShow = !sidebarShow" >
+      <Component :is="sidebar.logo" :class="`logo-${sidebar.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
         <template  v-slot:brand>
           <img ref="logo" src="/img/brand/logo.png"/>
         </template>
@@ -37,7 +37,7 @@
         default: () => {
           return {
             logo: `${process.env.VUE_APP_LAYOUT_MENU_POSITION}`,
-            logoSize: `logo-${process.env.VUE_APP_LAYOUT_MENU_LOGO}`,
+            logoSize: `${process.env.VUE_APP_LAYOUT_MENU_LOGO}`,
             container: !parseInt(process.env.VUE_APP_LAYOUT_MENU_FULL)
           }
         }
@@ -57,7 +57,7 @@
       &.logo-sm {
         img {
           height: 4rem;
-          margin-top: -1rem !important;
+          margin-top: -1rem;
           margin-bottom: -2rem !important;
         }
       }

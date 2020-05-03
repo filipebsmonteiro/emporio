@@ -13,6 +13,30 @@ body {
     border-bottom: $navbar-border-bottom-px $navbar-border-type $navbar-border-color;
     .nav-link {
       color: $navbar-text-color;
+      @if $navbar-font != '' {
+        font-family: $navbar-font;
+      }
+      @if $navbar-font-size != '' {
+        font-size: $navbar-font-size;
+      }
+    }
+  }
+}
+#navbar-categorias{
+  padding: 0.5rem !important;
+  background: linear-gradient(87deg, $navcat-bg-start 0, $navcat-bg-end 100%) !important;
+  border-left: $navcat-border-left-px $navcat-border-type $navcat-border-color;
+  border-top: $navcat-border-top-px $navcat-border-type $navcat-border-color;
+  border-right: $navcat-border-right-px $navcat-border-type $navcat-border-color;
+  border-bottom: $navcat-border-bottom-px $navcat-border-type $navcat-border-color;
+  .nav-link {
+    color: $navbar-text-color;
+    cursor: pointer;
+    @if $navcat-font != '' {
+      font-family: $navcat-font;
+    }
+    @if $navcat-font-size != '' {
+      font-size: $navcat-font-size;
     }
   }
 }
@@ -28,15 +52,31 @@ body {
 .color-custom {
   color: $navbar-text-color;
 }
+@mixin font($font-family, $font-file, $extension) {
+  @font-face {
+    font-family: $font-family;
 
-#navbar-categorias{
-  padding: 0.5rem !important;
-  background: linear-gradient(87deg, $navcat-bg-start 0, $navcat-bg-end 100%) !important;
-  border-left: $navcat-border-left-px $navcat-border-type $navcat-border-color;
-  border-top: $navcat-border-top-px $navcat-border-type $navcat-border-color;
-  border-right: $navcat-border-right-px $navcat-border-type $navcat-border-color;
-  border-bottom: $navcat-border-bottom-px $navcat-border-type $navcat-border-color;
-  .nav-link {
-    color: $navbar-text-color;
+    @if $extension == 'eot' {
+      src: url($font-file +'.eot');
+      src: url($font-file + '.eot?#iefix') format('embedded-opentype');
+    }
+
+    @if $extension == 'woff' {
+      src: url($font-file + '.woff') format('woff');
+    }
+
+    @if $extension == 'ttf' {
+      src: url($font-file + '.ttf') format('truetype');
+    }
+
+    @if $extension == 'svg' {
+      src: url($font-file + '.svg#aller') format('svg');
+    }
+
+    font-weight: normal;
+    font-style: normal;
   }
 }
+
+@include font($primary-font-custom, '~@/assets/vendor/nucleo/fonts/'+$primary-font-custom, $primary-font-extension);
+@include font($secondary-font-custom, '~@/assets/vendor/nucleo/fonts/'+$secondary-font-custom, $secondary-font-extension);

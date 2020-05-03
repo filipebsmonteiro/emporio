@@ -15,7 +15,7 @@
           <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
         </div>
       </div>
-      <Produto class="mt-4" :produtos="produtos" @remove="removeCartItem" @updqtd="updateProdQtd"/>
+      <TableProduto class="mt-4" :produtos="produtos" @remove="removeCartItem" @updqtd="updateProdQtd"/>
       <div class="row mt-5">
         <div class="col">
           <b-form-group label="Observações deste Pedido" label-for="observacoes">
@@ -94,15 +94,15 @@
 
 <script>
   import Endereco from '@/views/carrinho/Endereco'
-  import Produto from '@/views/carrinho/Produto'
   import Agendamento from '@/views/carrinho/Agendamento'
   import Cupom from '@/views/carrinho/Cupom'
   import { mapActions, mapGetters } from 'vuex'
   import Pedido from '@/services/Pedido'
+  import TableProduto from '@/views/carrinho/TableProduto'
 
   export default {
     name: 'Index',
-    components: { Cupom, Agendamento, Produto, Endereco },
+    components: { TableProduto, Cupom, Agendamento, Endereco },
     computed: {
       ...mapGetters({
         fidelidade: 'fidelidade/getCurrent',

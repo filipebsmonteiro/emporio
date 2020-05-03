@@ -21,5 +21,13 @@
 </script>
 
 <style lang="scss" scoped>
-
+  /deep/#navbar-main {
+    nav {
+      &.logo-sm {
+        img {
+          margin-top: -2rem !important;
+        }
+      }
+    }
+  }
 </style>

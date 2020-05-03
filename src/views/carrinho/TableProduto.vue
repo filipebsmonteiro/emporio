@@ -49,7 +49,7 @@
   import DetalhesProduto from '@/views/carrinho/DetalhesProduto'
 
   export default {
-    name: 'Produto',
+    name: 'TableProduto',
     components: { DetalhesProduto },
     props: {
       produtos: {
