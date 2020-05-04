@@ -9,8 +9,8 @@
         </div>
         <div class="mt-5 mb-2">
           <div class="row">
-            <div class="col">
-              <img src="/img/theme/sketch.jpg" class="float-md-right">
+            <div class="col d-flex">
+              <img src="/img/theme/gamela-logo.png" class="float-lg-right m-md-auto">
             </div>
             <div class="col text-center">
               <p class="text-white">Siga a gente:</p>
@@ -27,8 +27,8 @@
                 <i class="fas fa-instagram"/>
               </a>
             </div>
-            <div class="col">
-              <img src="/img/theme/sketch.jpg" alt="">
+            <div class="col d-flex">
+              <img src="/img/theme/advisor.png" style="max-height: 97px;" class="m-md-auto">
             </div>
           </div>
         </div>

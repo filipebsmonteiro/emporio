@@ -8,7 +8,7 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'produtos'}">
+          <router-link class="nav-link" :to="{name: 'sobre_nos'}">
             <span class="heading">Sobre Nós</span>
           </router-link>
         </li>
@@ -18,7 +18,7 @@
 
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'produtos'}">
+          <router-link class="nav-link" :to="{name: 'contato'}">
             <span class="heading">Contato</span>
           </router-link>
         </li>

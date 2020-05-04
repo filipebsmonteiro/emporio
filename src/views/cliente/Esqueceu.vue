@@ -4,13 +4,20 @@
       <div class="card bg-secondary shadow border-0 mt-5">
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
-            <small>Acesse com suas Credenciais ou Facebook</small>
+            <small>Confirme suas Credenciais para resetar a Senha</small>
           </div>
           <form role="form">
             <base-input class="input-group-alternative mb-3"
                         placeholder="Email"
                         addon-left-icon="ni ni-email-83"
                         v-model="model.email">
+            </base-input>
+
+            <base-input class="input-group-alternative mb-3"
+                        type="date"
+                        placeholder="Data de Nascimento"
+                        addon-left-icon="ni ni-calendar-grid-58"
+                        v-model="model.nascimento">
             </base-input>
 
             <base-input class="input-group-alternative"
@@ -20,20 +27,20 @@
                         v-model="model.password">
             </base-input>
 
-            <base-checkbox class="custom-control-alternative">
-              <span class="text-muted">Lembrar-me</span>
-            </base-checkbox>
+            <base-input class="input-group-alternative"
+                        placeholder="Confirmar Senha"
+                        type="password"
+                        addon-left-icon="ni ni-lock-circle-open"
+                        v-model="model.confirm_password">
+            </base-input>
+
             <div class="text-center">
-              <base-button type="primary" class="my-4" @click="login">Entrar</base-button>
-              <!--a href="#" class="btn btn-facebook btn-icon">
-                <span class="btn-inner--icon"><i class="fas fa-facebook"/></span>
-                <span class="btn-inner--text">Facebook</span>
-              </a-->
+              <base-button type="primary" class="my-4" @click="reset">Resetar Senha</base-button>
             </div>
           </form>
           <div class="row mt-3">
             <div class="col-6">
-              <router-link :to="{ name: 'cliente.esqueceu' }" class="text-light"><small>Esqueceu a Senha?</small></router-link>
+              <router-link :to="{ name: 'cliente.login' }" class="text-light"><small>Login</small></router-link>
             </div>
             <div class="col-6 text-right">
               <router-link :to="{ name: 'cliente.create' }" class="text-light"><small>Criar uma Conta</small></router-link>
@@ -47,21 +54,27 @@
 
 <script>
   import Auth from '@/services/Auth'
-  import TokenService from '@/api/token'
 
   export default {
-    name: 'Login',
+    name: 'Esqueceu',
     data() {
       return {
         model: {
           email: '',
-          password: ''
+          nascimento: '',
+          password: '',
+          confirm_password: ''
         }
       }
     },
     methods: {
-      async login() {
-        if (this.model.email === '' || this.model.password === ''){
+      async reset() {
+        if (
+          this.model.email === '' ||
+          this.model.nascimento === '' ||
+          this.model.password === '' ||
+          this.model.confirm_password === ''
+        ){
           this.$notify({
             type: 'danger',
             title: `Credenciais Inválidas!`,
@@ -71,11 +84,14 @@
           return
         }
 
-        await Auth.login(this.model)
-          .then( async response => {
-            await TokenService._setToken(response.data.access_token)
-            await TokenService._setExpiration(response.data.expires_in)
-            this.$router.push({ name: 'produtos' })
+        await Auth.reset(this.model)
+          .then( async () => {
+            this.$notify({
+              type: 'success',
+              title: `Senha atualizada com Sucesso!`,
+              verticalAlign: 'bottom',
+              horizontalAlign: 'center'
+            })
           })
           .catch(() => {
             this.$notify({
@@ -90,5 +106,6 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
 </style>

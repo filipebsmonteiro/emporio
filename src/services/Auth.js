@@ -14,6 +14,10 @@ class AuthRepository extends Repository {
   logout() {
     return this.$axios.post(`${this.endpoint}/logout`)
   }
+
+  reset(params) {
+    return this.$axios.post(`${this.endpoint}/reset`, params)
+  }
 }
 
 export default new AuthRepository()

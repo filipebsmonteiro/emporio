@@ -39,7 +39,7 @@ axios.interceptors.response.use(response => { return response },
     if (error.response.status === 401) {
       // Verifica Unauthorized ao renovar TOKEN
       if (originalRequest.url === TokenService._getRefreshEndPoint()) {
-        window.location.href = `${window.location.origin}/login`
+        //window.location.href = `${window.location.origin}/login`
         TokenService._clearTokenAndExpiration()
         return Promise.reject(error);
       }

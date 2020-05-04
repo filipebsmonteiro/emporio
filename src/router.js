@@ -12,7 +12,7 @@ export default new Router({
   linkExactActiveClass: 'active',
   routes: [
     {
-      path: '/',
+      path: '/painel',
       redirect: 'dashboard',
       component: DashboardLayout,
       children: [
@@ -55,7 +55,7 @@ export default new Router({
       )
     },
     {
-      path: '/',
+      path: '/painel',
       redirect: 'dist/login',
       component: AuthLayout,
       children: [
@@ -71,40 +71,16 @@ export default new Router({
         }
       ]
     },
+
     {
       path: '/',
       redirect: 'produtos',
       component: SiteLayout,
       children: [
         {
-          path: '/produtos',
-          name: 'produtos',
-          component: () => import('./views/produtos/Index')
-        },
-        {
-          path: '/produtos/categoria/:id',
-          name: 'produtos.categoria',
-          component: () => import('./views/produtos/Index')
-        },
-        {
-          path: '/produto/:id',
-          name: 'produto.show',
-          component: () => import('./views/produtos/Show')
-        },
-        {
           path: '/carrinho',
           name: 'carrinho',
           component: () => import('./views/carrinho/Index')
-        },
-        {
-          path: '/login',
-          name: 'cliente.login',
-          component: () => import('./views/cliente/Login')
-        },
-        {
-          path: '/cliente/create',
-          name: 'cliente.create',
-          component: () => import('./views/cliente/Form')
         },
         {
           path: '/cliente',
@@ -117,14 +93,44 @@ export default new Router({
           component: () => import('./views/cliente/Form')
         },
         {
-          path: '/enderecos',
-          name: 'endereco.index',
-          component: () => import('./views/endereco/Index')
+          path: '/cliente/create',
+          name: 'cliente.create',
+          component: () => import('./views/cliente/Form')
+        },
+        {
+          path: '/esqueceu',
+          name: 'cliente.esqueceu',
+          component: () => import('./views/cliente/Esqueceu')
+        },
+        {
+          path: '/login',
+          name: 'cliente.login',
+          component: () => import('./views/cliente/Login')
+        },
+        {
+          path: '/institucional/contato',
+          name: 'contato',
+          component: () => import('./views/institucinonal/Contato')
         },
         {
           path: '/endereco/:id/editar',
           name: 'endereco.editar',
           component: () => import('./views/endereco/Form')
+        },
+        {
+          path: '/enderecos',
+          name: 'endereco.index',
+          component: () => import('./views/endereco/Index')
+        },
+        {
+          path: '/fidelidades',
+          name: 'fidelidade.index',
+          component: () => import('./views/fidelidade/Index')
+        },
+        {
+          path: '/',
+          name: 'homepage',
+          component: () => import('./views/HomePage')
         },
         {
           path: '/pedidos',
@@ -137,9 +143,24 @@ export default new Router({
           component: () => import('./views/pedidos/Show')
         },
         {
-          path: '/fidelidades',
-          name: 'fidelidade.index',
-          component: () => import('./views/fidelidade/Index')
+          path: '/produto/:id',
+          name: 'produto.show',
+          component: () => import('./views/produtos/Show')
+        },
+        {
+          path: '/produtos',
+          name: 'produtos',
+          component: () => import('./views/produtos/Index')
+        },
+        {
+          path: '/produtos/categoria/:id',
+          name: 'produtos.categoria',
+          component: () => import('./views/produtos/Index')
+        },
+        {
+          path: '/institucional/sobre',
+          name: 'sobre_nos',
+          component: () => import('./views/institucinonal/Sobre')
         },
       ]
     }

@@ -52,6 +52,12 @@ body {
 .color-custom {
   color: $navbar-text-color;
 }
+.font-primary-custom{
+  font-family: $primary-font-custom;
+}
+.font-secondary-custom{
+  font-family: $secondary-font-custom;
+}
 @mixin font($font-family, $font-file, $extension) {
   @font-face {
     font-family: $font-family;

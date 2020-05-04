@@ -1,7 +1,7 @@
 @import '../custom/variables';
 
-$primary-font-custom: "";
-$primary-font-extension: "";
+$primary-font-custom: "Damion-regular";
+$primary-font-extension: "ttf";
 
 $secondary-font-custom: "Damion-regular";
 $secondary-font-extension: "ttf";
@@ -23,7 +23,7 @@ $navbar-border-top-px: 1px;
 $navbar-border-right-px: 1px;
 $navbar-border-bottom-px: 1px;
 $navbar-border-type: solid;
-$navbar-font: $primary-font-custom;
+$navbar-font: '';
 $navbar-font-size: '';
 
 // NavCat
@@ -37,4 +37,4 @@ $navcat-border-right-px: 1px;
 $navcat-border-bottom-px: 1px;
 $navcat-border-type: solid;
 $navcat-font: $primary-font-custom;
-$navcat-font-size: '';
+$navcat-font-size: x-large;
