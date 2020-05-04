@@ -19,58 +19,36 @@
             </div>
         </base-header>
 
-      <div class="container-fluid mt--7">
-        <div class="row">
-          <div class="col">
-            <card>
-              <h1>Novidades</h1>
-              <BaseTimeline>
-                <BaseTimelineItem
-                  icon="fas fa-bell"
-                  title="Novidade 123"
-                  datetime="10/05"
-                  description="Essa novidade tem muita novidade, quando dalo novidadde é coisa nova. Então quero dizer que nessa novidade Tem muita coisa nova. Enfim, é isso"
-                />
-                <BaseTimelineItem
-                  icon="fas fa-bell"
-                  title="Novidade 123"
-                  datetime="10/05"
-                  description="Essa novidade tem muita novidade, quando dalo novidadde é coisa nova. Então quero dizer que nessa novidade Tem muita coisa nova. Enfim, é isso"
-                />
-                <BaseTimelineItem
-                  icon="fas fa-bell"
-                  title="Novidade 123"
-                  datetime="10/05"
-                  description="Essa novidade tem muita novidade, quando dalo novidadde é coisa nova. Então quero dizer que nessa novidade Tem muita coisa nova. Enfim, é isso"
-                />
-              </BaseTimeline>
-            </card>
-          </div>
-          <div class="col">
-            <card>
-              <h1>Em breve</h1>
-              <BaseTimeline>
-                <BaseTimelineItem
-                  icon="fas fa-bell"
-                  title="Novidade 123"
-                  datetime="10/05"
-                  description="Essa novidade tem muita novidade, quando dalo novidadde é coisa nova. Então quero dizer que nessa novidade Tem muita coisa nova. Enfim, é isso"
-                />
-              </BaseTimeline>
-            </card>
-          </div>
+        <b-card class="shadow mt-n5 m-3">
+          <template v-slot:header>
+            Pedidos por Dia
+          </template>
+        </b-card>
+
+      <div class="row m-3">
+        <div class="col">
+          <b-card class="shadow">
+            <template v-slot:header>
+              Faturamento no período
+            </template>
+          </b-card>
+        </div>
+        <div class="col">
+          <b-card class="shadow">
+            <template v-slot:header>
+              Ticket Médio no período
+            </template>
+          </b-card>
         </div>
       </div>
-
     </div>
 </template>
-<script>
-  import BaseTimeline from '@/components/Timeline/BaseTimeline'
-  import BaseTimelineItem from '@/components/Timeline/BaseTimelineItem'
 
+<script>
   export default {
-    components: {BaseTimeline, BaseTimelineItem},
+    name: 'Dashboard'
   }
 </script>
-<style>
+
+<style lang="scss" scoped>
 </style>

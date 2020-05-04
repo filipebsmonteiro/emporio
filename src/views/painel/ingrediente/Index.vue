@@ -6,95 +6,62 @@
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="mb-0">Categorias de Produtos</h3>
+              <h3 class="mb-0">Ingredientes</h3>
             </div>
             <div class="col text-right">
-              <base-button size="sm" type="primary">Novo</base-button>
+              <router-link size="sm" class="btn btn-primary" :to="{ name: 'painel.ingrediente.create' }">Novo</router-link>
             </div>
           </div>
         </div>
 
-        <div class="table-responsive">
-          <base-table thead-classes="thead-light"
-                      :data="tableData">
-            <template slot="columns">
-              <th>Referral</th>
-              <th>Visitors</th>
-              <th></th>
-              <th></th>
-            </template>
-
-            <template slot-scope="{row}">
-              <th scope="row">
-                {{row.name}}
-              </th>
-              <td>
-                {{row.visitors}}
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <span class="mr-2">{{row.progress}}%</span>
-                  <base-progress :type="row.progressType"
-                                 class="pt-0"
-                                 :show-percentage="false"
-                                 :value="row.progress"
-                  />
-                </div>
-              </td>
-              <td>
-                <base-button type="outline-secondary" iconOnly icon="fas fa-edit"
-                             @click="$router.history.push({name: 'produto.categoria.edit', params: {id: 5}})"
-                />
-              </td>
-            </template>
-
-          </base-table>
-        </div>
+        <b-table :items="categorias" :fields="fields">
+          <template v-slot:cell(status)="{ item: { status } }">
+            <b-badge v-if="status" variant="success">Habilitado</b-badge>
+            <b-badge v-else variant="danger">Desabilitado</b-badge>
+          </template>
+          <template v-slot:cell(preco)="{ item: { preco } }">
+            {{ preco | formatMoney }}
+          </template>
+          <template v-slot:cell(id)="{ item: { id } }">
+            <router-link class="bn btn-link p-0" :to="{ name: 'painel.ingrediente.edit', params: { id } }">
+              <i class="fas fa-edit fa-2x"/>
+            </router-link>
+          </template>
+        </b-table>
       </div>
     </div>
   </div>
 </template>
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     name: 'Index',
+    computed: {
+      ...mapGetters({
+        categorias: 'ingrediente/getAll'
+      })
+    },
     data() {
       return {
-        tableData: [
-          {
-            name: 'Facebook',
-            visitors: '1,480',
-            progress: 60,
-            progressType: 'gradient-danger',
-          },
-          {
-            name: 'LinkedIn',
-            visitors: '5,480',
-            progress: 70,
-            progressType: 'gradient-success',
-          },
-          {
-            name: 'Google',
-            visitors: '4,807',
-            progress: 80,
-            progressType: 'gradient-primary',
-          },
-          {
-            name: 'Instagram',
-            visitors: '3,678',
-            progress: 75,
-            progressType: 'gradient-info',
-          },
-          {
-            name: 'Twitter',
-            visitors: '2,645',
-            progress: 30,
-            progressType: 'gradient-warning',
-          }
+        fields: [
+          { key: 'nome', label: 'Nome' },
+          { key: 'status', label: 'Status' },
+          { key: 'preco', label: 'Preço' },
+          { key: 'codigo_PDV', label: 'PDV' },
+          { key: 'id', label: 'Editar' }
         ]
       }
+    },
+    methods: {
+      ...mapActions([
+        'ingrediente/listAll'
+      ])
+    },
+    mounted() {
+      this['ingrediente/listAll']()
     }
-
   }
 </script>
-<style>
+<style lang="scss" scoped>
 </style>

@@ -6,106 +6,39 @@
         <div slot="header" class="bg-white border-0">
           <div class="row align-items-center">
             <div class="col-8">
-              <h3 class="mb-0">My account</h3>
+              <h3 v-if="$route.params.id" class="mb-0">Editar Categoria</h3>
+              <h3 v-else class="mb-0">Nova Categoria</h3>
             </div>
             <div class="col-4 text-right">
-              <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+              <b-btn variant="primary" @click="onSubmit">Salvar</b-btn>
             </div>
           </div>
         </div>
         <template>
           <form @submit.prevent>
-            <h6 class="heading-small text-muted mb-4">User information</h6>
+            <!--h6 class="heading-small text-muted mb-4">User information</h6-->
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-lg-6">
                   <base-input alternative=""
-                              label="Username"
-                              placeholder="Username"
+                              label="Nome"
+                              placeholder="Nome"
                               input-classes="form-control-alternative"
-                              v-model="model.username"
+                              v-model="model.nome"
                   />
                 </div>
                 <div class="col-lg-6">
                   <base-input alternative=""
-                              label="Email address"
-                              placeholder="jesse@example.com"
+                              label="Grupo"
+                              placeholder="Grupo"
                               input-classes="form-control-alternative"
-                              v-model="model.email"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <base-input alternative=""
-                              label="First name"
-                              placeholder="First name"
-                              input-classes="form-control-alternative"
-                              v-model="model.firstName"
-                  />
-                </div>
-                <div class="col-lg-6">
-                  <base-input alternative=""
-                              label="Last name"
-                              placeholder="Last name"
-                              input-classes="form-control-alternative"
-                              v-model="model.lastName"
+                              v-model="model.grupo"
                   />
                 </div>
               </div>
             </div>
             <hr class="my-4" />
-            <!-- Address -->
-            <h6 class="heading-small text-muted mb-4">Contact information</h6>
-            <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-md-12">
-                  <base-input alternative=""
-                              label="Address"
-                              placeholder="Home Address"
-                              input-classes="form-control-alternative"
-                              v-model="model.address"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-4">
-                  <base-input alternative=""
-                              label="City"
-                              placeholder="City"
-                              input-classes="form-control-alternative"
-                              v-model="model.city"
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <base-input alternative=""
-                              label="Country"
-                              placeholder="Country"
-                              input-classes="form-control-alternative"
-                              v-model="model.country"
-                  />
-                </div>
-                <div class="col-lg-4">
-                  <base-input alternative=""
-                              label="Postal code"
-                              placeholder="Postal code"
-                              input-classes="form-control-alternative"
-                              v-model="model.zipCode"
-                  />
-                </div>
-              </div>
-            </div>
-            <hr class="my-4" />
-            <!-- Description -->
-            <h6 class="heading-small text-muted mb-4">About me</h6>
-            <div class="pl-lg-4">
-              <div class="form-group">
-                <base-input alternative=""
-                            label="About Me">
-                  <textarea rows="4" class="form-control form-control-alternative" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
-                </base-input>
-              </div>
-            </div>
+
           </form>
         </template>
       </card>
@@ -114,23 +47,88 @@
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex'
+  import Categoria from '@/services/Produto/Categoria'
+
   export default {
     name: 'Form',
-    data() {
+    computed: {
+      ...mapGetters({
+        categoria: 'produto/categoria/getCurrent'
+      })
+    },
+    data () {
       return {
         model: {
-          username: '',
-          email: '',
-          firstName: '',
-          lastName: '',
-          address: '',
-          city: '',
-          country: '',
-          zipCode: '',
-          about: '',
+          nome: '',
+          grupo: '',
         }
       }
     },
+    methods: {
+      ...mapActions([
+        'produto/categoria/listOne'
+      ]),
+      validaRetornoErro(error) {
+        const data = error.response ? error.response.data : null
+        if ( data.errors && data.message === "The given data was invalid.") {
+          Object.keys(data.errors).map(campo => {
+            data.errors[campo].map(msg => {
+              this.$notify({
+                type: 'danger',
+                title: msg,
+                verticalAlign: 'bottom',
+                horizontalAlign: 'center'
+              })
+            })
+          });
+        }
+      },
+      async onSubmit(evt) {
+        evt.preventDefault()
+        if (this.$route.params.id) {
+          this.update()
+        } else {
+          this.create()
+        }
+      },
+      create() {
+        Categoria.post(this.model).then(() => {
+          this.$notify({
+            type: 'success',
+            title: `Dados Salvos com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({name: 'painel.produto.categoria.index'})
+        }).catch(error => {
+          this.validaRetornoErro(error)
+        })
+      },
+      update() {
+        Categoria.put(this.categoria.id, this.model).then(() => {
+          this.$notify({
+            type: 'success',
+            title: `Dados Atualizados com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({name: 'painel.produto.categoria.index'})
+        }).catch(error => {
+          // eslint-disable-next-line no-console
+          this.validaRetornoErro(error)
+        })
+      }
+    },
+    async mounted () {
+      if (this.$route.params.id) {
+        await this['produto/categoria/listOne'](this.$route.params.id)
+        this.model = {
+          ...this.model,
+          ...this.categoria
+        }
+      }
+    }
   }
 </script>
 

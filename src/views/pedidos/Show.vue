@@ -111,16 +111,8 @@
     components: { TableProduto },
     computed: {
       ...mapGetters({
-        pedidos: 'pedido/getCurrent'
+        pedido: 'pedido/getCurrent'
       }),
-      pedido() {
-        return {
-          ...this.pedidos,
-          //status: 'Concluido',
-          //agendamento: '2020-08-02 13:30:00',
-          //observacoes: 'asdfasdfasdf k kkkkk kkkkkkkkk kkkkkkkk',
-        }
-      }
     },
     data() {
       return {

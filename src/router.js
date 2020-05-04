@@ -17,37 +17,19 @@ export default new Router({
       component: DashboardLayout,
       children: [
         {
-          path: '/dashboard',
+          path: '/',
           name: 'dashboard',
-          // route level code-splitting
-          // this generates a separate chunk (about.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
           component: () => import('./views/painel/Dashboard.vue')
         },
         {
-          path: '/icons',
-          name: 'icons',
-          component: () => import('./views/dist/Icons.vue')
+          path: '/pedido',
+          name: 'painel.pedido.index',
+          component: () => import('./views/painel/pedido/Index.vue')
         },
         {
-          path: '/profile',
-          name: 'profile',
-          component: () => import('./views/dist/UserProfile.vue')
-        },
-        {
-          path: '/maps',
-          name: 'maps',
-          component: () => import('./views/dist/Maps.vue')
-        },
-        {
-          path: '/tables',
-          name: 'tables',
-          component: () => import('./views/dist/Tables.vue')
-        },
-        {
-          path: '/docs/produtos',
-          name: 'docs.produtos',
-          component: () => import('./views/docs/Index')
+          path: '/pedido/:referencia/show',
+          name: 'painel.pedido.show',
+          component: () => import('./views/painel/pedido/Show.vue')
         },
       ].concat(
         produtoRoutes,

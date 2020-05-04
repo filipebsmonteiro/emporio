@@ -6,29 +6,31 @@
       title="Argon"
     >
       <template slot="links">
-        <sidebar-item
-          :link="{
-            text: 'Dashboard',
-            icon: 'ni ni-tv-2 text-primary',
-            path: '/dashboard'
-          }"
-        />
+        <sidebar-item :link="{ text: 'Dashboard', icon: 'ni ni-tv-2 text-primary', name: 'dashboard' }"/>
 
-        <sidebar-item :link="{text: 'Categorias de Produtos', icon: 'ni ni-collection text-red', name: 'produto.categoria.index'}"/>
-        <sidebar-item :link="{text: 'Produtos', icon: 'ni ni-bullet-list-67 text-blue', name: 'produto.index'}"/>
-        <sidebar-item :link="{text: 'Categorias de Ingredientes', icon: 'ni ni-collection text-red', name: 'ingrediente.categoria.index'}"/>
-        <sidebar-item :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-blue', name: 'ingrediente.index'}"/>
-        <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-planet text-blue', path: 'atendimento'}"/>
-        <sidebar-item :link="{text: 'Clientes', icon: 'fas fa-users text-green', path: 'atendimento'}"/>
+        <base-dropdown>
+          <template v-slot:title>
+            <sidebar-item :link="{text: 'Produtos', icon: 'ni ni-collection text-red'}"/>
+          </template>
+          <template>
+            <sidebar-item :link="{text: 'Lista de Produtos', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.produto.index'}"/>
+            <sidebar-item :link="{text: 'Categorias de Produtos', icon: 'ni ni-collection text-red', name: 'painel.produto.categoria.index'}"/>
+          </template>
+        </base-dropdown>
 
-        <hr>
+        <sidebar-item :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.ingrediente.index'}"/>
+        <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-active-40 text-blue', name: 'painel.pedido.index'}"/>
 
+        <base-dropdown>
+          <template v-slot:title>
+            <sidebar-item :link="{text: 'Marketing', icon: 'ni ni-planet text-red'}"/>
+          </template>
+          <template>
+            <sidebar-item :link="{text: 'Clientes', icon: 'fas fa-users text-green', name: 'painel.cliente.index'}"/>
+            <sidebar-item :link="{text: 'Cupons', icon: 'fas fa-ticket-alt', name: 'painel.cupom.index'}"/>
+          </template>
+        </base-dropdown>
 
-        <sidebar-item :link="{text: 'Icons', icon: 'ni ni-planet text-blue', path: '/icons'}"/>
-        <sidebar-item :link="{text: 'Maps', icon: 'ni ni-pin-3 text-orange', path: '/maps'}"/>
-        <sidebar-item :link="{text: 'User Profile', icon: 'ni ni-single-02 text-yellow', path: '/profile'}"/>
-        <sidebar-item :link="{text: 'Login', icon: 'ni ni-key-25 text-info', path: '/login'}"/>
-        <sidebar-item :link="{text: 'Register', icon: 'ni ni-circle-08 text-pink', path: '/register'}"/>
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">

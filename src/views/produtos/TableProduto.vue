@@ -1,6 +1,6 @@
 <template>
   <b-table :items="produtos" :fields="fields" tbody-tr-class="p-2" striped borderless responsive>
-    <template v-slot:cell(imagem)="linha">
+    <template v-if="!hideImg" v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
           <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`" />
@@ -38,7 +38,11 @@
       produtos: {
         type: Array,
         default: () => []
-      }
+      },
+      hideImg: {
+        type: Boolean,
+        default: false
+      },
     },
     data () {
       return {
@@ -52,6 +56,11 @@
         ]
       }
     },
+    mounted() {
+      if (this.hideImg) {
+        this.fields = this.fields.filter(f => f.key !== ' imagem')
+      }
+    }
   }
 </script>
 

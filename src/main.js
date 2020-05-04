@@ -21,7 +21,8 @@ import router from './router'
 import { BootstrapVue } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLocalStorage from 'vue-localstorage'
-import VuePusher from 'vue-pusher';
+import VuePusher from 'vue-pusher'
+import VueHtmlToPaper from 'vue-html-to-paper'
 import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import { store } from './store'
@@ -40,6 +41,17 @@ Vue.use(VuePusher, {
     secret: 'a4a7f0cb258b2b6ca69a'
     //encrypted: true,
   }
+});
+Vue.use(VueHtmlToPaper, {
+  name: '_blank',
+  specs: [
+    'fullscreen=yes',
+    //'titlebar=yes',
+    //'scrollbars=yes'
+  ],
+  styles: [
+    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+  ]
 });
 new Vue({
   router,
