@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <b-table :items="categorias" :fields="fields">
+        <b-table :items="categorias" :fields="fields" responsive>
           <template v-slot:cell(id)="{ item: { id, status } }">
             <b-btn v-if="status==='Disponível'" variant="white" size="sm">
               <i class="fas fa-pause"/>

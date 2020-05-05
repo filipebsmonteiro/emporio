@@ -49,6 +49,9 @@
         default: 3
       }
     },
+    beforeUpdate(){
+      this.local_model = this.model
+    },
     data () {
       return {
         search_text: '',
@@ -56,9 +59,6 @@
       }
     },
     mounted () {
-      this.local_model = this.model
-    },
-    beforeUpdate () {
       this.local_model = this.model
     },
     methods: {

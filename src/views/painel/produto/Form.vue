@@ -106,20 +106,20 @@
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-lg-12">
-                <b-form-group label="Dias da Semana">
-                  <b-form-checkbox v-model="model.domingo" class="ml-1 mr-1" button>
+                <b-form-group label="Dias da Semana" class="text-center">
+                  <b-form-checkbox v-model="model.domingo" class="ml-1 mr-1 mt-1" button>
                     Domingo</b-form-checkbox>
-                  <b-form-checkbox v-model="model.segunda" class="ml-1 mr-1" button>
+                  <b-form-checkbox v-model="model.segunda" class="ml-1 mr-1 mt-1" button>
                     Segunda</b-form-checkbox>
-                  <b-form-checkbox v-model="model.terca" class="ml-1 mr-1" button>
+                  <b-form-checkbox v-model="model.terca" class="ml-1 mr-1 mt-1" button>
                     Terça</b-form-checkbox>
-                  <b-form-checkbox v-model="model.quarta" class="ml-1 mr-1" button>
+                  <b-form-checkbox v-model="model.quarta" class="ml-1 mr-1 mt-1" button>
                     Quarta</b-form-checkbox>
-                  <b-form-checkbox v-model="model.quinta" class="ml-1 mr-1" button>
+                  <b-form-checkbox v-model="model.quinta" class="ml-1 mr-1 mt-1" button>
                     Quinta</b-form-checkbox>
-                  <b-form-checkbox v-model="model.sexta" class="ml-1 mr-1" button>
+                  <b-form-checkbox v-model="model.sexta" class="ml-1 mr-1 mt-1" button>
                     Sexta</b-form-checkbox>
-                  <b-form-checkbox v-model="model.sabado" class="ml-1 mr-1" button>
+                  <b-form-checkbox v-model="model.sabado" class="ml-1 mr-1 mt-1" button>
                     Sábado</b-form-checkbox>
                 </b-form-group>
                 </div>
@@ -193,23 +193,60 @@
             <div class="pl-lg-4">
               <div class="row">
                 <div v-for="(multiplo, i) in model.multiplos" :key="i"  class="col-md-6 mt-3">
-                  <b-card header-class="p-0" body-class="p-2" class="bg-translucent-success card-variacao">
+                  <b-card header-class="p-0" body-class="p-2" class="bg-translucent-info card-variacao">
                     <template v-slot:header>
                       <b-input-group>
-                        <b-input :value="multiplo.nome" placeholder="Nome da Variação" />
+                        <b-input placeholder="Nome da Variação" class="font-weight-bold" :value="multiplo.nome" />
                         <i class="fas fa-times p-1 text-gray position-absolute"/>
                       </b-input-group>
                     </template>
 
                     <div class="row">
-                      <div class="col-md-4">
-                        <b-input placeholder="Minimo" type="number" :value="multiplo.quantidade_min"/>
+                      <div class="col-sm-4">
+                        <b-input placeholder="Minimo"
+                                 type="number"
+                                 class="font-weight-bold"
+                                 :value="multiplo.quantidade_min"/>
                       </div>
-                      <div class="col-md-4">
-                        <b-input placeholder="Máximo" type="number" :value="multiplo.quantidade_max"/>
+                      <div class="col-sm-4">
+                        <b-input placeholder="Máximo"
+                                 type="number"
+                                 class="font-weight-bold"
+                                 :value="multiplo.quantidade_max"/>
                       </div>
-                      <div class="col-md-4 d-flex align-items-center text-white">
+                      <div class="col-sm-4 d-flex align-items-center text-white">
                         <b-check size="lg" class="ml-4 p-0" switch :checked="!!multiplo.obrigatorio">Obrigatório</b-check>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+
+
+                        <b-form-group label="Opções" label-class="text-white" class="mt-4">
+                          <b-form-tags v-model="value" class="p-0 border-0 bg-transparent" size="lg">
+                            <template v-slot="{ tags, removeTag }">
+
+                              <SelectIngrediente :model="ingrediente_model"
+                                                 @input="evt => {
+                                                   value = [...value, evt.label];
+                                                   ingrediente_model = null;
+                                                 }"
+                                                 class="mb-2"/>
+
+                              <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
+                                <li v-for="tag in tags" :key="tag" class="list-inline-item">
+                                  <b-form-tag @remove="removeTag(tag)" variant="default">
+                                    {{ tag }}
+                                  </b-form-tag>
+                                </li>
+                              </ul>
+                            </template>
+                          </b-form-tags>
+                        </b-form-group>
+
+
+
+
                       </div>
                     </div>
 
@@ -230,9 +267,11 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/services/Produto/Produto'
+  import SelectIngrediente from '@/views/painel/ingrediente/SelectIngrediente'
 
   export default {
     name: 'Form',
+    components: { SelectIngrediente },
     computed: {
       ...mapGetters({
         produto: 'produto/getCurrent',
@@ -248,10 +287,16 @@
           })
         }
         return []
+      },
+      ingredientesDisponiveis() {
+        return this.ingredientes.filter(opt => this.value.indexOf(opt) === -1)
       }
     },
     data() {
       return {
+        ingrediente_model: null,
+        ingredientes: ['Apple', 'Orange', 'Banana', 'Lime', 'Peach', 'Chocolate', 'Strawberry'],
+        value: [],
         model: {
           nome: null,
           preco: null,
