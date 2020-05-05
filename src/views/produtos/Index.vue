@@ -49,7 +49,10 @@
         'produto/listAll'
       ]),
       async loadProducts (id) {
-        await this['produto/listAll']([['Cat_produtos_idCat_produtos', '=', id]])
+        await this['produto/listAll']([
+          ['Cat_produtos_idCat_produtos', '=', id],
+          ['status', '=', 'Disponível']
+        ])
       }
     },
     async mounted () {

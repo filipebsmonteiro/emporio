@@ -15,11 +15,14 @@
         </div>
 
         <b-table :items="categorias" :fields="fields">
-          <template v-slot:cell(id)="{ item: { id } }">
-            <b-btn variant="default" size="sm">
+          <template v-slot:cell(id)="{ item: { id, status } }">
+            <b-btn v-if="status==='Disponível'" variant="white" size="sm">
               <i class="fas fa-pause"/>
             </b-btn>
-            <router-link class="bn btn-link p-0" :to="{ name: 'painel.produto.edit', params: { id } }">
+            <b-btn v-else variant="danger" size="sm">
+              <i class="fas fa-play"/>
+            </b-btn>
+            <router-link class="btn btn-link p-0" :to="{ name: 'painel.produto.edit', params: { id } }">
               <i class="fas fa-edit fa-2x"/>
             </router-link>
           </template>
@@ -35,7 +38,7 @@
     name: 'Index',
     computed: {
       ...mapGetters({
-        categorias: 'produto/categoria/getAll'
+        categorias: 'produto/getAll'
       })
     },
     data() {
@@ -51,11 +54,11 @@
     },
     methods: {
       ...mapActions([
-        'produto/categoria/listAll'
+        'produto/listAll'
       ])
     },
     mounted() {
-      this['produto/categoria/listAll']()
+      this['produto/listAll']()
     }
   }
 </script>
