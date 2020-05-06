@@ -33,10 +33,12 @@
           </form>
           <div class="row mt-3">
             <div class="col-6">
-              <router-link :to="{ name: 'cliente.esqueceu' }" class="text-light"><small>Esqueceu a Senha?</small></router-link>
+              <router-link :to="{ name: 'cliente.esqueceu' }" class="text-light text-primary">
+                <small>Esqueceu a Senha?</small></router-link>
             </div>
             <div class="col-6 text-right">
-              <router-link :to="{ name: 'cliente.create' }" class="text-light"><small>Criar uma Conta</small></router-link>
+              <router-link :to="{ name: 'cliente.create' }" class="text-light text-primary">
+                <small>Criar uma Conta</small></router-link>
             </div>
           </div>
         </div>
