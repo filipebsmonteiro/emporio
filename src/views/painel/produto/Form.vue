@@ -202,20 +202,20 @@
                     </template>
 
                     <div class="row">
-                      <div class="col-sm-4">
-                        <b-input placeholder="Minimo"
+                      <div class="col-md-4 col-sm-6 col-xs-6">
+                        <b-input placeholder="Mínimo"
                                  type="number"
                                  class="font-weight-bold"
                                  :value="multiplo.quantidade_min"/>
                       </div>
-                      <div class="col-sm-4">
+                      <div class="col-md-4 col-sm-6 col-xs-6">
                         <b-input placeholder="Máximo"
                                  type="number"
                                  class="font-weight-bold"
                                  :value="multiplo.quantidade_max"/>
                       </div>
-                      <div class="col-sm-4 d-flex align-items-center text-white">
-                        <b-check size="lg" class="ml-4 p-0" switch :checked="!!multiplo.obrigatorio">Obrigatório</b-check>
+                      <div class="col-md-4 d-flex align-items-center text-white">
+                        <b-check size="lg" class="ml-md-4 p-md-0" switch :checked="!!multiplo.obrigatorio">Obrigatório</b-check>
                       </div>
                     </div>
                     <div class="row">
@@ -223,20 +223,18 @@
 
 
                         <b-form-group label="Opções" label-class="text-white" class="mt-4">
-                          <b-form-tags v-model="value" class="p-0 border-0 bg-transparent" size="lg">
+                          <b-form-tags v-model="multiplo.ingredientes" class="p-0 border-0 bg-transparent" size="lg">
                             <template v-slot="{ tags, removeTag }">
 
-                              <SelectIngrediente :model="ingrediente_model"
-                                                 @input="evt => {
-                                                   value = [...value, evt.label];
-                                                   ingrediente_model = null;
+                              <SelectIngrediente @input="evt => {
+                                                   multiplo.ingredientes = [...multiplo.ingredientes, evt];
                                                  }"
                                                  class="mb-2"/>
 
                               <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
                                 <li v-for="tag in tags" :key="tag" class="list-inline-item">
                                   <b-form-tag @remove="removeTag(tag)" variant="default">
-                                    {{ tag }}
+                                    {{ tag | jsonParse('nome') }}
                                   </b-form-tag>
                                 </li>
                               </ul>
@@ -294,9 +292,6 @@
     },
     data() {
       return {
-        ingrediente_model: null,
-        ingredientes: ['Apple', 'Orange', 'Banana', 'Lime', 'Peach', 'Chocolate', 'Strawberry'],
-        value: [],
         model: {
           nome: null,
           preco: null,
@@ -436,5 +431,8 @@
       background-color: #ffffff69;
     }
 
+  }
+  /deep/.list-inline-item{
+    margin: 0.2rem;
   }
 </style>

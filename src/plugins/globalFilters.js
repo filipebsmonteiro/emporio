@@ -29,3 +29,13 @@ Vue.filter('ageFromBirthday', (value, datetime=false) => {
   }
   return null
 });
+Vue.filter('jsonParse', (value, attribute=null) => {
+  if (value) {
+    const objectParsed = JSON.parse(value)
+    if (attribute){
+      return objectParsed[attribute]
+    }
+    return objectParsed
+  }
+  return null
+});

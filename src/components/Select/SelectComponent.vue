@@ -7,7 +7,8 @@
       :disabled="disabled"
       @search="search"
       @input="changeModel"
-    >
+      :label="label"
+      :reduce="reduce">
       <template slot="no-options">
         <b-spinner v-if="searching" small/>
         <em v-else-if="search_text.length >= min">
@@ -47,6 +48,14 @@
       min: {
         type: Number,
         default: 3
+      },
+      label: {
+        type: String,
+        default: null
+      },
+      reduce: {
+        type: Function,
+        default: null
       }
     },
     beforeUpdate(){

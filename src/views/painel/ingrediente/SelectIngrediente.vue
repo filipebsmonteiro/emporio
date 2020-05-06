@@ -6,14 +6,14 @@
       :disabled="disabled"
       :searching="isLoading"
       @search="autocomplete"
-      @input="evt => $emit('input', evt)">
+      @input="inputMethod"
+      label="nome"
+      :reduce="option => option.id">
       <template v-slot:no-results>
         Nenhum resultado para:<br/>
         "{{stringSearch}}"<br/>
         Deseja Incluir?<br/>
-        <b-button variant="success" size="sm" class="ml-2" @click="addNew" pill>
-          Sim
-        </b-button>
+        <b-button variant="success" size="sm" class="ml-2" @click="addNew" pill>Sim</b-button>
       </template>
     </SelectComponent>
   </b-overlay>
@@ -40,11 +40,11 @@
     computed: {
       ...mapGetters({
         isLoading: 'ingrediente/isLoading',
-        store_ingredientes: 'ingrediente/getAll',
+        ingredientes: 'ingrediente/getAll',
       }),
-      ingredientes () {
-        if (this.store_ingredientes && Array.isArray(this.store_ingredientes)) {
-          return this.store_ingredientes.map(ent => {
+      ingredientesComputed () {
+        if (this.ingredientes && Array.isArray(this.ingredientes)) {
+          return this.ingredientes.map(ent => {
             return {
               label: ent.nome,
               value: ent.id
@@ -54,12 +54,6 @@
         return []
       },
     },
-    /*watch: {
-      model(newVal, oldVal) {
-        this.local_model = newVal
-        alert(oldVal)
-      }
-    },*/
     beforeUpdate(){
       this.local_model = this.model
     },
@@ -101,6 +95,13 @@
           })
         })
       },
+      async inputMethod(id) {
+        // eslint-disable-next-line no-console
+        console.log('PASSEI AKI| ', id, this.local_model)
+        const ingrediente = this.ingredientes.find(i => i.id===id)
+        this.$emit('input', ingrediente)
+        this.local_model = null
+      }
     }
   }
 </script>
