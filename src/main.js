@@ -38,7 +38,8 @@ Vue.use(VuePusher, {
   api_key: process.env.VUE_APP_PUSHER_KEY,
   options: {
     cluster: 'us2',
-    secret: 'a4a7f0cb258b2b6ca69a'
+    secret: 'a4a7f0cb258b2b6ca69a',
+    disableStats: true,
     //encrypted: true,
   }
 });

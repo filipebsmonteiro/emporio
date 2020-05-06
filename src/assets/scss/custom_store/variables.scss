@@ -14,22 +14,22 @@ $body-bg-end: #f8f9fe;
 $body-fonts: #525f7f;
 
 // NavBar
-$navbar-bg-start: #32325d;
-$navbar-bg-end: #44325d;
-$navbar-text-color: rgba(255, 255, 255, 0.65);
-$navbar-border-color: transparent;
-$navbar-border-left-px: 1px;
-$navbar-border-top-px: 1px;
-$navbar-border-right-px: 1px;
-$navbar-border-bottom-px: 1px;
+$navbar-bg-start: transparent;
+$navbar-bg-end: transparent;
+$navbar-text-color: #5E3D0B;
+$navbar-border-color: #5E3D0B;
+$navbar-border-left-px: 0px;
+$navbar-border-top-px: 0px;
+$navbar-border-right-px: 0px;
+$navbar-border-bottom-px: 2px;
 $navbar-border-type: solid;
 $navbar-font: '';
 $navbar-font-size: '';
 
 // NavCat
-$navcat-bg-start: #32325d;
-$navcat-bg-end: #44325d;
-$navcat-text-color: rgba(255, 255, 255, 0.65);
+$navcat-bg-start: #813f0b;
+$navcat-bg-end: #793902;
+$navcat-text-color: rgba(255, 255, 255, 0.8);
 $navcat-border-color: transparent;
 $navcat-border-left-px: 1px;
 $navcat-border-top-px: 1px;
@@ -38,3 +38,12 @@ $navcat-border-bottom-px: 1px;
 $navcat-border-type: solid;
 $navcat-font: $primary-font-custom;
 $navcat-font-size: x-large;
+
+//Produto
+$btn-prod-bg-color: $success;
+$btn-prod-color: $white;
+
+// Footer
+$footer-bg-start: #813f0b;
+$footer-bg-end: #793902;
+$footer-text-color: rgba(255, 255, 255, 0.8);

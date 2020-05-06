@@ -15,7 +15,7 @@
             {{ produto.ingredientes }}
           </b-card-text>
 
-          <router-link :to="{name: 'produto.show', params: {id: produto.id}}" class="btn btn-primary product__button">
+          <router-link :to="{name: 'produto.show', params: {id: produto.id}}" class="btn product__button">
             Pedir
           </router-link>
         </b-card-body>

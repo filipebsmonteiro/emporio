@@ -1,5 +1,6 @@
 <template>
   <nav ref="nav" class="navbar navbar-expand-md">
+    <img src="/img/brand/logo.png" class="img-logo d-md-none d-lg-none"/>
     <LinksSidebar
       items-classes="container-fluid justify-content-between d-none d-md-flex"
       @toggle="$emit('toggle')">
@@ -29,5 +30,9 @@
         }
       }
     }
+  }
+  .img-logo{
+    height: 1rem;
+    width: 1rem;
   }
 </style>

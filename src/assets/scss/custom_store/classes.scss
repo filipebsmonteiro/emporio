@@ -30,15 +30,28 @@ body {
   border-right: $navcat-border-right-px $navcat-border-type $navcat-border-color;
   border-bottom: $navcat-border-bottom-px $navcat-border-type $navcat-border-color;
   .nav-link {
-    color: $navbar-text-color;
+    color: $navcat-text-color;
     cursor: pointer;
     @if $navcat-font != '' {
       font-family: $navcat-font;
     }
     @if $navcat-font-size != '' {
       font-size: $navcat-font-size;
+      ul.dropdown-menu button{
+        font-size: $navcat-font-size;
+        font-weight: normal;
+        padding: 0.25rem !important;;
+      }
     }
   }
+}
+footer.footer{
+  background: linear-gradient(87deg, $footer-bg-start 0, $footer-bg-end 100%) !important;
+  color: $footer-text-color !important;
+}
+.product__button{
+  background-color: $btn-prod-bg-color;
+  color: $btn-prod-color;
 }
 .bg-custom {
   background: linear-gradient(87deg, $navbar-bg-start 0, $navbar-bg-end 100%) !important;

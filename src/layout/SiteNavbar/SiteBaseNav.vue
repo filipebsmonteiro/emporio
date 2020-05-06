@@ -3,7 +3,9 @@
     <div id="navbar-main">
       <Component :is="sidebar.logo" :class="`logo-${sidebar.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
         <template  v-slot:brand>
-          <img ref="logo" src="/img/brand/logo.png"/>
+          <router-link to="/">
+            <img ref="logo" src="/img/brand/logo.png"/>
+          </router-link>
         </template>
       </Component>
       <slot name="button">

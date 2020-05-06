@@ -1,10 +1,11 @@
 <template>
-  <footer class="footer px-4 bg-custom mt-5">
+  <footer class="footer px-4 mt-5">
     <div class="row">
       <div class="col-2"></div>
       <div class="col-8">
-        <div class="mt-3 mb-5">
-          <b-input class="mb-2"/>
+        <div class="mt-3 mb-5 text-center">
+          <span class="h1 text-white">Assine para receber as novidades mais quentinhas e gostosas</span>
+          <b-input class="mb-2" placeholder="Digite seu melhor e-mail"/>
           <b-btn variant="white" block>Assine Já</b-btn>
         </div>
         <div class="mt-5 mb-2">

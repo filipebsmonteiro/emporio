@@ -33,64 +33,43 @@
       </h1>
     </div>
     <div class="row">
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos' }" disabled="">
-          Nome da Categoria
+      <div class="col-md text-center">
+        <b-img v-bind="mainProps" thumbnail src="/img/brand/paes.jpg"/>
+        <router-link class="btn btn-white w-75" :to="{ name: 'produtos' }" disabled="">
+          Pães
         </router-link>
       </div>
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
-          Nome da Categoria
+      <div class="col-md text-center">
+        <b-img v-bind="mainProps" thumbnail src="/img/brand/biscoitos.jpg"/>
+        <router-link class="btn btn-white w-75" :to="{ name: 'produtos' }">
+          Biscoitos
         </router-link>
       </div>
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
-          Nome da Categoria
-        </router-link>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos' }" disabled="">
-          Nome da Categoria
-        </router-link>
-      </div>
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
-          Nome da Categoria
-        </router-link>
-      </div>
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
-          Nome da Categoria
+      <div class="col-md text-center">
+        <b-img v-bind="mainProps" thumbnail src="/img/brand/salgados.jpg"/>
+        <router-link class="btn btn-white w-75" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
+          Salgados
         </router-link>
       </div>
     </div>
 
     <div class="row mt-3">
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos' }" disabled="">
-          Nome da Categoria
+      <div class="col-md text-center">
+        <b-img v-bind="mainProps" thumbnail src="/img/brand/TORDoce.jpg"/>
+        <router-link class="btn btn-white w-75" :to="{ name: 'produtos.categoria', params: { id: 3 } }">
+          Tortas Doces
         </router-link>
       </div>
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
-          Nome da Categoria
+      <div class="col-md text-center">
+        <b-img v-bind="mainProps" thumbnail src="/img/brand/TORSalg.jpg"/>
+        <router-link class="btn btn-white w-75" :to="{ name: 'produtos.categoria', params: { id: 2} }">
+          Tortas Salgadas
         </router-link>
       </div>
-      <div class="col-md">
-        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=54"/>
-        <router-link class="btn btn-white btn-block" :to="{ name: 'produtos.categoria', params: { id: 1 } }">
-          Nome da Categoria
+      <div class="col-md text-center">
+        <b-img v-bind="mainProps" thumbnail src="/img/brand/BoloDoce.jpg"/>
+        <router-link class="btn btn-white w-75" :to="{ name: 'produtos.categoria', params: { id: 4 } }">
+          Bolos e Doces
         </router-link>
       </div>
     </div>
@@ -104,7 +83,12 @@
 
 <script>
   export default {
-    name: 'HomePage'
+    name: 'HomePage',
+    data() {
+      return {
+        mainProps: { blank: false, blankColor: '#777', width: 250, height: 250}
+      }
+    }
   }
 </script>
 
