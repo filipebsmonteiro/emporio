@@ -220,28 +220,16 @@
                     </div>
                     <div class="row">
                       <div class="col-12">
-
-
-                        <b-form-group label="Opções" label-class="text-white" class="mt-4">
-                          <b-form-tags v-model="multiplo.ingredientes" class="p-0 border-0 bg-transparent" size="lg">
-                            <template v-slot="{ tags, removeTag }">
-
-                              <SelectIngrediente @input="evt => {
-                                                   multiplo.ingredientes = [...multiplo.ingredientes, evt];
-                                                 }"
-                                                 class="mb-2"/>
-
-                              <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
-                                <li v-for="tag in tags" :key="tag" class="list-inline-item">
-                                  <b-form-tag @remove="removeTag(tag)" variant="default">
-                                    {{ tag | jsonParse('nome') }}
-                                  </b-form-tag>
-                                </li>
-                              </ul>
-                            </template>
-                          </b-form-tags>
+                        <b-form-group label="Opções" label-class="text-white" class="mt-4 mb-0">
+                          <SelectIngrediente
+                            @input="evt => { multiplo.ingredientes = [...multiplo.ingredientes, evt] }"
+                            class="mb-2"/>
                         </b-form-group>
-
+                        <b-table :fields="['nome', 'preco', { key: 'id', label: ''}]" :items="multiplo.ingredientes">
+                          <template v-slot:cell(id)>
+                            <i class="fas fa-times m-auto btn p-0 text-danger"/>
+                          </template>
+                        </b-table>
 
 
 
@@ -286,9 +274,6 @@
         }
         return []
       },
-      ingredientesDisponiveis() {
-        return this.ingredientes.filter(opt => this.value.indexOf(opt) === -1)
-      }
     },
     data() {
       return {

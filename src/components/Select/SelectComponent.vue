@@ -6,7 +6,7 @@
       :options="options"
       :disabled="disabled"
       @search="search"
-      @input="changeModel"
+      @input="evt => $emit('input', evt)"
       :label="label"
       :reduce="reduce">
       <template slot="no-options">
@@ -74,9 +74,6 @@
       search (evt) {
         this.search_text = evt
         this.$emit('search', this.search_text)
-      },
-      changeModel (evt) {
-        this.$emit('input', evt)
       }
     }
   }

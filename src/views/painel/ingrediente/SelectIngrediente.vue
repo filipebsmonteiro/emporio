@@ -8,7 +8,8 @@
       @search="autocomplete"
       @input="inputMethod"
       label="nome"
-      :reduce="option => option.id">
+      :reduce="option => option.id"
+    >
       <template v-slot:no-results>
         Nenhum resultado para:<br/>
         "{{stringSearch}}"<br/>
@@ -95,12 +96,9 @@
           })
         })
       },
-      async inputMethod(id) {
-        // eslint-disable-next-line no-console
-        console.log('PASSEI AKI| ', id, this.local_model)
+      inputMethod(id) {
         const ingrediente = this.ingredientes.find(i => i.id===id)
         this.$emit('input', ingrediente)
-        this.local_model = null
       }
     }
   }
