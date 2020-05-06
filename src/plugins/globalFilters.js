@@ -8,10 +8,7 @@ import moment from 'moment'
 
 Vue.filter('formatMoney', (value) => {
   value = parseFloat(value)
-  if (value){
-    return `R$ ${value.toFixed(2).replace('.', ',')}`
-  }
-  if (value === 0 || value === '0'){
+  if (value || value === 0 || value === '0'){
     return `R$ ${value.toFixed(2).replace('.', ',')}`
   }
 });

@@ -8,7 +8,7 @@ import SiteLayout from '@/layout/SiteLayout'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   linkExactActiveClass: 'active',
   routes: [
     {

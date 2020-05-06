@@ -222,12 +222,21 @@
                       <div class="col-12">
                         <b-form-group label="Opções" label-class="text-white" class="mt-4 mb-0">
                           <SelectIngrediente
-                            @input="evt => { multiplo.ingredientes = [...multiplo.ingredientes, evt] }"
+                            :model="ingrediente_model"
+                            @input="evt => { multiplo.ingredientes = [...multiplo.ingredientes, evt]; ingrediente_model = null }"
                             class="mb-2"/>
                         </b-form-group>
                         <b-table :fields="['nome', 'preco', { key: 'id', label: ''}]" :items="multiplo.ingredientes">
-                          <template v-slot:cell(id)>
-                            <i class="fas fa-times m-auto btn p-0 text-danger"/>
+                          <template v-slot:cell(preco)="{ item: { nesseMultiplo, preco } }">
+                            <b-input-group class="align-items-center">
+                              <!--span v-if="nesseMultiplo || preco" class="mr-2">R$ </span-->
+                              <b-form-input class="input-opcao"  type="number" step="0.01" size="sm"
+                                            v-model="nesseMultiplo"
+                                            :value="nesseMultiplo ? nesseMultiplo : preco > 0 ? preco : null"/>
+                            </b-input-group>
+                          </template>
+                          <template v-slot:cell(id)="{ item }">
+                            <i class="fas fa-times m-auto btn p-0 text-danger" @click="removeItem(multiplo, item)"/>
                           </template>
                         </b-table>
 
@@ -277,6 +286,7 @@
     },
     data() {
       return {
+        ingrediente_model: null,
         model: {
           nome: null,
           preco: null,
@@ -325,6 +335,13 @@
             })
           });
         }
+      },
+      removeItem(multiplo, ingrediente){
+        this.produto.multiplos.map(m => {
+          if (m.id === multiplo.id){
+            m.ingredientes = m.ingredientes.filter(i => i.id !== ingrediente.id)
+          }
+        })
       },
       async onSubmit(evt) {
         evt.preventDefault()
@@ -419,5 +436,15 @@
   }
   /deep/.list-inline-item{
     margin: 0.2rem;
+  }
+  .input-opcao{
+    background-color: transparent;
+    border-color: transparent;
+    color: #525f7f;
+    padding: 0 !important;
+    width: 7rem;
+    &:hover, &:focus{
+      border-color: #f7fafc !important;
+    }
   }
 </style>
