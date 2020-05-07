@@ -44,8 +44,11 @@ body {
       }
     }
   }
+  .container-fluid button.navbar-toggler {
+    color: $navcat-text-color;
+  }
 }
-footer.footer{
+footer.footer-site{
   background: linear-gradient(87deg, $footer-bg-start 0, $footer-bg-end 100%) !important;
   color: $footer-text-color !important;
 }

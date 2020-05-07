@@ -226,7 +226,7 @@
                             @input="evt => { multiplo.ingredientes = [...multiplo.ingredientes, evt]; ingrediente_model = null }"
                             class="mb-2"/>
                         </b-form-group>
-                        <b-table :fields="['nome', 'preco', { key: 'id', label: ''}]" :items="multiplo.ingredientes">
+                        <b-table :fields="['nome', 'preco', { key: 'id', label: ''}]" :items="multiplo.ingredientes" responsive>
                           <template v-slot:cell(preco)="{ item: { nesseMultiplo, preco } }">
                             <b-input-group class="align-items-center">
                               <!--span v-if="nesseMultiplo || preco" class="mr-2">R$ </span-->

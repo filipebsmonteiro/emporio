@@ -16,7 +16,7 @@
                                   :toggled="toggled"
                                   :target="contentId"
                                   @click.native.stop="toggled = !toggled"
-                                  class="bg-custom color-custom">
+                                  >
                 <i class="fas fa-bars"/>
             </navbar-toggle-button>
 
