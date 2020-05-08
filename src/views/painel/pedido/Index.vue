@@ -2,11 +2,14 @@
   <div>
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8" />
     <b-card no-body class="m-3 mt-n5">
-      <b-table :fields="fields" :items="pedidos" responsive="">
-        <template v-slot:cell(referencia)="{ item: { referencia } }">
+      <b-table :fields="fields" :items="pedidos" striped responsive>
+        <template v-slot:cell(referencia)="{ item: { referencia }, toggleDetails }">
           <router-link :to="{ name: 'painel.pedido.show', params: { referencia } }">
             {{ referencia }}
           </router-link>
+          <b-btn variant="link p-2" @click="toggleDetails">
+            <i class="fas fa-expand"/>
+          </b-btn>
         </template>
         <template v-slot:cell(status)="{ item: { status } }">
           <b-badge variant="success">{{ status}}</b-badge>
@@ -24,6 +27,9 @@
         <template v-slot:cell(created_at)="{ item: { created_at } }">
           {{ created_at.date | formatDate }}
         </template>
+        <template v-slot:row-details="{ item }">
+          <Pedido :pedido="item" class="shadow"/>
+        </template>
       </b-table>
     </b-card>
   </div>
@@ -31,9 +37,11 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import Pedido from '@/views/painel/pedido/Pedido'
 
   export default {
     name: 'Index',
+    components: { Pedido },
     computed: {
       ...mapGetters({
         pedidos: 'pedido/getAll'

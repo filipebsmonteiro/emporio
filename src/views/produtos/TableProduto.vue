@@ -3,7 +3,7 @@
     <template v-if="!hideImg" v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
-          <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`" />
+          <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`"/>
           <i v-else class="fas fa-camera-retro fa-2x m-auto"/>
         </span>
       </span>
@@ -12,14 +12,13 @@
       {{ item.quantidade }}<strong v-if="item.unidade_medida"> {{ item.unidade_medida }}</strong>
     </template>
     <template v-slot:cell(detalhes)="linha">
-      <base-button v-if="linha.item.multiplos.length > 0"
-                   type="link" @click="linha.toggleDetails">
+      <base-button v-if="linha.item.multiplos.length > 0" type="link" @click="linha.toggleDetails">
         <u>Detalhes</u>
       </base-button>
     </template>
     <template v-slot:row-details="linha">
       <b-card class="shadow" no-body>
-        <detalhes-produto :detalhes="linha.item.multiplos" />
+        <detalhes-produto :detalhes="linha.item.multiplos"/>
       </b-card>
     </template>
     <template v-slot:cell(valor)="linha">
@@ -56,7 +55,7 @@
         ]
       }
     },
-    mounted() {
+    mounted () {
       if (this.hideImg) {
         this.fields = this.fields.filter(f => f.key !== ' imagem')
       }
@@ -69,6 +68,7 @@
     width: 5rem;
     height: 5rem;
   }
+
   /deep/ th {
     &:last-child {
       text-align: center !important;

@@ -83,9 +83,10 @@
           </b-list-group-item>
           <b-list-group-item class="d-flex justify-content-between">
             <span><b>Forma de Pagamento:</b></span>
-            <span>{{ pedido.forma_pagamento.nome }}</span>
+            <span v-if="pedido.forma_pagamento">{{ pedido.forma_pagamento.nome }}</span>
           </b-list-group-item>
-          <b-list-group-item v-if="pedido.forma_pagamento.id === 1" class="d-flex justify-content-between">
+          <b-list-group-item v-if="pedido.forma_pagamento && pedido.forma_pagamento.id === 1"
+                             class="d-flex justify-content-between">
             <span><b>Troco para:</b></span>
             <span>{{ pedido.forma_pagamento.pivot.troco | formatMoney }}</span>
           </b-list-group-item>
@@ -128,8 +129,9 @@
       await this['pedido/listOne'](this.$route.params.referencia)
 
       this.pusher.subscribe(`pedido-update-${this.$route.params.referencia}`, channel => {
-        channel.bind('pedidoEvent', () => {
-          window.location.reload()
+        channel.bind(`App\\Events\\pedidoEvent`, async () => {
+          //window.location.reload()
+          await this['pedido/listOne'](this.$route.params.referencia)
         })
       })
     }
