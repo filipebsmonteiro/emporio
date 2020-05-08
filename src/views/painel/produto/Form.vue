@@ -26,16 +26,16 @@
                               placeholder="Nome"
                               input-classes="form-control-alternative"
                               v-model="model.nome"
-                  />
+                              required/>
                 </div>
                 <div class="col-lg-4">
                   <base-input alternative=""
                               label="Preço"
                               placeholder="Preço"
-                              type="number"
+                              type="number" step="0.01"
                               input-classes="form-control-alternative"
                               v-model="model.preco"
-                  />
+                              required/>
                 </div>
                 <div class="col-lg-4">
                   <b-form-group label="Status">
@@ -43,7 +43,7 @@
                               class="form-control-alternative"
                               v-model="model.status"
                               :options="['Disponível', 'Indisponível']"
-                    />
+                              required/>
                   </b-form-group>
                 </div>
               </div>
@@ -53,16 +53,15 @@
                               label="Unidade de Medida"
                               placeholder="Unidade de Medida"
                               input-classes="form-control-alternative"
-                              v-model="model.unidade_medida"
-                  />
+                              v-model="model.unidade_medida"/>
                 </div>
                 <div class="col-lg-4">
                   <base-input alternative=""
                               label="Intervalo"
                               placeholder="Intervalo"
+                              type="number" step="0.01"
                               input-classes="form-control-alternative"
-                              v-model="model.intervalo"
-                  />
+                              v-model="model.intervalo"/>
                 </div>
                 <div class="col-lg-4">
                   <b-form-group label="Categoria">
@@ -70,7 +69,7 @@
                               class="form-control-alternative"
                               v-model="model.Cat_produtos_idCat_produtos"
                               :options="categorias"
-                    />
+                              required/>
                   </b-form-group>
                 </div>
               </div>
@@ -91,11 +90,10 @@
                   <base-input alternative=""
                               label="Valor da Promoção"
                               placeholder="Valor da Promoção"
-                              type="number"
+                              type="number" step="0.01"
                               input-classes="form-control-alternative"
                               :disabled="!model.promocionar"
-                              v-model="model.valorPromocao"
-                  />
+                              v-model="model.valorPromocao"/>
                 </div>
               </div>
             </div>
@@ -313,7 +311,6 @@
       },
       async onSubmit(evt) {
         evt.preventDefault()
-        return
         if (this.$route.params.id) {
           this.update()
         } else {

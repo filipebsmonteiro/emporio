@@ -82,7 +82,6 @@
             verticalAlign: 'bottom'
           })
           if (!this.variacao.ingredientes.find(i => i.id === opcao.id)) {
-            opcao = {...opcao, preco: 2.5 }
             this.variacao.ingredientes = [...this.variacao.ingredientes, opcao]
             this.opcao_model = null
             this.$emit('update', this.variacao)
