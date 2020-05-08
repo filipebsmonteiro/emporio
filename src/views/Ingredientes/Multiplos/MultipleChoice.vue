@@ -9,7 +9,7 @@
       <template v-slot:label>
         <div class="d-flex justify-content-between">
           <span>{{ ingrediente.nome }}</span>
-          <span>{{ ingrediente.preco ? ingrediente.preco : null | formatMoney }}</span>
+          <span>{{ ingrediente.nesseMultiplo ? ingrediente.nesseMultiplo : ingrediente.preco ? ingrediente.preco : null | formatMoney }}</span>
         </div>
       </template>
       <b-form-spinbutton :value="0" :min="0"
