@@ -31,8 +31,4 @@
       }
     }
   }
-  .img-logo{
-    height: 1rem;
-    width: 1rem;
-  }
 </style>

@@ -192,63 +192,13 @@
             <h6 class="heading-small text-muted mb-4">Variaçoẽs de Produto</h6>
             <div class="pl-lg-4">
               <div class="row">
-                <div v-for="(multiplo, i) in model.multiplos" :key="i"  class="col-md-6 mt-3">
-                  <b-card header-class="p-0" body-class="p-2" class="bg-translucent-info card-variacao">
-                    <template v-slot:header>
-                      <b-input-group>
-                        <b-input placeholder="Nome da Variação" class="font-weight-bold" :value="multiplo.nome" />
-                        <i class="fas fa-times p-1 text-gray position-absolute"/>
-                      </b-input-group>
-                    </template>
-
-                    <div class="row">
-                      <div class="col-md-4 col-sm-6 col-xs-6">
-                        <b-input placeholder="Mínimo"
-                                 type="number"
-                                 class="font-weight-bold"
-                                 :value="multiplo.quantidade_min"/>
-                      </div>
-                      <div class="col-md-4 col-sm-6 col-xs-6">
-                        <b-input placeholder="Máximo"
-                                 type="number"
-                                 class="font-weight-bold"
-                                 :value="multiplo.quantidade_max"/>
-                      </div>
-                      <div class="col-md-4 d-flex align-items-center text-white">
-                        <b-check size="lg" class="ml-md-4 p-md-0" switch :checked="!!multiplo.obrigatorio">Obrigatório</b-check>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12">
-                        <b-form-group label="Opções" label-class="text-white" class="mt-4 mb-0">
-                          <SelectIngrediente
-                            :model="ingrediente_model"
-                            @input="evt => { multiplo.ingredientes = [...multiplo.ingredientes, evt]; ingrediente_model = null }"
-                            class="mb-2"/>
-                        </b-form-group>
-                        <b-table :fields="['nome', 'preco', { key: 'id', label: ''}]" :items="multiplo.ingredientes" responsive>
-                          <template v-slot:cell(preco)="{ item: { nesseMultiplo, preco } }">
-                            <b-input-group class="align-items-center">
-                              <!--span v-if="nesseMultiplo || preco" class="mr-2">R$ </span-->
-                              <b-form-input class="input-opcao"  type="number" step="0.01" size="sm"
-                                            v-model="nesseMultiplo"
-                                            :value="nesseMultiplo ? nesseMultiplo : preco > 0 ? preco : null"/>
-                            </b-input-group>
-                          </template>
-                          <template v-slot:cell(id)="{ item }">
-                            <i class="fas fa-times m-auto btn p-0 text-danger" @click="removeItem(multiplo, item)"/>
-                          </template>
-                        </b-table>
-
-
-
-                      </div>
-                    </div>
-
-                  </b-card>
+                <div v-for="(variacao, index) in model.multiplos" :key="index"  class="col-md-6 mt-3">
+                  <Variacao :variacao="variacao"
+                            @update="evt => { updateVariacao(index, evt) }"
+                            @remove="removeVariacao(index)" />
                 </div>
                 <div class="col-md-6 mt-3">
-                  <button type="button" class="btn btn-block btn-info">Adicionar Variaçao</button>
+                  <button type="button" class="btn btn-block btn-info" @click="addVariacao">Adicionar Variaçao</button>
                 </div>
               </div>
             </div>
@@ -262,11 +212,11 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/services/Produto/Produto'
-  import SelectIngrediente from '@/views/painel/ingrediente/SelectIngrediente'
+  import Variacao from '@/views/painel/produto/Variacao'
 
   export default {
     name: 'Form',
-    components: { SelectIngrediente },
+    components: { Variacao },
     computed: {
       ...mapGetters({
         produto: 'produto/getCurrent',
@@ -286,7 +236,13 @@
     },
     data() {
       return {
-        ingrediente_model: null,
+        variacao_exemplo: {
+          nome: null,
+          quantidade_min: null,
+          quantidade_max: null,
+          obrigatorio: true,
+          ingredientes: []
+        },
         model: {
           nome: null,
           preco: null,
@@ -336,15 +292,28 @@
           });
         }
       },
-      removeItem(multiplo, ingrediente){
-        this.produto.multiplos.map(m => {
-          if (m.id === multiplo.id){
-            m.ingredientes = m.ingredientes.filter(i => i.id !== ingrediente.id)
+      addVariacao () {
+        const copy = Object.assign({}, this.variacao_exemplo)
+        this.model.multiplos = [...this.model.multiplos, copy]
+      },
+      updateVariacao (index, variacao) {
+        this.model.multiplos = this.model.multiplos.map((mult, idx) => {
+          if (idx === index) {
+            return variacao
+          }
+          return mult
+        })
+      },
+      removeVariacao (index) {
+        this.model.multiplos = this.model.multiplos.filter((mult, idx) => {
+          if (idx !== index) {
+            return mult
           }
         })
       },
       async onSubmit(evt) {
         evt.preventDefault()
+        return
         if (this.$route.params.id) {
           this.update()
         } else {
@@ -374,7 +343,6 @@
           })
           this.$router.push({name: 'painel.produto.index'})
         }).catch(error => {
-          // eslint-disable-next-line no-console
           this.validaRetornoErro(error)
         })
       }
@@ -393,6 +361,7 @@
           quinta: !!this.produto.quinta,
           sexta: !!this.produto.sexta,
           sabado: !!this.produto.sabado,
+          promocionar: !!this.produto.promocionar,
         }
       }
     }
@@ -406,45 +375,5 @@
     border-color: #2dce89;
     -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  }
-  .card-variacao{
-    .card-header{
-      input{
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
-      }
-      i.fa-times{
-        right: 2px;
-        cursor: pointer;
-      }
-    }
-    /deep/.custom-control-label {
-      &::before{
-        background-color: transparent;
-        border: #fff solid 1px;
-      }
-      &::after{
-        background-color: #fff;
-      }
-    }
-    /deep/.custom-control-input:checked ~ .custom-control-label::before {
-      color: #fff;
-      border-color: #fff;
-      background-color: #ffffff69;
-    }
-
-  }
-  /deep/.list-inline-item{
-    margin: 0.2rem;
-  }
-  .input-opcao{
-    background-color: transparent;
-    border-color: transparent;
-    color: #525f7f;
-    padding: 0 !important;
-    width: 7rem;
-    &:hover, &:focus{
-      border-color: #f7fafc !important;
-    }
   }
 </style>

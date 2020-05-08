@@ -8,8 +8,7 @@
       @search="autocomplete"
       @input="inputMethod"
       label="nome"
-      :reduce="option => option.id"
-    >
+      :reduce="option => option.id">
       <template v-slot:no-results>
         Nenhum resultado para:<br/>
         "{{stringSearch}}"<br/>
@@ -26,7 +25,7 @@
   import IngredienteRepository from '@/services/Ingrediente'
 
   export default {
-    name: 'SelectIngrediente',
+    name: 'SelectOpcao',
     components: { SelectComponent },
     props: {
       model: {
@@ -43,20 +42,6 @@
         isLoading: 'ingrediente/isLoading',
         ingredientes: 'ingrediente/getAll',
       }),
-      ingredientesComputed () {
-        if (this.ingredientes && Array.isArray(this.ingredientes)) {
-          return this.ingredientes.map(ent => {
-            return {
-              label: ent.nome,
-              value: ent.id
-            }
-          })
-        }
-        return []
-      },
-    },
-    beforeUpdate(){
-      this.local_model = this.model
     },
     data () {
       return {
@@ -68,6 +53,9 @@
       this.local_model = this.model
       this['ingrediente/listAll']()
     },
+    beforeUpdate(){
+      this.local_model = this.model
+    },
     methods: {
       ...mapActions([
         'ingrediente/listAll',
@@ -75,7 +63,11 @@
       async autocomplete (string) {
         this.stringSearch = string
         if (string.length >= 3) {
-          await this['ingrediente/listAll']([['nome', 'LIKE', '%' + string + '%']])
+          if (this.timer) { clearTimeout(this.timer); this.timer = null;}
+
+          this.timer = await setTimeout(async () => {
+            await this['ingrediente/listAll']([['nome', 'LIKE', '%' + string + '%']])
+          }, 900) // delay 900 milsec
         }
       },
       async addNew () {
