@@ -10,10 +10,10 @@
   </div>
 </template>
 <script>
-import { FadeTransition } from 'vue2-transitions';
+import { FadeTransition } from 'vue2-transitions'
 import SiteBaseNav from '@/layout/SiteNavbar/SiteBaseNav'
 import Footer from '@/layout/Footer'
-import CustomFooter from '@/layout/CustomFooter'
+import CustomFooter from '@/layout/Custom/CustomFooter'
 export default {
   name: 'SiteLayout',
   components: {
