@@ -12,6 +12,7 @@
         v-for="produto in line"
         :key="produto.id"
         :produto="produto"
+        :class="line.length < produtosPorLinha ? `col-md-${12/produtosPorLinha}` : ''"
       />
     </b-card-group>
   </div>

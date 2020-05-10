@@ -8,7 +8,7 @@ axiosPackage.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, 
 
 // Set config defaults when creating the instance
 export const axios = axiosPackage.create({
-  baseURL: process.env.VUE_APP_DOMAIN_URL,
+  baseURL: `${process.env.VUE_APP_DOMAIN_URL}/api`,
 
   // responseType: 'stream'
   // timeout: 1000,

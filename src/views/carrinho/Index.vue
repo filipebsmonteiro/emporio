@@ -28,7 +28,7 @@
               <template slot="option" slot-scope="option">
                 <span v-if="option.imagem" class="b-avatar rounded size-3 mr-2 ml-0">
                   <span class="b-avatar-custom">
-                    <img :src="`/img/pagamento/${option.imagem}`" />
+                    <img :src="`/img/pagamento/${option.imagem}`"/>
                   </span>
                 </span>
                 {{ option.label }}
@@ -109,27 +109,29 @@
         store_formaspagamento: 'formapagamento/getAll',
         store_produtos: 'produto/getAll'
       }),
-      allowed() {
+      allowed () {
         return {
           agendameto: parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO),
           cupom: parseInt(process.env.VUE_APP_PERMITE_CUPONS),
           fidelidade: parseInt(process.env.VUE_APP_PERMITE_FIDELIDADE)
         }
       },
-      produtos() {
+      produtos () {
         return this.carrinho.map(cartProd => {
           let produto = cartProd
           const backendProd = this.store_produtos.find(pbe => pbe.id === cartProd.produto)
-          if (!backendProd) return produto
+          if (!backendProd) {
+            return produto
+          }
 
-          const categoria       = backendProd.categoria ? backendProd.categoria.nome : null
-          const imagem          = backendProd.imagem ? backendProd.imagem: null
-          const intervalo       = backendProd.intervalo ? backendProd.intervalo: 1
-          const minimo_unidade  = backendProd.minimo_unidade ? backendProd.minimo_unidade : 1
-          const nome            = backendProd.nome
-          const preco           = backendProd.promocionar ? backendProd.valorPromocao : backendProd.preco
-          const unidade_medida  = backendProd.unidade_medida ? backendProd.unidade_medida : null
-          let valor             = preco / minimo_unidade
+          const categoria = backendProd.categoria ? backendProd.categoria.nome : null
+          const imagem = backendProd.imagem ? backendProd.imagem : null
+          const intervalo = backendProd.intervalo ? backendProd.intervalo : 1
+          const minimo_unidade = backendProd.minimo_unidade ? backendProd.minimo_unidade : 1
+          const nome = backendProd.nome
+          const preco = backendProd.promocionar ? backendProd.valorPromocao : backendProd.preco
+          const unidade_medida = backendProd.unidade_medida ? backendProd.unidade_medida : null
+          let valor = preco / minimo_unidade
           let detalhes = []
 
           if (produto.multiplos.length > 0) {
@@ -168,7 +170,7 @@
           }
           return produto
 
-      })
+        })
       },
       subtotal () {
         return this.produtos.reduce(function (prev, cur) {
@@ -179,7 +181,7 @@
         return this.subtotal + this.taxa_entrega + this.fidelidade_field
       },
       formaspagamento () {
-        if (this.store_formaspagamento && Array.isArray(this.store_formaspagamento)){
+        if (this.store_formaspagamento && Array.isArray(this.store_formaspagamento)) {
           return this.store_formaspagamento.map(forma => {
             return {
               label: forma.nome,
@@ -210,19 +212,19 @@
         'produto/listAll',
         'mainbar/setQuantidade'
       ]),
-      removeCartItem(time) {
+      removeCartItem (time) {
         this.carrinho = this.carrinho.filter(item => item.time !== time)
         this.$localStorage.set('carrinho', JSON.stringify(this.carrinho))
         this['mainbar/setQuantidade'](this.carrinho.length)
       },
-      updateProdQtd(item) {
+      updateProdQtd (item) {
         this.carrinho.map(p => {
-          if (p.produto === item.produto){
+          if (p.produto === item.produto) {
             p.quantidade = item.quantidade
           }
         })
       },
-      async persist() {
+      async persist () {
         await Pedido.post({
           endereco_id: this.$localStorage.get('endereco_id'),
           loja_id: this.$localStorage.get('loja_id'),
@@ -235,6 +237,15 @@
           produtos: this.carrinho
         }).then(async response => {
 
+          if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+            this.analytics.fbq.event('Purchase', {
+              content_ids: response.data.produtos.map(p => p.id),
+              content_type: 'product',
+              currency: 'BRL',
+              value: response.data.valor,
+            })
+          }
+
           await this.$localStorage.remove('carrinho')
           await this.$swal({
             type: 'success',
@@ -245,13 +256,13 @@
             confirmButtonText: 'Acompanhar!',
           }).then(result => {
             if (result.value) {
-              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.referencia }})
+              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.referencia } })
             }
           })
 
         }).catch(error => {
           const data = error.response.data
-          if ( data.errors && data.message === "The given data was invalid.") {
+          if (data.errors && data.message === 'The given data was invalid.') {
             if (data.errors.endereco_id) {
               this.$swal({
                 type: 'danger',
@@ -261,7 +272,7 @@
                 confirmButtonText: 'Selecionar endereço!',
               }).then(result => {
                 if (result.value) {
-                  this.$router.push({name: 'endereco.index'})
+                  this.$router.push({ name: 'endereco.index' })
                 }
               })
               delete data.errors.endereco_id
@@ -277,7 +288,7 @@
                   horizontalAlign: 'center'
                 })
               })
-            });
+            })
           }
         })
       }
@@ -288,16 +299,32 @@
       await this['fidelidade/listOne'](1)
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
-      if (this.carrinho.length > 0){
+      if (this.carrinho.length > 0) {
         await this['produto/listAll']({ ids: this.carrinho.map(p => p.produto) })
+      }
+
+      if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED) && this.carrinho.length === 0) {
+        this.analytics.fbq.event('InitiateCheckout', {
+          contents: prods.map(p => {
+            return {
+              id: p.produto,
+              quantity: p.quantidade
+            }
+          }),
+          currency: 'BRL',
+          num_items: prods.length,
+          value: this.produtos.reduce(function (prev, cur) {
+            return prev + (cur.valor * cur.quantidade)
+          }, 0),
+        })
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-.size-3 {
-  width: 3rem;
-  height: 3rem;
-}
+  .size-3 {
+    width: 3rem;
+    height: 3rem;
+  }
 </style>

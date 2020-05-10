@@ -45,7 +45,7 @@
         store_produto: 'produto/getCurrent',
         isLoadingProduto: 'produto/isLoading'
       }),
-      produto() {
+      produto () {
         return {
           ...this.store_produto,
           unidade_medida: this.store_produto.unidade_medida ? this.store_produto.unidade_medida : null,
@@ -55,7 +55,7 @@
         }
       },
     },
-    data() {
+    data () {
       return {
         quantidade: 1,
         multiplos: []
@@ -67,21 +67,21 @@
         'produto/listOne',
         'mainbar/setQuantidade'
       ]),
-      quantidadeFormatter(value) {
+      quantidadeFormatter (value) {
         if (this.produto.unidade_medida) {
           return `${value} ${this.produto.unidade_medida}`
         }
         return value
       },
-      updateMultiplos(multiplo) {
+      updateMultiplos (multiplo) {
         const exists = this.multiplos.find(m => m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente)
         if (exists) {
-          if (multiplo.quantidade === 0){
+          if (multiplo.quantidade === 0) {
             this.multiplos = this.multiplos.filter(m => m.multiplo !== multiplo.multiplo && m.ingrediente !== multiplo.ingrediente)
             return
           }
           this.multiplos.map(m => {
-            if (m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente){
+            if (m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente) {
               m.quantidade = multiplo.quantidade
             }
           })
@@ -90,10 +90,10 @@
 
         this.multiplos = [...this.multiplos, multiplo]
       },
-      adicionarCarrinho() {
+      adicionarCarrinho () {
         let isValid = true
         this.produto.multiplos.map(multBackEnd => {
-          if (multBackEnd.obrigatorio){
+          if (multBackEnd.obrigatorio) {
             let soma = 0
             this.multiplos.map(multSelected => {
               soma = multSelected.multiplo === multBackEnd.id ? soma + multSelected.quantidade : soma
@@ -111,7 +111,9 @@
           }
         })
 
-        if (!isValid) return
+        if (!isValid) {
+          return
+        }
 
         const produto = {
           time: moment().format(),
@@ -121,15 +123,26 @@
         }
 
         let carrinho = this.$localStorage.get('carrinho', null)
-        if (carrinho){
+        if (carrinho) {
           const carrinhoParsed = JSON.parse(carrinho)
           carrinho = [...carrinhoParsed, produto]
-        }else {
+        } else {
           carrinho = [produto]
         }
         this.$localStorage.set('carrinho', JSON.stringify(carrinho))
 
         this['mainbar/setQuantidade'](carrinho.length)
+
+        if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+          this.analytics.fbq.event('AddToCart', {
+            content_ids: [`${this.produto.id}`],
+            content_type: 'product',
+            content_name: `${this.store_produto}`,
+            content_category: `${this.produto.categoria.grupo} ${this.produto.categoria.nome}`,
+            currency: 'BRL',
+            value: (this.produto.preco / this.produto.minimo_unidade) * this.produto.quantidade,
+          })
+        }
 
         this.$swal({
           icon: 'success',
@@ -140,7 +153,7 @@
           confirmButtonText: 'Continuar!',
         }).then(result => {
           if (result.value) {
-            this.$router.push({name: 'produtos'})
+            this.$router.push({ name: 'produtos' })
           }
         })
       }
@@ -148,6 +161,15 @@
     async mounted () {
       await this['produto/listOne'](this.$route.params.id)
       this.quantidade = this.produto.minimo_unidade
+
+      if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+        this.analytics.fbq.event('ViewContent', {
+          content_ids: [`${this.$route.params.id}`],
+          content_type: 'product',
+          content_name: `${this.store_produto}`,
+          content_category: `${this.store_produto.categoria.grupo} ${this.store_produto.categoria.nome}`,
+        })
+      }
     },
   }
 </script>

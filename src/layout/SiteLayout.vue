@@ -9,31 +9,43 @@
     <Footer v-else/>
   </div>
 </template>
-<script>
-import { FadeTransition } from 'vue2-transitions'
-import SiteBaseNav from '@/layout/SiteNavbar/SiteBaseNav'
-import Footer from '@/layout/Footer'
-import CustomFooter from '@/layout/Custom/CustomFooter'
-export default {
-  name: 'SiteLayout',
-  components: {
-    CustomFooter,
-    Footer,
-    SiteBaseNav,
-    FadeTransition
-  },
-  computed: {
-    hasCustomFooter() {
-      if (parseInt(process.env.VUE_APP_HAS_CUSTOM_FOOTER))
-        return true
 
-      return false
+<script>
+  import { FadeTransition } from 'vue2-transitions'
+  import SiteBaseNav from '@/layout/SiteNavbar/SiteBaseNav'
+  import Footer from '@/layout/Footer'
+  import CustomFooter from '@/layout/Custom/CustomFooter'
+
+  export default {
+    name: 'SiteLayout',
+    components: {
+      CustomFooter,
+      Footer,
+      SiteBaseNav,
+      FadeTransition
+    },
+    computed: {
+      hasCustomFooter () {
+        if (parseInt(process.env.VUE_APP_HAS_CUSTOM_FOOTER)) {
+          return true
+        }
+
+        return false
+      }
+    },
+    mounted () {
+      if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+        this.analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+          em: process.env.VUE_APP_FACEBOOK_EMAIL
+        })
+        this.analytics.fbq.event('PageView')
+      }
     }
   }
-};
 </script>
+
 <style lang="scss" scoped>
-  /deep/#main-nav{
+  /deep/ #main-nav {
     border-left: 1px;
     border-top: 1px;
     border-right: 1px;

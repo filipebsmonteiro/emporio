@@ -23,6 +23,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import VueLocalStorage from 'vue-localstorage'
 import VuePusher from 'vue-pusher'
 import VueHtmlToPaper from 'vue-html-to-paper'
+import VueFacebookPixel from 'vue-analytics-facebook-pixel'
 import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import { store } from './store'
@@ -42,7 +43,7 @@ Vue.use(VuePusher, {
     disableStats: true,
     //encrypted: true,
   }
-});
+})
 Vue.use(VueHtmlToPaper, {
   name: '_blank',
   specs: [
@@ -53,7 +54,9 @@ Vue.use(VueHtmlToPaper, {
   styles: [
     'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
   ]
-});
+})
+Vue.use(VueFacebookPixel)
+
 new Vue({
   router,
   store,

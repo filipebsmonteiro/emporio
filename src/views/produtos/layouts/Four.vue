@@ -24,7 +24,8 @@
     <b-card-text class="flex-fill">
       <div class="w-100 d-flex justify-content-between align-items-end">
         <span class="product__preco">{{ produto.preco | formatMoney }}</span>
-        <small class="ml-3"> {{ produto.unidade_medida ? ` ${produto.minimo_unidade} ${produto.unidade_medida}` : null }}</small>
+        <small class="ml-3"> {{ produto.unidade_medida ? ` ${produto.minimo_unidade} ${produto.unidade_medida}` : null
+          }}</small>
       </div>
     </b-card-text>
     <router-link :to="{ name: 'produto.show', params: { id: produto.id } }" class="btn product__button">
@@ -49,14 +50,12 @@
           }
         }
       }
-    },
-    methods: {
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .jumbotron{
+  .jumbotron {
     //background-image: url('/img/produtos/1-7.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -64,32 +63,38 @@
     height: 10rem;
     background-position: center center;
     border-bottom-right-radius: 0px;
-    border-bottom-left-radius:  0px;
+    border-bottom-left-radius: 0px;
 
     @media (max-width: 576px) {
       height: 15rem;
     }
   }
-  .product{
+
+  .product {
     @media (max-width: 576px) {
       margin-left: 1.5rem !important;
       margin-right: 1.5rem !important;
     }
-    /deep/.card-header{
+
+    /deep/ .card-header {
       padding: 0px !important;
     }
-    /deep/.card-body{
+
+    /deep/ .card-body {
       display: flex !important;
       flex-direction: column !important;
-      .card-title{
+
+      .card-title {
         margin: 0.25rem !important;
       }
     }
-    &__{
-      &preco{
+
+    &__ {
+      &preco {
         white-space: nowrap !important;
       }
-      &button{
+
+      &button {
         white-space: nowrap !important;
       }
     }

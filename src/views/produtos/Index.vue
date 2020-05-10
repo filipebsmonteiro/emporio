@@ -10,7 +10,15 @@
         />
       </div>
       <div :class="{'col-md-9': catLayout === 'Side'}">
-        <b-overlay :show="isLoadingProduto">
+        <b-overlay :show="isLoadingProduto" no-center>
+          <template v-slot:overlay>
+            <div class="d-flex mt-5">
+              <div class="m-auto">
+                <b-icon icon="stopwatch" font-scale="3" animation="cylon"/>
+                <p>Carregando...</p>
+              </div>
+            </div>
+          </template>
           <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
         </b-overlay>
       </div>

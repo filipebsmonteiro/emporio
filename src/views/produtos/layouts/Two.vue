@@ -40,20 +40,21 @@
           }
         }
       }
-    },
-    methods: {}
+    }
   }
 </script>
 
 <style lang="scss" scoped>
   .product {
     max-width: 540px;
-    &__{
+
+    &__ {
       &image {
         margin-top: auto;
         margin-bottom: auto;
       }
-      &button{
+
+      &button {
         white-space: nowrap !important;
       }
     }
