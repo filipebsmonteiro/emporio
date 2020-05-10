@@ -1,35 +1,37 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
-    <side-bar
-      :background-color="sidebarBackground"
-      short-title="Argon"
-      title="Argon"
-    >
+    <side-bar :background-color="sidebarBackground" short-title="Empório" title="Empório Virtual">
       <template slot="links">
         <sidebar-item :link="{ text: 'Dashboard', icon: 'ni ni-tv-2 text-primary', name: 'painel.dashboard' }"/>
 
-        <base-dropdown>
-          <template v-slot:title>
-            <sidebar-item :link="{text: 'Produtos', icon: 'ni ni-collection text-red'}"/>
-          </template>
-          <template>
-            <sidebar-item :link="{text: 'Lista de Produtos', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.produto.index'}"/>
-            <sidebar-item :link="{text: 'Categorias de Produtos', icon: 'ni ni-collection text-red', name: 'painel.produto.categoria.index'}"/>
-          </template>
-        </base-dropdown>
+        <sidebar-item>
+          <base-dropdown tag="a" class="nav-link">
+            <template v-slot:title>
+              <i class="ni ni-collection text-red"/>
+              <span class="nav-link-text">Produtos</span>
+            </template>
+            <template>
+              <sidebar-item :link="{text: 'Lista de Produtos', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.produto.index'}"/>
+              <sidebar-item :link="{text: 'Categorias de Produtos', icon: 'ni ni-collection text-red', name: 'painel.produto.categoria.index'}"/>
+            </template>
+          </base-dropdown>
+        </sidebar-item>
 
         <sidebar-item :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.ingrediente.index'}"/>
         <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-active-40 text-blue', name: 'painel.pedido.index'}"/>
 
-        <base-dropdown>
-          <template v-slot:title>
-            <sidebar-item :link="{text: 'Marketing', icon: 'ni ni-planet text-red'}"/>
-          </template>
-          <template>
-            <sidebar-item :link="{text: 'Clientes', icon: 'fas fa-users text-green', name: 'painel.cliente.index'}"/>
-            <sidebar-item :link="{text: 'Cupons', icon: 'fas fa-ticket-alt', name: 'painel.cupom.index'}"/>
-          </template>
-        </base-dropdown>
+        <sidebar-item>
+          <base-dropdown tag="a" class="nav-link">
+            <template v-slot:title>
+              <i class="ni ni-planet text-red"/>
+              <span class="nav-link-text">Marketing</span>
+            </template>
+            <template>
+              <sidebar-item :link="{text: 'Clientes', icon: 'fas fa-users text-green', name: 'painel.cliente.index'}"/>
+              <sidebar-item :link="{text: 'Cupons', icon: 'fas fa-ticket-alt', name: 'painel.cupom.index'}"/>
+            </template>
+          </base-dropdown>
+        </sidebar-item>
 
       </template>
     </side-bar>
@@ -59,7 +61,7 @@
     },
     data() {
       return {
-        sidebarBackground: 'vue' //vue|blue|orange|green|red|primary
+        sidebarBackground: 'orange' //vue|blue|orange|green|red|primary
       };
     },
     methods: {
@@ -71,5 +73,8 @@
     }
   };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+  .nav-item {
+    cursor: pointer;
+  }
 </style>

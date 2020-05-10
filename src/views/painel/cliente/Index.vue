@@ -6,20 +6,14 @@
         <div class="card-header border-0">
           <div class="row align-items-center">
             <div class="col">
-              <h3 class="mb-0">Categorias de Produtos</h3>
-            </div>
-            <div class="col text-right">
-              <router-link size="sm" class="btn btn-primary" :to="{ name: 'painel.produto.categoria.create' }">Novo</router-link>
+              <h3 class="mb-0">Lista de Clientes</h3>
             </div>
           </div>
         </div>
 
-        <b-table :items="categorias" :fields="fields">
-          <template v-slot:cell(created_at)="{ item: { created_at } }">
-            {{ created_at | formatDate }}
-          </template>
+        <b-table :items="clientes" :fields="fields" responsive>
           <template v-slot:cell(id)="{ item: { id } }">
-            <router-link class="bn btn-link btn-sm p-0" :to="{ name: 'painel.produto.categoria.edit', params: { id } }">
+            <router-link class="btn btn-link btn-sm p-0" :to="{ name: 'painel.cliente.edit', params: { id } }">
               <i class="fas fa-edit fa-2x"/>
             </router-link>
           </template>
@@ -35,26 +29,26 @@
     name: 'Index',
     computed: {
       ...mapGetters({
-        categorias: 'produto/categoria/getAll'
+        clientes: 'cliente/getAll'
       })
     },
     data () {
       return {
         fields: [
-          { key: 'nome', label: 'Nome' },
-          { key: 'grupo', label: 'Grupo' },
-          { key: 'created_at', label: 'Criado em' },
-          { key: 'id', label: 'Editar' }
+          { key: 'id', label: 'Editar' },
+          { key: 'phone', label: 'Telefone' },
+          { key: 'email', label: 'Email' },
+          { key: 'nome', label: 'Nome' }
         ]
       }
     },
     methods: {
       ...mapActions([
-        'produto/categoria/listAll'
+        'cliente/listAll'
       ])
     },
     mounted () {
-      this['produto/categoria/listAll']()
+      this['cliente/listAll']()
     }
   }
 </script>

@@ -3,12 +3,15 @@ import Router from 'vue-router'
 import DashboardLayout from '@/layout/DashboardLayout'
 import cliente from '@/routes/cliente'
 import endereco from '@/routes/endereco'
+import painelCliente from '@/routes/painel/cliente'
+import painelCupom from '@/routes/painel/cupom'
 import painelIngrediente from '@/routes/painel/ingrediente'
 import painelProduto from '@/routes/painel/produto'
 import painelPedido from '@/routes/painel/pedido'
 import pedido from '@/routes/pedido'
 import produto from '@/routes/produto'
 import SiteLayout from '@/layout/SiteLayout'
+
 Vue.use(Router)
 
 export default new Router({
@@ -37,6 +40,8 @@ export default new Router({
           name: 'painel.dashboard',
           component: () => import('@/views/painel/Dashboard')
         },
+        ...painelCliente,
+        ...painelCupom,
         ...painelIngrediente,
         ...painelProduto,
         ...painelPedido,
@@ -81,5 +86,5 @@ export default new Router({
         },
       ]
     }
-]
+  ]
 })

@@ -16,13 +16,13 @@
 
         <b-table :items="categorias" :fields="fields" responsive>
           <template v-slot:cell(id)="{ item: { id, status } }">
-            <b-btn v-if="status==='Disponível'" variant="white" size="sm">
+            <b-btn v-if="status==='Disponível'" variant="white" size="sm" @click="changeStatus(id, 'Indisponível')">
               <i class="fas fa-pause"/>
             </b-btn>
-            <b-btn v-else variant="danger" size="sm">
+            <b-btn v-else variant="danger" size="sm" @click="changeStatus(id, 'Disponível')">
               <i class="fas fa-play"/>
             </b-btn>
-            <router-link class="btn btn-link p-0" :to="{ name: 'painel.produto.edit', params: { id } }">
+            <router-link class="btn btn-link btn-sm p-0" :to="{ name: 'painel.produto.edit', params: { id } }">
               <i class="fas fa-edit fa-2x"/>
             </router-link>
           </template>
@@ -33,6 +33,7 @@
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import Produto from '@/services/Produto/Produto'
 
   export default {
     name: 'Index',
@@ -55,7 +56,20 @@
     methods: {
       ...mapActions([
         'produto/listAll'
-      ])
+      ]),
+      changeStatus (id, status) {
+        Produto.changeStatus(id, { status }).then(() => {
+          this.$notify({
+            type: 'success',
+            title: `Status do Produto Atualizado com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this['produto/listAll']()
+        }).catch(error => {
+          this.validaRetornoErro(error)
+        })
+      }
     },
     mounted() {
       this['produto/listAll']()

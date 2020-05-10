@@ -37,9 +37,10 @@
         produtos: 'produto/getAll',
         isLoadingProduto: 'produto/isLoading',
       }),
-      catLayout() {
-        if (process.env.VUE_APP_LAYOUT_CATEGORIAS === 'Side')
+      catLayout () {
+        if (process.env.VUE_APP_LAYOUT_CATEGORIAS === 'Side') {
           return 'Side'
+        }
 
         return 'Top'
       }
@@ -56,7 +57,7 @@
       }
     },
     async mounted () {
-      if (this.$route.name === 'produtos.categoria'){
+      if (this.$route.name === 'produtos.categoria') {
         await this.loadProducts(this.$route.params.id)
       }
     },
@@ -64,7 +65,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .sticky-top{
+  .sticky-top {
     top: 1rem;
   }
 </style>
