@@ -2,7 +2,8 @@
   <b-table :fields="fields" :items="ingredientes" responsive>
     <template v-slot:cell(visibilidade)="{ item: { id, nome } }">
       <b-input-group class="align-items-center">
-        <b-form-select size="sm"
+        <b-form-select v-model="visibilidade"
+                       size="sm"
                        :options="['Ingrediente', 'Essencial Visível', 'Essencial Não Visível']"
                        @change="evt => $emit('update', { id, nome, visibilidade: evt })"/>
       </b-input-group>
