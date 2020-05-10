@@ -1,6 +1,6 @@
 <template>
   <b-table :fields="fields" :items="ingredientes" responsive>
-    <template v-slot:cell(visibilidade)="{ item: { id, nome } }">
+    <template v-slot:cell(visibilidade)="{ item: { id, nome, visibilidade } }">
       <b-input-group class="align-items-center">
         <b-form-select v-model="visibilidade"
                        size="sm"

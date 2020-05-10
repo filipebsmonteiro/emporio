@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8" />
+    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"/>
     <div class="container-fluid mt--7">
       <card shadow type="secondary">
         <div slot="header" class="bg-white border-0">
@@ -74,7 +74,7 @@
                 </div>
               </div>
             </div>
-            <hr class="my-4" />
+            <hr class="my-4"/>
 
             <!-- Promoções -->
             <h6 class="heading-small text-muted mb-4">Promoções</h6>
@@ -97,29 +97,36 @@
                 </div>
               </div>
             </div>
-            <hr class="my-4" />
+            <hr class="my-4"/>
 
             <!-- Disponibilidades -->
             <h6 class="heading-small text-muted mb-4">Disponibilidade</h6>
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-lg-12">
-                <b-form-group label="Dias da Semana" class="text-center">
-                  <b-form-checkbox v-model="model.domingo" class="ml-1 mr-1 mt-1" button>
-                    Domingo</b-form-checkbox>
-                  <b-form-checkbox v-model="model.segunda" class="ml-1 mr-1 mt-1" button>
-                    Segunda</b-form-checkbox>
-                  <b-form-checkbox v-model="model.terca" class="ml-1 mr-1 mt-1" button>
-                    Terça</b-form-checkbox>
-                  <b-form-checkbox v-model="model.quarta" class="ml-1 mr-1 mt-1" button>
-                    Quarta</b-form-checkbox>
-                  <b-form-checkbox v-model="model.quinta" class="ml-1 mr-1 mt-1" button>
-                    Quinta</b-form-checkbox>
-                  <b-form-checkbox v-model="model.sexta" class="ml-1 mr-1 mt-1" button>
-                    Sexta</b-form-checkbox>
-                  <b-form-checkbox v-model="model.sabado" class="ml-1 mr-1 mt-1" button>
-                    Sábado</b-form-checkbox>
-                </b-form-group>
+                  <b-form-group label="Dias da Semana" class="text-center">
+                    <b-form-checkbox v-model="model.domingo" class="ml-1 mr-1 mt-1" button>
+                      Domingo
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="model.segunda" class="ml-1 mr-1 mt-1" button>
+                      Segunda
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="model.terca" class="ml-1 mr-1 mt-1" button>
+                      Terça
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="model.quarta" class="ml-1 mr-1 mt-1" button>
+                      Quarta
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="model.quinta" class="ml-1 mr-1 mt-1" button>
+                      Quinta
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="model.sexta" class="ml-1 mr-1 mt-1" button>
+                      Sexta
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="model.sabado" class="ml-1 mr-1 mt-1" button>
+                      Sábado
+                    </b-form-checkbox>
+                  </b-form-group>
                 </div>
               </div>
               <div class="row mt-4">
@@ -184,7 +191,7 @@
                 </div>
               </div>
             </div>
-            <hr class="my-4" />
+            <hr class="my-4"/>
 
             <!-- Ingredientes -->
             <h6 class="heading-small text-muted mb-4">Ingredientes</h6>
@@ -200,16 +207,16 @@
                 </div>
               </div>
             </div>
-            <hr class="my-4" />
+            <hr class="my-4"/>
 
             <!-- Multiplos -->
             <h6 class="heading-small text-muted mb-4">Variaçoẽs de Produto</h6>
             <div class="pl-lg-4">
               <div class="row">
-                <div v-for="(variacao, index) in model.multiplos" :key="index"  class="col-md-6 mt-3">
+                <div v-for="(variacao, index) in model.multiplos" :key="index" class="col-md-6 mt-3">
                   <Variacao :variacao="variacao"
                             @update="evt => { updateVariacao(index, evt) }"
-                            @remove="removeVariacao(index)" />
+                            @remove="removeVariacao(index)"/>
                 </div>
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-block btn-info" @click="addVariacao">Adicionar Variaçao</button>
@@ -238,8 +245,8 @@
         produto: 'produto/getCurrent',
         store_categorias: 'produto/categoria/getAll'
       }),
-      categorias() {
-        if (this.store_categorias && Array.isArray(this.store_categorias)){
+      categorias () {
+        if (this.store_categorias && Array.isArray(this.store_categorias)) {
           return this.store_categorias.map(c => {
             return {
               value: c.id,
@@ -250,7 +257,7 @@
         return []
       },
     },
-    data() {
+    data () {
       return {
         variacao_exemplo: {
           nome: null,
@@ -291,12 +298,12 @@
     },
     methods: {
       ...mapActions([
-        'produto/listOne',
+        'produto/listOnePainel',
         'produto/categoria/listAll'
       ]),
-      validaRetornoErro(error) {
+      validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
-        if ( data.errors && data.message === "The given data was invalid.") {
+        if (data.errors && data.message === 'The given data was invalid.') {
           Object.keys(data.errors).map(campo => {
             data.errors[campo].map(msg => {
               this.$notify({
@@ -306,14 +313,14 @@
                 horizontalAlign: 'center'
               })
             })
-          });
+          })
         }
       },
       addVariacao () {
         const copy = Object.assign({}, this.variacao_exemplo)
         this.model.multiplos = [...this.model.multiplos, copy]
       },
-      addIngrediente(ingrediente) {
+      addIngrediente (ingrediente) {
         if (ingrediente) {
           this.model.ingredientes = [...this.model.ingredientes, {
             id: ingrediente.id,
@@ -322,7 +329,7 @@
           }]
         }
       },
-      updateIngrediente(ingrediente) {
+      updateIngrediente (ingrediente) {
         this.model.ingredientes = this.model.ingredientes.map(i => {
           if (i.id === ingrediente.id) {
             return ingrediente
@@ -330,7 +337,7 @@
           return i
         })
       },
-      removeIngrediente(id) {
+      removeIngrediente (id) {
         this.model.ingredientes = this.model.ingredientes.filter(i => i.id !== id)
       },
       updateVariacao (index, variacao) {
@@ -348,7 +355,7 @@
           }
         })
       },
-      async onSubmit(evt) {
+      async onSubmit (evt) {
         evt.preventDefault()
         if (this.$route.params.id) {
           this.update()
@@ -356,7 +363,7 @@
           this.create()
         }
       },
-      create() {
+      create () {
         Produto.post(this.model).then(() => {
           this.$notify({
             type: 'success',
@@ -364,12 +371,12 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'painel.produto.index'})
+          this.$router.push({ name: 'painel.produto.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
       },
-      update() {
+      update () {
         Produto.put(this.produto.id, this.model).then(() => {
           this.$notify({
             type: 'success',
@@ -377,7 +384,7 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'painel.produto.index'})
+          this.$router.push({ name: 'painel.produto.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
@@ -386,7 +393,7 @@
     async mounted () {
       await this['produto/categoria/listAll']()
       if (this.$route.params.id) {
-        await this['produto/listOne'](this.$route.params.id)
+        await this['produto/listOnePainel'](this.$route.params.id)
         this.model = {
           ...this.model,
           ...this.produto,
@@ -405,7 +412,7 @@
 </script>
 
 <style lang="scss" scoped>
-  /deep/.btn-group-toggle > .btn.btn-secondary.active{
+  /deep/ .btn-group-toggle > .btn.btn-secondary.active {
     color: #fff;
     background-color: #2dce89;
     border-color: #2dce89;

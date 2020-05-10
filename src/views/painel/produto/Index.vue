@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8" />
+    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"/>
     <div class="container-fluid mt--7">
       <div class="card">
         <div class="card-header border-0">
@@ -16,10 +16,16 @@
 
         <b-table :items="categorias" :fields="fields" responsive>
           <template v-slot:cell(id)="{ item: { id, status } }">
-            <b-btn v-if="status==='Disponível'" variant="white" size="sm" @click="changeStatus(id, 'Indisponível')">
+            <b-btn v-if="status==='Desabilitado'" variant="outline-warning" size="sm"
+                   title="Desabilitado por falta de Ingrediente Essencial" disabled>
+              <i class="fas fa-exclamation"/>
+            </b-btn>
+            <b-btn v-else-if="status==='Disponível'" variant="white" size="sm"
+                   @click="changeStatus(id, 'Indisponível')">
               <i class="fas fa-pause"/>
             </b-btn>
-            <b-btn v-else variant="danger" size="sm" @click="changeStatus(id, 'Disponível')">
+            <b-btn v-else-if="status==='Indisponível'" variant="danger" size="sm"
+                   @click="changeStatus(id, 'Disponível')">
               <i class="fas fa-play"/>
             </b-btn>
             <router-link class="btn btn-link btn-sm p-0" :to="{ name: 'painel.produto.edit', params: { id } }">
@@ -32,7 +38,7 @@
   </div>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/services/Produto/Produto'
 
   export default {
@@ -42,7 +48,7 @@
         categorias: 'produto/getAll'
       })
     },
-    data() {
+    data () {
       return {
         fields: [
           { key: 'nome', label: 'Nome' },
@@ -71,7 +77,7 @@
         })
       }
     },
-    mounted() {
+    mounted () {
       this['produto/listAll']()
     }
   }

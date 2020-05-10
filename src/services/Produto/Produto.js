@@ -3,6 +3,9 @@ import { Repository, createRepository } from '../repository'
 class ProdutoRepository extends Repository {
   endpoint = 'produto'
 
+  fetchPainel (id) {
+      return this.$axios.get(`${this.endpoint}/painel/${id}`)
+  }
 
   changeStatus(id, params) {
     return this.$axios.put(`${this.endpoint}/changeStatus/${id}`, params)

@@ -32,6 +32,13 @@ export default {
     }
   },
   actions: {
+    async listOnePainel ({ commit }, id) {
+      commit('setLoading', true)
+      await ProdutoRepository.fetchPainel(id).then(response => {
+        commit('setCurrent', response.data)
+      })
+      commit('setLoading', false)
+    },
     async listOne ({ commit }, id) {
       commit('setLoading', true)
       await ProdutoRepository.fetch(id).then(response => {
