@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import mainbar from './modules/mainbar'
 import cliente from './modules/cliente'
 import cupom from './modules/cupom'
+import dashboard from './modules/dashboard'
 import endereco from './modules/endereco'
 import fidelidade from './modules/fidelidade'
 import formapagamento from './modules/formapagamento'
@@ -19,6 +20,7 @@ export const store = new Vuex.Store({
     mainbar,
     cliente,
     cupom,
+    dashboard,
     endereco,
     fidelidade,
     formapagamento,

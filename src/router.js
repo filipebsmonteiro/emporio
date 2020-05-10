@@ -29,6 +29,7 @@ export default new Router({
 
     {
       path: '/painel',
+      redirect: '/painel/dashboard',
       component: DashboardLayout,
       children: [
         {

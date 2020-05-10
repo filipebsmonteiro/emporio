@@ -6,7 +6,7 @@
       title="Argon"
     >
       <template slot="links">
-        <sidebar-item :link="{ text: 'Dashboard', icon: 'ni ni-tv-2 text-primary', name: 'dashboard' }"/>
+        <sidebar-item :link="{ text: 'Dashboard', icon: 'ni ni-tv-2 text-primary', name: 'painel.dashboard' }"/>
 
         <base-dropdown>
           <template v-slot:title>

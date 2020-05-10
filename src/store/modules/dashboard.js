@@ -5,7 +5,15 @@ export default {
   namespaced: true,
   state: {
     list: [],
-    current: {},
+    cards: {
+      abertos: 0,
+      confirmados: 0,
+      enviados: 0,
+      cancelados: 0,
+      faturamento: 0,
+      media_valor: 0,
+      media_entrega: 0,
+    },
     isLoading: false
   },
   getters: {
@@ -15,13 +23,13 @@ export default {
     isLoading (state) {
       return state.isLoading
     },
-    getCurrent (state) {
-      return state.current
+    getCards (state) {
+      return state.cards
     }
   },
   mutations: {
-    setCurrent (state, obj) {
-      state.current = obj
+    setCards (state, obj) {
+      state.cards = obj
     },
     setAll (state, array) {
       state.list = array
@@ -31,17 +39,13 @@ export default {
     }
   },
   actions: {
-    async listOne ({ commit }, id) {
-      commit('setLoading', true)
-      await DashboardRepository.fetch(id).then(response => {
-        commit('setCurrent', response.data)
-      })
-      commit('setLoading', false)
-    },
     async listAll ({ commit }, params) {
       commit('setLoading', true)
-      await DashboardRepository.fetchAll(params).then(response => {
+      await DashboardRepository.fetchQuantidade(params).then(response => {
         commit('setAll', response.data)
+      })
+      await DashboardRepository.fetchCards(params).then(response => {
+        commit('setCards', response.data)
       })
       commit('setLoading', false)
     }
