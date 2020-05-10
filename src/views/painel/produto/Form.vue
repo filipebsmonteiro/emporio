@@ -186,6 +186,22 @@
             </div>
             <hr class="my-4" />
 
+            <!-- Ingredientes -->
+            <h6 class="heading-small text-muted mb-4">Ingredientes</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-md-4">
+                  <SelectOpcao @input="addIngrediente" class="mb-2"/>
+                </div>
+                <div class="col-md-8">
+                  <IngredienteList :ingredientes="model.ingredientes"
+                                   @remove="removeIngrediente"
+                                   @update="updateIngrediente"/>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4" />
+
             <!-- Multiplos -->
             <h6 class="heading-small text-muted mb-4">Variaçoẽs de Produto</h6>
             <div class="pl-lg-4">
@@ -211,10 +227,12 @@
   import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/services/Produto/Produto'
   import Variacao from '@/views/painel/produto/Variacao'
+  import SelectOpcao from '@/views/painel/ingrediente/SelectOpcao'
+  import IngredienteList from '@/views/painel/produto/IngredienteList'
 
   export default {
     name: 'Form',
-    components: { Variacao },
+    components: { IngredienteList, SelectOpcao, Variacao },
     computed: {
       ...mapGetters({
         produto: 'produto/getCurrent',
@@ -266,7 +284,8 @@
           termino_periodo1: null,
           inicio_periodo2: null,
           termino_periodo2: null,
-          multiplos: []
+          multiplos: [],
+          ingredientes: [],
         }
       }
     },
@@ -293,6 +312,26 @@
       addVariacao () {
         const copy = Object.assign({}, this.variacao_exemplo)
         this.model.multiplos = [...this.model.multiplos, copy]
+      },
+      addIngrediente(ingrediente) {
+        if (ingrediente) {
+          this.model.ingredientes = [...this.model.ingredientes, {
+            id: ingrediente.id,
+            nome: ingrediente.nome,
+            visibilidade: 'Ingrediente'
+          }]
+        }
+      },
+      updateIngrediente(ingrediente) {
+        this.model.ingredientes = this.model.ingredientes.map(i => {
+          if (i.id === ingrediente.id) {
+            return ingrediente
+          }
+          return i
+        })
+      },
+      removeIngrediente(id) {
+        this.model.ingredientes = this.model.ingredientes.filter(i => i.id !== id)
       },
       updateVariacao (index, variacao) {
         this.model.multiplos = this.model.multiplos.map((mult, idx) => {
@@ -338,7 +377,7 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'painel.produto.index'})
+          //this.$router.push({name: 'painel.produto.index'})
         }).catch(error => {
           this.validaRetornoErro(error)
         })
