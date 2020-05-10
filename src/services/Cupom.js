@@ -7,6 +7,9 @@ class CupomRepository extends Repository {
     return this.$axios.post(`${this.endpoint}/valida`, params)
   }
 
+  fetchTipos () {
+    return this.$axios.get(`${this.endpoint}/tipos`)
+  }
 }
 
 export default new CupomRepository()
