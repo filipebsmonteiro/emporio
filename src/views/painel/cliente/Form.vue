@@ -59,7 +59,7 @@
                               v-model="model.nascimento" disabled/>
                 </div>
                 <div class="col-lg-6">
-                  <base-input label="Senha" input-classes="form-control-alternative" v-model="model.password"/>
+                  <base-input label="Senha" disabled input-classes="form-control-alternative" v-model="model.password"/>
                 </div>
               </div>
             </div>
@@ -74,6 +74,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import Fidelidade from '@/services/Fidelidade'
 
   export default {
     name: 'Form',
@@ -117,7 +118,22 @@
       },
       async onSubmit (evt) {
         evt.preventDefault()
-
+        Fidelidade.post({
+          Clientes_idClientes: this.cliente.id,
+          valorAcumulado: this.model.valorAcumulado,
+          valorResgate: this.model.valorResgate
+        }).then(()  => {
+          this.$notify({
+            type: 'success',
+            title: `Fidelidade Salva com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({ name: 'painel.cliente.index' })
+        }).catch(error => {
+          // eslint-disable-next-line no-console
+          this.validaRetornoErro(error)
+        })
       },
     },
     async mounted () {
