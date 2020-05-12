@@ -1,5 +1,6 @@
 import { default as axiosPackage } from 'axios'
 import TokenService from './token'
+import { redirectLogin } from '@/guards'
 
 axiosPackage.defaults.headers.common['Accept'] = 'application/json'
 axiosPackage.defaults.headers.common['Content-Type'] = 'application/json'
@@ -25,51 +26,43 @@ axios.interceptors.request.use(
       }
       config.headers['Authorization'] = TokenService._getToken()
     }
-    return config;
+    return config
   },
   error => {
     Promise.reject(error)
   }
-);
+)
 
-axios.interceptors.response.use(response => { return response },
+const isTryingRefreshToken = (url) => {
+  if (url === TokenService._getRefreshEndPoint()) {
+    return true
+  }
+  return false
+}
+
+axios.interceptors.response.use(response => {
+    return response
+  },
   async error => {
-    const originalRequest = error.config;
+    const originalRequest = error.config
 
     if (error.response.status === 401) {
-      // Verifica Unauthorized ao renovar TOKEN
-      if (originalRequest.url === TokenService._getRefreshEndPoint()) {
-        //window.location.href = `${window.location.origin}/login`
-        TokenService._clearTokenAndExpiration()
-        return Promise.reject(error);
+      if (isTryingRefreshToken(originalRequest.url)) {
+        TokenService._clearToken()
       }
 
-      const newToken = await TokenService._refreshToken(axios)
-
-      if (newToken){
-        axios.defaults.headers.common['Authorization'] = newToken
-
-        // Tenta novamente Request
-        return axios(originalRequest);
+      if (!TokenService._isTokenExpired()) {
+        const newToken = await TokenService._refreshToken(axios)
+        if (newToken) {
+          axios.defaults.headers.common['Authorization'] = newToken
+          // Tenta novamente Request
+          return axios(originalRequest)
+        }
       }
-
-      /*/ Tenta renovar Token
-      axios.post(TokenService._getRefreshEndPoint())
-        .then(res => {
-          if (res.status === 200 || res.status === 201) {
-            TokenService._setToken(res.data.access_token)
-            TokenService._setExpiration(res.data.expires_in)
-
-            axios.defaults.headers.common['Authorization'] = TokenService._getToken()
-
-            // Tenta novamente Request
-            return axios(originalRequest);
-          }
-        })*/
+      redirectLogin(originalRequest.url)
     }
 
-    //window.location.href = `${window.location.origin}/`
     // return Error object with Promise
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
- )
+)

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import DashboardLayout from '@/layout/DashboardLayout'
 import cliente from '@/routes/cliente'
 import endereco from '@/routes/endereco'
+import institucional from '@/routes/institucional'
 import painelCliente from '@/routes/painel/cliente'
 import painelCupom from '@/routes/painel/cupom'
 import painelIngrediente from '@/routes/painel/ingrediente'
@@ -11,6 +12,8 @@ import painelPedido from '@/routes/painel/pedido'
 import pedido from '@/routes/pedido'
 import produto from '@/routes/produto'
 import SiteLayout from '@/layout/SiteLayout'
+import { isAuthenticatedPainel } from '@/guards'
+import TokenService from '@/api/token'
 
 Vue.use(Router)
 
@@ -19,71 +22,48 @@ export default new Router({
   linkExactActiveClass: 'active',
   routes: [
     {
-      path: '/dist/dashboard',
-      redirect: '/dist/dashboard',
-      component: DashboardLayout,
-      children: [
-        {
-          path: '',
-          component: () => import('./views/dist/Dashboard.vue')
-        },
-      ]
+      path: '/dist', component: DashboardLayout,
+      children: [{ path: '', component: () => import('@/views/dist/Dashboard.vue') }]
     },
 
     {
+      path: '/painel/login',
+      name: 'painel.login',
+      component: () => import('@/views/painel/Login'),
+      beforeEnter: ($to, $from, $next) => {
+        if (
+          TokenService._isAuthenticated()
+          && TokenService._getDomain()
+          && TokenService._getDomain() === '/painel'
+        ) { $next({ name: 'painel.dashboard' }) }
+        $next()
+      }
+    },
+    {
       path: '/painel',
-      redirect: '/painel/dashboard',
       component: DashboardLayout,
+      beforeEnter: isAuthenticatedPainel,
       children: [
-        {
-          path: 'dashboard',
-          name: 'painel.dashboard',
-          component: () => import('@/views/painel/Dashboard')
-        },
+        { path: 'dashboard', name: 'painel.dashboard', component: () => import('@/views/painel/Dashboard') },
         ...painelCliente,
         ...painelCupom,
         ...painelIngrediente,
         ...painelProduto,
         ...painelPedido,
-
-        // Login possui Layout Diferente
-        /*{
-          path: '/login',
-          component: AuthLayout,
-          children: [
-            {
-              path: 'login',
-              name: 'painel.login',
-              component: () => import('./views/dist/Login.vue')
-            },
-          ]
-        },*/
       ]
     },
+
     {
       path: '/',
-      redirect: 'produtos',
+      redirect: '/produtos',
       component: SiteLayout,
       children: [
+        { path: '/', name: 'homepage', component: () => import('@/views/HomePage') },
         ...cliente,
         ...endereco,
         ...pedido,
         ...produto,
-        {
-          path: '/institucional/contato',
-          name: 'contato',
-          component: () => import('./views/institucinonal/Contato')
-        },
-        {
-          path: '/',
-          name: 'homepage',
-          component: () => import('./views/HomePage')
-        },
-        {
-          path: '/institucional/sobre',
-          name: 'sobre_nos',
-          component: () => import('./views/institucinonal/Sobre')
-        },
+        ...institucional
       ]
     }
   ]
