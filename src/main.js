@@ -36,7 +36,7 @@ Vue.use(ArgonDashboard)
 Vue.use(VueSweetalert2)
 Vue.use(VueLocalStorage)
 Vue.use(VueFacebookPixel, {
-  debug: true,
+  debug: process.env.VUE_APP_FACEBOOK_DEBUG,
   router
 })
 Vue.use(VuePusher, {
