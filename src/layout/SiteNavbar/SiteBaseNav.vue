@@ -56,29 +56,38 @@
 <style lang="scss" scoped>
   /deep/#navbar-main {
     nav {
-      &.logo-sm {
+
         img {
           height: 4rem;
           margin-top: -1rem;
           margin-bottom: -1rem !important;
         }
-      }
+
       &.logo-md {
-        margin-top: 1rem !important;
-        margin-bottom: 1.5rem !important;
-        img {
-          height: 6rem;
-          margin-top: -2rem !important;
-          margin-bottom: -2.5rem !important;
+        @media (min-width: 768px) {
+          margin-top: 1rem !important;
+          margin-bottom: 1.5rem !important;
+          img {
+            height: 6rem;
+            margin-top: -2rem !important;
+            margin-bottom: -2.5rem !important;
+            @media (max-width: 767.98px) {
+              height: 4rem;
+              margin-top: -1rem;
+              margin-bottom: -1rem !important;
+            }
+          }
         }
       }
       &.logo-lg {
-        margin-top: 1.5rem !important;
-        margin-bottom: 2rem !important;
-        img {
-          height: 7rem;
-          margin-top: -2.5rem !important;
-          margin-bottom: -3rem !important;
+        @media (min-width: 768px) {
+          margin-top: 1.5rem !important;
+          margin-bottom: 2rem !important;
+          img {
+            height: 7rem;
+            margin-top: -2.5rem !important;
+            margin-bottom: -3rem !important;
+          }
         }
       }
     }
