@@ -35,27 +35,44 @@ Vue.use(BootstrapVue)
 Vue.use(ArgonDashboard)
 Vue.use(VueSweetalert2)
 Vue.use(VueLocalStorage)
+Vue.use(VueFacebookPixel, {
+  debug: true,
+  router
+})
 Vue.use(VuePusher, {
   api_key: process.env.VUE_APP_PUSHER_KEY,
   options: {
-    cluster: 'us2',
-    secret: 'a4a7f0cb258b2b6ca69a',
+    cluster: process.env.VUE_APP_PUSHER_CLUSTER,
+    secret: process.env.VUE_APP_PUSHER_SECRET,
     disableStats: true,
     //encrypted: true,
   }
 })
 Vue.use(VueHtmlToPaper, {
   name: '_blank',
-  specs: [
-    'fullscreen=yes',
-    //'titlebar=yes',
-    //'scrollbars=yes'
-  ],
-  styles: [
-    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-  ]
+  specs: ['fullscreen=yes'],
+  styles: ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css']
 })
-Vue.use(VueFacebookPixel)
+if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+  Vue.analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+    em: process.env.VUE_APP_FACEBOOK_EMAIL
+  })
+}
+router.beforeEach(async ($to, $from, $next) => {
+  /*if ( Object.keys( $to.meta ).length > 0){
+    if (
+      ($to.meta.perfil && hasPerfil($to.meta.perfil)) ||
+      ($to.meta.permission && await can($to.meta.permission))
+    ){
+      $next()
+    }else{
+      if ($to.name !== 'Denied') {
+        $next({name: 'Denied'})
+      }
+    }
+  }*/
+  $next()
+})
 
 new Vue({
   router,

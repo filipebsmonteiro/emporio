@@ -134,13 +134,16 @@
         this['mainbar/setQuantidade'](carrinho.length)
 
         if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
-          this.analytics.fbq.event('AddToCart', {
+          this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+            em: process.env.VUE_APP_FACEBOOK_EMAIL
+          })
+          this.$analytics.fbq.event('AddToCart', {
             content_ids: [`${this.produto.id}`],
             content_type: 'product',
-            content_name: `${this.store_produto}`,
+            content_name: `${this.store_produto.nome}`,
             content_category: `${this.produto.categoria.grupo} ${this.produto.categoria.nome}`,
             currency: 'BRL',
-            value: (this.produto.preco / this.produto.minimo_unidade) * this.produto.quantidade,
+            value: (this.produto.preco / this.produto.minimo_unidade) * produto.quantidade,
           })
         }
 
@@ -148,7 +151,7 @@
           icon: 'success',
           title: `Produto adicionado ao Carrinho com Sucesso`,
           text: 'Deseja continuar comprando?',
-          footer: '<a href=/carrinho>Ir para o carrinho</a>',
+          footer: '<a href=/pedido/carrinho>Ir para o carrinho</a>',
           focusConfirm: false,
           confirmButtonText: 'Continuar!',
         }).then(result => {
@@ -163,10 +166,13 @@
       this.quantidade = this.produto.minimo_unidade
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
-        this.analytics.fbq.event('ViewContent', {
+        this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+          em: process.env.VUE_APP_FACEBOOK_EMAIL
+        })
+        this.$analytics.fbq.event('ViewContent', {
           content_ids: [`${this.$route.params.id}`],
           content_type: 'product',
-          content_name: `${this.store_produto}`,
+          content_name: `${this.store_produto.nome}`,
           content_category: `${this.store_produto.categoria.grupo} ${this.store_produto.categoria.nome}`,
         })
       }

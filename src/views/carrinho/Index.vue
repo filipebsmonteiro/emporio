@@ -238,7 +238,11 @@
         }).then(async response => {
 
           if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
-            this.analytics.fbq.event('Purchase', {
+            this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+              em: process.env.VUE_APP_FACEBOOK_EMAIL,
+              debug: true
+            })
+            this.$analytics.fbq.event('Purchase', {
               content_ids: response.data.produtos.map(p => p.id),
               content_type: 'product',
               currency: 'BRL',
@@ -303,8 +307,14 @@
         await this['produto/listAll']({ ids: this.carrinho.map(p => p.produto) })
       }
 
-      if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED) && this.carrinho.length === 0) {
-        this.analytics.fbq.event('InitiateCheckout', {
+      if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED) && this.carrinho.length > 0) {
+        this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+          em: process.env.VUE_APP_FACEBOOK_EMAIL
+        })
+        const value = this.produtos.reduce((prev, cur) => {
+          return prev + (cur.valor * cur.quantidade)
+        }, 0)
+        this.$analytics.fbq.event('InitiateCheckout', {
           contents: prods.map(p => {
             return {
               id: p.produto,
@@ -313,9 +323,7 @@
           }),
           currency: 'BRL',
           num_items: prods.length,
-          value: this.produtos.reduce(function (prev, cur) {
-            return prev + (cur.valor * cur.quantidade)
-          }, 0),
+          value,
         })
       }
     }

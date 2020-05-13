@@ -44,6 +44,13 @@ export default {
         commit('setAll', response.data)
       })
       commit('setLoading', false)
+    },
+    async listAllPainel ({ commit }, params) {
+      commit('setLoading', true)
+      await PedidoRepository.fetchAllPainel(params).then(response => {
+        commit('setAll', response.data)
+      })
+      commit('setLoading', false)
     }
   }
 }

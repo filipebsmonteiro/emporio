@@ -27,7 +27,15 @@
 
 <script>
   export default {
-    name: 'Sobre'
+    name: 'Sobre',
+    mounted () {
+      if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+        this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+          em: process.env.VUE_APP_FACEBOOK_EMAIL
+        })
+        this.$analytics.fbq.event('PageView')
+      }
+    }
   }
 </script>
 

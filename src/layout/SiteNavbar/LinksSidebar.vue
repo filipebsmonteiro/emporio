@@ -88,7 +88,7 @@
       ]),
       logout() {
         Auth.logout().then(() => {
-          TokenService._clearTokenAndExpiration()
+          TokenService._clearToken()
           this.$router.push({ name: 'cliente.login' })
         }).catch(() => {
             this.$notify({
