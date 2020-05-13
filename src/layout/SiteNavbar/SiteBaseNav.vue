@@ -1,7 +1,7 @@
 <template>
   <div :class="{'container rounded': sidebar.container}">
     <div id="navbar-main">
-      <Component :is="sidebar.logo" :class="`logo-${sidebar.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
+      <Component :is="sidebar.logo" :class="` logo-${sidebar.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
         <template  v-slot:brand>
           <router-link to="/">
             <img ref="logo" src="/img/brand/logo.png"/>
@@ -13,7 +13,7 @@
       </slot>
       <b-sidebar id="sidebar-main" bg-variant="white" text-variant="danger" :visible="sidebarShow" shadow>
         <div class="px-3 py-2">
-          <LinksSidebar :show-toogle-button="false"/>
+          <LinksSidebar/>
         </div>
       </b-sidebar>
     </div>
@@ -60,7 +60,7 @@
         img {
           height: 4rem;
           margin-top: -1rem;
-          margin-bottom: -2rem !important;
+          margin-bottom: -1rem !important;
         }
       }
       &.logo-md {

@@ -64,12 +64,12 @@
     data() {
       return {
         fields: [
+          { key: 'select', label: 'Selecionar' },
+          { key: 'id', label: 'Editar' },
           { key: 'Logradouro', label: 'Logradouro' },
           { key: 'Bairro', label: 'Bairro' },
           { key: 'Cidade', label: 'Cidade' },
           { key: 'Referencia', label: 'Referencia' },
-          { key: 'id', label: 'Editar' },
-          { key: 'select', label: 'Selecionar' },
         ]
       }
     },
