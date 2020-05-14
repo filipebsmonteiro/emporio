@@ -21,9 +21,11 @@ export default new Router({
   mode: 'history',
   linkExactActiveClass: 'active',
   routes: [
+    { path: '*', component: () => import('@/views/NotFound') },
+
     {
       path: '/dist', component: DashboardLayout,
-      children: [{ path: '', component: () => import('@/views/dist/Dashboard.vue') }]
+      children: [{ path: '', component: () => import('@/views/dist/Dashboard') }]
     },
 
     {

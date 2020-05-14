@@ -125,20 +125,11 @@
       ]),
     },
     async mounted () {
-      // eslint-disable-next-line no-console
-      console.log('Montei')
       await this['pedido/listAll']([
         ['status', '!=', 'Cancelado'],
-        ['created_at', '>=', moment().subtract(12, 'month').format()],
-        ['Clientes_idClientes', '=', 1],
+        ['created_at', '>=', moment().subtract(12, 'month').format()]
       ])
-      // eslint-disable-next-line no-console
-      console.log(this.pedidos)
-      await this['fidelidade/listAll']({ cliente_id: 1 })
-      // eslint-disable-next-line no-console
-      console.log(this.store_fidelidades)
-      // eslint-disable-next-line no-console
-      console.log(this.fidelidades)
+      await this['fidelidade/listAll']()
     }
   }
 </script>

@@ -136,7 +136,7 @@
     },
     mounted() {
       this['endereco/listAll']()
-      this['pedido/listAll']() //{ limit: 4, orderBy: 'created_at', orderDirection: 'desc' }
+      this['pedido/listAll']({ per_page: 5 })
       this['cliente/listMe']()
     }
   }

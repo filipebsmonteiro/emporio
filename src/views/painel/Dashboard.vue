@@ -214,7 +214,6 @@
             await this['dashboard/listAll'](params)
             this.$store.commit('dashboard/setAll', [dataLastWeek, this.qtd_pedidos])
             return
-            break
           }
           case null: {
             params = {

@@ -70,7 +70,7 @@
       if (!parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO)){
         this.fields = this.fields.filter(f => f.key !== 'agendamento')
       }
-      this['pedido/listAll']([['Clientes_idClientes', '=', 1]])
+      this['pedido/listAll']()
     }
   }
 </script>
