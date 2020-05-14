@@ -1,57 +1,19 @@
 import CupomRepository from '@/services/Cupom.js'
+import State from '@/store/Classes/State'
+import Getters from '@/store/Classes/Getters'
+import Mutations from '@/store/Classes/Mutations'
+import ActionsClass from '@/store/Classes/ActionsClass'
+
+const $actions = new ActionsClass(CupomRepository)
 
 export default {
   name: 'cupom',
   namespaced: true,
-  state: {
-    list: [],
-    tipos: [],
-    current: {},
-    isLoading: false
-  },
-  getters: {
-    getAll (state) {
-      return state.list
-    },
-    getTipos (state) {
-      return state.tipos
-    },
-    isLoading (state) {
-      return state.isLoading
-    },
-    getCurrent (state) {
-      return state.current
-    }
-  },
-  mutations: {
-    setCurrent (state, obj) {
-      state.current = obj
-    },
-    setAll (state, array) {
-      state.list = array
-    },
-    setTipos (state, array) {
-      state.tipos = array
-    },
-    setLoading (state, boolean) {
-      state.isLoading = boolean
-    }
-  },
+  state: State,
+  getters: Getters,
+  mutations: Mutations,
   actions: {
-    async listOne ({ commit }, id) {
-      commit('setLoading', true)
-      await CupomRepository.fetch(id).then(response => {
-        commit('setCurrent', response.data)
-      })
-      commit('setLoading', false)
-    },
-    async listAll ({ commit }, params) {
-      commit('setLoading', true)
-      await CupomRepository.fetchAll(params).then(response => {
-        commit('setAll', response.data)
-      })
-      commit('setLoading', false)
-    },
+    ...$actions.classToObject(),
     async listTipos ({ commit }, params) {
       commit('setLoading', true)
       await CupomRepository.fetchTipos(params).then(response => {

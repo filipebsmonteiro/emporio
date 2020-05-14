@@ -1,50 +1,19 @@
 import EnderecoRepository from '@/services/Endereco.js'
+import State from '@/store/Classes/State'
+import Getters from '@/store/Classes/Getters'
+import Mutations from '@/store/Classes/Mutations'
+import ActionsClass from '@/store/Classes/ActionsClass'
+
+const $actions = new ActionsClass(EnderecoRepository)
 
 export default {
   name: 'endereco',
   namespaced: true,
-  state: {
-    list: [],
-    current: {},
-    isLoading: false
-  },
-  getters: {
-    getAll (state) {
-      return state.list
-    },
-    isLoading (state) {
-      return state.isLoading
-    },
-    getCurrent (state) {
-      return state.current
-    }
-  },
-  mutations: {
-    setCurrent (state, obj) {
-      state.current = obj
-    },
-    setAll (state, array) {
-      state.list = array
-    },
-    setLoading (state, boolean) {
-      state.isLoading = boolean
-    }
-  },
+  state: State,
+  getters: Getters,
+  mutations: Mutations,
   actions: {
-    async listOne ({ commit }, id) {
-      commit('setLoading', true)
-      await EnderecoRepository.fetch(id).then(response => {
-        commit('setCurrent', response.data)
-      })
-      commit('setLoading', false)
-    },
-    async listAll ({ commit }, params) {
-      commit('setLoading', true)
-      await EnderecoRepository.fetchAll(params).then(response => {
-        commit('setAll', response.data)
-      })
-      commit('setLoading', false)
-    },
+    ...$actions.classToObject(),
     async listResponsavel ({ commit }, { CEP, vm }) {
       commit('setLoading', true)
       await EnderecoRepository.fetchLojaResponsavel(CEP).then(response => {

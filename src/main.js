@@ -35,10 +35,15 @@ Vue.use(BootstrapVue)
 Vue.use(ArgonDashboard)
 Vue.use(VueSweetalert2)
 Vue.use(VueLocalStorage)
-Vue.use(VueFacebookPixel, {
-  debug: process.env.VUE_APP_FACEBOOK_DEBUG,
-  router
-})
+if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+  Vue.use(VueFacebookPixel, {
+    debug: process.env.VUE_APP_FACEBOOK_DEBUG,
+    router
+  })
+  Vue.analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+    em: process.env.VUE_APP_FACEBOOK_EMAIL
+  })
+}
 Vue.use(VuePusher, {
   api_key: process.env.VUE_APP_PUSHER_KEY,
   options: {
@@ -53,11 +58,6 @@ Vue.use(VueHtmlToPaper, {
   specs: ['fullscreen=yes'],
   styles: ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css']
 })
-if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
-  Vue.analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
-    em: process.env.VUE_APP_FACEBOOK_EMAIL
-  })
-}
 router.beforeEach(async ($to, $from, $next) => {
   /*if ( Object.keys( $to.meta ).length > 0){
     if (
