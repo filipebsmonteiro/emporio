@@ -20,6 +20,11 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   linkExactActiveClass: 'active',
+  //scrollBehavior (to, from, savedPosition) {
+  scrollBehavior () {
+    return { x: 0, y: 0 };
+  },
+
   routes: [
     { path: '*', component: () => import('@/views/NotFound') },
 

@@ -92,24 +92,26 @@
       },
       adicionarCarrinho () {
         let isValid = true
-        this.produto.multiplos.map(multBackEnd => {
-          if (multBackEnd.obrigatorio) {
-            let soma = 0
-            this.multiplos.map(multSelected => {
-              soma = multSelected.multiplo === multBackEnd.id ? soma + multSelected.quantidade : soma
-            })
-
-            if (soma < multBackEnd.quantidade_min) {
-              isValid = false
-              this.$notify({
-                type: 'danger',
-                title: `Selecione ao menos ${multBackEnd.quantidade_min} ${multBackEnd.nome}`,
-                verticalAlign: 'bottom',
-                horizontalAlign: 'center'
+        if (this.produto.multiplos) {
+          this.produto.multiplos.map(multBackEnd => {
+            if (multBackEnd.obrigatorio) {
+              let soma = 0
+              this.multiplos.map(multSelected => {
+                soma = multSelected.multiplo === multBackEnd.id ? soma + multSelected.quantidade : soma
               })
+
+              if (soma < multBackEnd.quantidade_min) {
+                isValid = false
+                this.$notify({
+                  type: 'danger',
+                  title: `Selecione ao menos ${multBackEnd.quantidade_min} ${multBackEnd.nome}`,
+                  verticalAlign: 'bottom',
+                  horizontalAlign: 'center'
+                })
+              }
             }
-          }
-        })
+          })
+        }
 
         if (!isValid) {
           return
@@ -164,6 +166,8 @@
     async mounted () {
       await this['produto/listOne'](this.$route.params.id)
       this.quantidade = this.produto.minimo_unidade
+
+      window.scrollTo(0,0)
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
         this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {

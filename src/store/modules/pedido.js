@@ -1,17 +1,17 @@
 import PedidoRepository from '@/services/Pedido.js'
-import State from '@/store/Classes/State'
-import Getters from '@/store/Classes/Getters'
-import Mutations from '@/store/Classes/Mutations'
-import ActionsClass from '@/store/Classes/ActionsClass'
+import State from '@/store/References/State'
+import Getters from '@/store/References/Getters'
+import Mutations from '@/store/References/Mutations'
+import ActionsClass from '@/store/References/ActionsClass'
 
 const $actions = new ActionsClass(PedidoRepository)
 
 export default {
   name: 'pedido',
   namespaced: true,
-  state: State,
-  getters: Getters,
-  mutations: Mutations,
+  state: Object.assign({}, State),
+  getters: Object.assign({}, Getters),
+  mutations: Object.assign({}, Mutations),
   actions: {
     ...$actions.classToObject(),
     async listAllPainel ({ commit }, params) {
