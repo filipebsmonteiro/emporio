@@ -19,6 +19,9 @@ body {
       @if $navbar-font-size != '' {
         font-size: $navbar-font-size;
       }
+      .badge{
+        color: $navbar-cart-color !important;
+      }
     }
   }
 }

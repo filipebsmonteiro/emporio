@@ -31,7 +31,7 @@
             </div>
             <div class="card-body px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Use suas Credenciais</small>
+                <small>Use suas credenciais</small>
               </div>
               <form role="form">
                 <base-input class="input-group-alternative mb-3"
@@ -80,8 +80,8 @@
   </div>
 </template>
 <script>
-  import TokenService from '@/api/token'
-  import AuthPainel from '@/services/AuthPainel'
+  import TokenService from '@/api/TokenService'
+  import Auth from '@/services/painel/Auth'
 
   export default {
     name: 'login',
@@ -106,7 +106,7 @@
           return
         }
 
-        await AuthPainel.login(this.model)
+        await Auth.login(this.model)
           .then(async response => {
             await TokenService._setToken(response.data.access_token)
             await TokenService._setExpiration(response.data.expires_in)

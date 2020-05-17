@@ -1,4 +1,4 @@
-import EnderecoRepository from '@/services/Endereco.js'
+import EnderecoRepository from '@/services/Endereco'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'

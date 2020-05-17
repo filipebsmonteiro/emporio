@@ -1,4 +1,4 @@
-import FidelidadeRepository from '@/services/Fidelidade.js'
+import FidelidadeRepository from '@/services/Fidelidade'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'

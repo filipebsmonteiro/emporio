@@ -1,5 +1,5 @@
 import { default as axiosPackage } from 'axios'
-import TokenService from './token'
+import TokenService from '@/api/TokenService'
 import { redirectLogin } from '@/guards'
 
 axiosPackage.defaults.headers.common['Accept'] = 'application/json'

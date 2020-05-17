@@ -1,4 +1,4 @@
-import FormapagamentoRepository from '@/services/Formapagamento.js'
+import FormapagamentoRepository from '@/services/Formapagamento'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'

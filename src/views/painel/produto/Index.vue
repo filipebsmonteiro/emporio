@@ -15,6 +15,9 @@
         </div>
 
         <b-table :items="categorias" :fields="fields" responsive>
+          <template v-slot:cell(preco)="{ item: { preco } }">
+            {{ preco | formatMoney }}
+          </template>
           <template v-slot:cell(id)="{ item: { id, status } }">
             <b-btn v-if="status==='Desabilitado'" variant="outline-warning" size="sm"
                    title="Desabilitado por falta de Ingrediente Essencial" disabled>

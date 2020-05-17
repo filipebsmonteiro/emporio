@@ -1,4 +1,4 @@
-import CupomRepository from '@/services/Cupom.js'
+import CupomRepository from '@/services/Cupom'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'

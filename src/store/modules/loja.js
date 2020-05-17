@@ -1,4 +1,4 @@
-import LojaRepository from '@/services/Loja.js'
+import LojaRepository from '@/services/Loja'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'

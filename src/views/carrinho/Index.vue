@@ -1,30 +1,30 @@
 <template>
   <div class="container mt-5 mb-5">
     <div v-if="this.carrinho.length === 0">
-      <h2>Poxa, seu carrinho parece estar Vazio</h2>
+      <h2>Poxa! Seu carrinho parece estar vazio!</h2>
       <p>Não tem problema!</p>
       <router-link :to="{name: 'produtos'}">Compre algum de nossos produtos agora!</router-link>
     </div>
     <div v-else>
       <div class="row">
-        <div class="col">
+        <div class="col-lg-4 col-md-6">
           <Endereco/>
         </div>
-        <div class="col"/>
-        <div class="col">
+        <div class="col d-md-none d-sm-none"/>
+        <div class="col-lg-4 col-md-6">
           <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
         </div>
       </div>
       <TableProduto class="mt-4" :produtos="produtos" @remove="removeCartItem" @updqtd="updateProdQtd"/>
       <div class="row mt-5">
-        <div class="col">
-          <b-form-group label="Observações deste Pedido" label-for="observacoes">
+        <div class="col-md-6 col-sm-12">
+          <b-form-group label="Observações deste pedido" label-for="observacoes">
             <b-form-textarea id="observacoes" v-model="observacoes" rows="3"/>
           </b-form-group>
         </div>
-        <div class="col">
+        <div class="col-md-6 col-sm-12">
           <b-form-group label="Forma de Pagamento" label-for="formas-pagamentos">
-            <SelectComponent :options="formaspagamento" @input="evt => {forma_pagamento = evt.value}">
+            <SelectComponent :options="formaspagamento" @input="evt => {forma_pagamento = evt ? evt.value : null}">
               <template slot="option" slot-scope="option">
                 <span v-if="option.imagem" class="b-avatar rounded size-3 mr-2 ml-0">
                   <span class="b-avatar-custom">
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col">
+        <div class="col-md-6 col-sm-12">
 
           <b-form-group v-if="allowed.fidelidade && fidelidade > 0" label="Fidelidade">
             <b-input type="number" step="0.01" :max="fidelidade" v-model="fidelidade_field"/>
@@ -55,7 +55,7 @@
           <Cupom v-if="allowed.cupom" @validated="evt => {cupom_field = evt}"/>
 
         </div>
-        <div class="col">
+        <div class="col-md-6 col-sm-12">
           <h1>Valor do Pedido</h1>
           <b-list-group>
             <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
@@ -271,7 +271,7 @@
               this.$swal({
                 type: 'danger',
                 title: `Local de Entrega`,
-                text: 'Você ainda não selecionou o Local de entrega!',
+                text: 'Você ainda não selecionou o local de entrega!',
                 focusConfirm: true,
                 confirmButtonText: 'Selecionar endereço!',
               }).then(result => {

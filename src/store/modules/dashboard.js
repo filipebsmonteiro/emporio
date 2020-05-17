@@ -1,4 +1,4 @@
-import DashboardRepository from '@/services/Dashboard.js'
+import DashboardRepository from '@/services/painel/Dashboard'
 
 export default {
   name: 'dashboard',

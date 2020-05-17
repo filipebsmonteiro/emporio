@@ -4,7 +4,7 @@
       <div class="card bg-secondary shadow border-0 mt-5">
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
-            <small>Acesse com suas Credenciais ou Facebook</small>
+            <small>Acesse com suas credenciais</small>
           </div>
           <form role="form">
             <base-input class="input-group-alternative mb-3"
@@ -34,11 +34,11 @@
           <div class="row mt-3">
             <div class="col-6">
               <router-link :to="{ name: 'cliente.esqueceu' }" class="text-light text-primary">
-                <small>Esqueceu a Senha?</small></router-link>
+                <small>Esqueceu a senha?</small></router-link>
             </div>
             <div class="col-6 text-right">
               <router-link :to="{ name: 'cliente.create' }" class="text-light text-primary">
-                <small>Criar uma Conta</small></router-link>
+                <small>Criar uma conta</small></router-link>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
 
 <script>
   import Auth from '@/services/Auth'
-  import TokenService from '@/api/token'
+  import TokenService from '@/api/TokenService'
 
   export default {
     name: 'Login',

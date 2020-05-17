@@ -151,14 +151,14 @@
 
         this.$swal({
           icon: 'success',
-          title: `Produto adicionado ao Carrinho com Sucesso`,
+          title: `Produto adicionado ao carrinho com sucesso`,
           text: 'Deseja continuar comprando?',
           footer: '<a href=/pedido/carrinho>Ir para o carrinho</a>',
           focusConfirm: false,
           confirmButtonText: 'Continuar!',
         }).then(result => {
           if (result.value) {
-            this.$router.push({ name: 'produtos' })
+            this.$router.push({ name: 'produtos.categoria', params: { id: this.store_produto.categoria.id } })
           }
         })
       }

@@ -1,4 +1,4 @@
-import IngredienteRepository from '@/services/Ingrediente.js'
+import IngredienteRepository from '@/services/Ingrediente'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'

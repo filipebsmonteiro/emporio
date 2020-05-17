@@ -1,4 +1,4 @@
-import TokenService from '@/api/token'
+import TokenService from '@/api/TokenService'
 
 export const isAuthenticatedPainel = ($to, $from, $next) => {
   if (

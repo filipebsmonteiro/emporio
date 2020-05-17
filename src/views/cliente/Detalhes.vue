@@ -6,15 +6,14 @@
           <div class="card-body">
             <div class="text-center">
               <h3>
-                {{ cliente.nome }}
-                <span class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
+                {{ cliente.nome }}<span class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
               </h3>
 
               <div v-if="enderecos.length > 0" class="h5 font-weight-300">
                 <i class="ni location_pin mr-2"></i>{{ `${enderecos[0].Cidade}, ${enderecos[0].Bairro}` }}
               </div>
               <div v-else class="h5 font-weight-300">
-                <i class="ni location_pin mr-2"></i>Sem Endereços cadastrados
+                <i class="ni location_pin mr-2"></i>Sem endereços cadastrados!
               </div>
 
               <div class="h5 mt-4">
@@ -76,7 +75,7 @@
             </div>
           </div>
           <template>
-            <p v-if="pedidos.length === 0" class="m-auto">Ops Não Temos Nada Aqui ainda</p>
+            <p v-if="pedidos.length === 0" class="m-auto">Ops! Não temos nada aqui ainda!</p>
             <b-table :fields="fields" :items="pedidos">
               <template v-slot:cell(data)="{ item: { created_at: date } }">
                 {{ date.date | formatDate }}
@@ -130,13 +129,13 @@
     methods: {
       ...mapActions([
         'endereco/listAll',
-        'pedido/listAll',
+        'pedido/listAllPaginated',
         'cliente/listMe',
       ]),
     },
     mounted() {
       this['endereco/listAll']()
-      this['pedido/listAll']({ per_page: 5 })
+      this['pedido/listAllPaginated']({ per_page: 5 })
       this['cliente/listMe']()
     }
   }

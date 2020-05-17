@@ -64,11 +64,15 @@
     },
     async mounted() {
       await this['produto/categoria/listAll']()
+
+      if (this.$route.name === 'produtos.categoria') {
+        this.loadProducts(this.$route.params.id)
+        return
+      }
       this.loadProducts(this.categorias[0].id)
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>

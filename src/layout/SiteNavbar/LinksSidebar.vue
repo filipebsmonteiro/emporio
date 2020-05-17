@@ -57,7 +57,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Auth from '@/services/Auth'
-  import TokenService from '@/api/token'
+  import TokenService from '@/api/TokenService'
 
   export default {
     name: 'LinksSidebar',

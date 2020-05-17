@@ -3,7 +3,6 @@
     <div :class="{'row': catLayout === 'Side'}">
       <div :class="{'col-md-3': catLayout === 'Side'}">
         <Categorias
-          v-if="this.$route.name !== 'produtos.categoria'"
           :class="{'position-sticky sticky-top': catLayout === 'Side'}"
           @clickCategoria="loadProducts"
           :flex-column="catLayout === 'Side'"
@@ -14,7 +13,7 @@
           <template v-slot:overlay>
             <div class="d-flex mt-5">
               <div class="m-auto">
-                <b-icon icon="stopwatch" font-scale="3" animation="cylon"/>
+                <!--b-icon icon="stopwatch" font-scale="3" animation="cylon"/-->
                 <p>Carregando...</p>
               </div>
             </div>
@@ -65,9 +64,7 @@
       }
     },
     async mounted () {
-      if (this.$route.name === 'produtos.categoria') {
-        await this.loadProducts(this.$route.params.id)
-      }
+      window.scrollTo(0,0)
     },
   }
 </script>

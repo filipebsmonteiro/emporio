@@ -41,9 +41,9 @@
     data () {
       return {
         fields: [
-          { key: 'nome', label: 'Nome' },
+          { key: 'nome', label: 'Descrição' },
           { key: 'grupo', label: 'Grupo' },
-          { key: 'created_at', label: 'Criado em' },
+          //{ key: 'created_at', label: 'Criado em' },
           { key: 'id', label: 'Editar' }
         ]
       }

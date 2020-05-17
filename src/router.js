@@ -13,7 +13,7 @@ import pedido from '@/routes/pedido'
 import produto from '@/routes/produto'
 import SiteLayout from '@/layout/SiteLayout'
 import { isAuthenticatedPainel } from '@/guards'
-import TokenService from '@/api/token'
+import TokenService from '@/api/TokenService'
 
 Vue.use(Router)
 

@@ -1,4 +1,4 @@
-import { Repository, createRepository } from './repository'
+import { Repository, createRepository } from '@/services/repository'
 
 class AuthRepository extends Repository {
   endpoint = 'painel/auth'

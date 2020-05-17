@@ -1,4 +1,4 @@
-import ClienteRepository from '@/services/Cliente.js'
+import ClienteRepository from '@/services/Cliente'
 import Auth from '@/services/Auth'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'

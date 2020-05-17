@@ -51,11 +51,11 @@
       },
       label: {
         type: String,
-        default: null
+        default: () => {}
       },
       reduce: {
         type: Function,
-        default: null
+        default: function (t) { return t }
       }
     },
     beforeUpdate(){

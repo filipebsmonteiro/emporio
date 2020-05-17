@@ -1,4 +1,4 @@
-import PedidoRepository from '@/services/Pedido.js'
+import PedidoRepository from '@/services/Pedido'
 import State from '@/store/References/State'
 import Getters from '@/store/References/Getters'
 import Mutations from '@/store/References/Mutations'
