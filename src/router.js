@@ -13,17 +13,16 @@ import pedido from '@/routes/pedido'
 import produto from '@/routes/produto'
 import SiteLayout from '@/layout/SiteLayout'
 import { isAuthenticatedPainel } from '@/guards'
-import TokenService from '@/api/TokenService'
+import APIService from '@/api/APIService'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   linkExactActiveClass: 'active',
-  //scrollBehavior (to, from, savedPosition) {
-  scrollBehavior () {
-    return { x: 0, y: 0 };
-  },
+  //scrollBehavior () {
+  //  return { x: 0, y: 0 };
+  //},
 
   routes: [
     { path: '*', component: () => import('@/views/NotFound') },
@@ -38,11 +37,9 @@ export default new Router({
       name: 'painel.login',
       component: () => import('@/views/painel/Login'),
       beforeEnter: ($to, $from, $next) => {
-        if (
-          TokenService._isAuthenticated()
-          && TokenService._getDomain()
-          && TokenService._getDomain() === '/painel'
-        ) { $next({ name: 'painel.dashboard' }) }
+        if (APIService._isAuthenticated() && APIService._getDomain() && APIService._getDomain() === 'painel') {
+          $next({ name: 'painel.dashboard' })
+        }
         $next()
       }
     },

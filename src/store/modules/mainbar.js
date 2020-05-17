@@ -1,4 +1,4 @@
-import TokenService from '@/api/TokenService'
+import APIService from '@/api/APIService'
 
 export default {
   name: 'mainbar',
@@ -28,7 +28,7 @@ export default {
       commit('setQuantidade', quantidade)
     },
     checkLogged ({ commit }) {
-      if (TokenService._getToken()){
+      if (APIService._getToken()){
         commit('setLogged', true)
         return
       }

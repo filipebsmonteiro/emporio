@@ -36,6 +36,13 @@
             </router-link>
           </template>
         </b-table>
+        <Paginator
+          v-if="pagination.total > pagination.per_page"
+          :page="pagination.page"
+          :per-page="pagination.per_page"
+          :total="pagination.total"
+          @change="evt => $store.dispatch('produto/listAllPaginated', evt)"
+        />
       </div>
     </div>
   </div>
@@ -43,12 +50,15 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/services/Produto/Produto'
+  import Paginator from '@/components/Paginator'
 
   export default {
     name: 'Index',
+    components: { Paginator },
     computed: {
       ...mapGetters({
-        categorias: 'produto/getAll'
+        categorias: 'produto/getAll',
+        pagination: 'produto/pagination'
       })
     },
     data () {
@@ -64,7 +74,7 @@
     },
     methods: {
       ...mapActions([
-        'produto/listAll'
+        'produto/listAllPaginated'
       ]),
       changeStatus (id, status) {
         Produto.changeStatus(id, { status }).then(() => {
@@ -74,14 +84,14 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this['produto/listAll']()
+          this['produto/listAllPaginated'](this.pagination)
         }).catch(error => {
           this.validaRetornoErro(error)
         })
       }
     },
     mounted () {
-      this['produto/listAll']()
+      this['produto/listAllPaginated'](this.pagination)
     }
   }
 </script>

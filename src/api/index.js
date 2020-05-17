@@ -1,5 +1,5 @@
 import { default as axiosPackage } from 'axios'
-import TokenService from '@/api/TokenService'
+import APIService from '@/api/APIService'
 import { redirectLogin } from '@/guards'
 
 axiosPackage.defaults.headers.common['Accept'] = 'application/json'
@@ -9,7 +9,7 @@ axiosPackage.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, 
 
 // Set config defaults when creating the instance
 export const axios = axiosPackage.create({
-  baseURL: `${process.env.VUE_APP_DOMAIN_URL}/api`,
+  baseURL: APIService._getBaseUrl(),
 
   // responseType: 'stream'
   // timeout: 1000,
@@ -17,14 +17,13 @@ export const axios = axiosPackage.create({
 
 axios.interceptors.request.use(
   async config => {
-
-    if (TokenService._getToken()) {
-      if (TokenService._minutesRemaining() && TokenService._minutesRemaining() <= 5) {
-        axiosPackage.defaults.headers.common['Authorization'] = TokenService._getToken()
+    if (APIService._getToken()) {
+      if (APIService._minutesRemaining() && APIService._minutesRemaining() <= 5) {
+        axiosPackage.defaults.headers.common['Authorization'] = APIService._getToken()
         // Envia com um pacote diferente do Global
-        await TokenService._refreshToken(axiosPackage)
+        await APIService._refreshToken(axiosPackage)
       }
-      config.headers['Authorization'] = TokenService._getToken()
+      config.headers['Authorization'] = APIService._getToken()
     }
     return config
   },
@@ -34,7 +33,7 @@ axios.interceptors.request.use(
 )
 
 const isTryingRefreshToken = (url) => {
-  if (url === TokenService._getRefreshEndPoint()) {
+  if (url === APIService._getRefreshEndPoint()) {
     return true
   }
   return false
@@ -48,11 +47,11 @@ axios.interceptors.response.use(response => {
 
     if (error.response.status === 401) {
       if (isTryingRefreshToken(originalRequest.url)) {
-        TokenService._clearToken()
+        APIService._clearToken()
       }
 
-      if (!TokenService._isTokenExpired()) {
-        const newToken = await TokenService._refreshToken(axios)
+      if (!APIService._isTokenExpired()) {
+        const newToken = await APIService._refreshToken(axios)
         if (newToken) {
           axios.defaults.headers.common['Authorization'] = newToken
           // Tenta novamente Request

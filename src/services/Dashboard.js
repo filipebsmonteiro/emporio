@@ -1,7 +1,7 @@
-import { Repository, createRepository } from '@/services/repository'
+import { Repository, createRepository } from './repository'
 
 class DashboardRepository extends Repository {
-  endpoint = 'painel/dashboard'
+  endpoint = 'dashboard'
 
   fetchQuantidade(params) {
     return this.$axios.get(`${this.endpoint}/quantidade`, {params})

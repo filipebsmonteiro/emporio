@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8" />
+    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"/>
     <div class="container-fluid mt--7">
       <div class="card">
         <div class="card-header border-0">
@@ -28,21 +28,31 @@
             </router-link>
           </template>
         </b-table>
+        <Paginator
+          v-if="pagination.total > pagination.per_page"
+          :page="pagination.page"
+          :per-page="pagination.per_page"
+          :total="pagination.total"
+          @change="evt => $store.dispatch('cupom/listAllPaginated', evt)"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
+  import Paginator from '@/components/Paginator'
 
   export default {
     name: 'Index',
+    components: { Paginator },
     computed: {
       ...mapGetters({
-        cupons: 'cupom/getAll'
+        cupons: 'cupom/getAll',
+        pagination: 'cupom/pagination'
       })
     },
-    data() {
+    data () {
       return {
         fields: [
           { key: 'codigo', label: 'Código' },
@@ -54,11 +64,11 @@
     },
     methods: {
       ...mapActions([
-        'cupom/listAll'
+        'cupom/listAllPaginated'
       ])
     },
-    mounted() {
-      this['cupom/listAll']()
+    mounted () {
+      this['cupom/listAllPaginated'](this.pagination)
     }
   }
 </script>

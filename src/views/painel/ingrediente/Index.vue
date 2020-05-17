@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        <b-table :items="categorias" :fields="fields">
+        <b-table :items="ingredientes" :fields="fields">
           <template v-slot:cell(status)="{ item: { status } }">
             <b-badge v-if="status" variant="success">Habilitado</b-badge>
             <b-badge v-else variant="danger">Desabilitado</b-badge>
@@ -28,18 +28,28 @@
             </router-link>
           </template>
         </b-table>
+        <Paginator
+          v-if="pagination.total > pagination.per_page"
+          :page="pagination.page"
+          :per-page="pagination.per_page"
+          :total="pagination.total"
+          @change="evt => $store.dispatch('ingrediente/listAllPaginated', evt)"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import Paginator from '@/components/Paginator'
 
   export default {
     name: 'Index',
+    components: { Paginator },
     computed: {
       ...mapGetters({
-        categorias: 'ingrediente/getAll'
+        ingredientes: 'ingrediente/getAll',
+        pagination: 'ingrediente/pagination'
       })
     },
     data() {
@@ -55,11 +65,11 @@
     },
     methods: {
       ...mapActions([
-        'ingrediente/listAll'
+        'ingrediente/listAllPaginated'
       ])
     },
     mounted() {
-      this['ingrediente/listAll']()
+      this['ingrediente/listAllPaginated'](this.pagination)
     }
   }
 </script>

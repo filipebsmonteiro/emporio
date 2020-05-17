@@ -82,7 +82,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <b-form-group label="Promocionar"
-                                description="Marque para Habilitar preço promocional">
+                                description="Marque para habilitar preço promocional">
                     <b-check v-model="model.promocionar" switch size="lg"/>
                   </b-form-group>
                 </div>

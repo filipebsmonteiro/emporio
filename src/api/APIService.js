@@ -1,13 +1,14 @@
 import moment from 'moment'
 
-class TokenService {
+class APIService {
   token = null
   domain = null
   expiration = null
   moment = null
-  refresh_endpoint = process.env.VUE_APP_DOMAIN_URL + (this.domain ? `/api${this.domain}/auth/refresh` : '/api/auth/refresh')
+  baseUrl = process.env.VUE_APP_DOMAIN_URL
+  refresh_endpoint = `${this.baseUrl}/auth/refresh`
 
-  constructor ()  {
+  constructor () {
     this.moment = moment
     this.token = localStorage.getItem('access_token')
     this.domain = localStorage.getItem('access_token_domain')
@@ -16,6 +17,8 @@ class TokenService {
       // Se exsitir vai ser String, então converte
       this.expiration = this.moment(this.expiration)
     }
+    this.baseUrl = process.env.VUE_APP_DOMAIN_URL + (this.domain ? `/api/${this.domain}` : '/api')
+    this.refresh_endpoint = `${this.baseUrl}/auth/refresh`
   }
 
   _getToken () {
@@ -46,6 +49,10 @@ class TokenService {
     this.expiration = this.moment().add(seconds, 'seconds')
     localStorage.setItem('token_expiration', this.expiration.format())
     return this._getExpiration()
+  }
+
+  _getBaseUrl () {
+    return this.baseUrl
   }
 
   _getRefreshEndPoint () {
@@ -79,20 +86,20 @@ class TokenService {
   }
 
   _isAuthenticated () {
-    if (this._getToken()){
+    if (this._getToken()) {
       return true
     }
     return false
   }
 
   _isTokenExpired () {
-    if (!this._getToken() || this._minutesRemaining() <= 0){
+    if (!this._getToken() || this._minutesRemaining() <= 0) {
       return true
     }
     return false
   }
 }
 
-export default new TokenService()
+export default new APIService()
 
-export const create = TokenService
+export const create = APIService

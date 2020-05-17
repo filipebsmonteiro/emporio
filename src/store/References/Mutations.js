@@ -8,10 +8,13 @@ export default {
   },
 
   setPagination (state, obj) {
+    if (obj.meta){
+      obj = obj.meta
+    }
     const newObj = {
-      per_page: obj.per_page,
-      page: obj.page,
-      total: obj.total
+      per_page: parseInt(obj.per_page),
+      page: parseInt(obj.current_page),
+      total: parseInt(obj.total)
     }
     state.pagination = newObj
   },

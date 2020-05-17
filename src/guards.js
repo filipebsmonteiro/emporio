@@ -1,23 +1,19 @@
-import TokenService from '@/api/TokenService'
+import APIService from '@/api/APIService'
 
 export const isAuthenticatedPainel = ($to, $from, $next) => {
-  if (
-    TokenService._isAuthenticated()
-    && TokenService._getDomain()
-    && TokenService._getDomain() === '/painel'
-  ){
+  if (APIService._isAuthenticated() && APIService._getDomain() && APIService._getDomain() === 'painel') {
     return $next()
   }
   $next({ name: 'painel.login' })
 }
 export const isAuthenticatedSite = ($to, $from, $next) => {
-  if (TokenService._isAuthenticated()){
+  if (APIService._isAuthenticated()) {
     return $next()
   }
   $next({ name: 'cliente.login' })
 }
 
-export const redirectLogin = (url=null) => {
+export const redirectLogin = (url = null) => {
   if (url && url.indexOf('/painel') > -1) {
     window.location.href = `${window.location.origin}/painel/login`
     return

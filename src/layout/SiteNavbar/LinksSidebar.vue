@@ -57,7 +57,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Auth from '@/services/Auth'
-  import TokenService from '@/api/TokenService'
+  import APIService from '@/api/APIService'
 
   export default {
     name: 'LinksSidebar',
@@ -80,7 +80,7 @@
       ]),
       logout() {
         Auth.logout().then(() => {
-          TokenService._clearToken()
+          APIService._clearToken()
           this.$router.push({ name: 'cliente.login' })
         }).catch(() => {
             this.$notify({

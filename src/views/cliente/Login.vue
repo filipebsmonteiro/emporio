@@ -49,7 +49,7 @@
 
 <script>
   import Auth from '@/services/Auth'
-  import TokenService from '@/api/TokenService'
+  import APIService from '@/api/APIService'
 
   export default {
     name: 'Login',
@@ -75,8 +75,8 @@
 
         await Auth.login(this.model)
           .then( async response => {
-            await TokenService._setToken(response.data.access_token)
-            await TokenService._setExpiration(response.data.expires_in)
+            await APIService._setToken(response.data.access_token)
+            await APIService._setExpiration(response.data.expires_in)
             this.$router.push({ name: 'produtos' })
           })
           .catch(() => {

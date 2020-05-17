@@ -21,7 +21,7 @@ import router from './router'
 import { BootstrapVue } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLocalStorage from 'vue-localstorage'
-//import VuePusher from 'vue-pusher'
+import VuePusher from 'vue-pusher'
 import VueHtmlToPaper from 'vue-html-to-paper'
 import VueFacebookPixel from 'vue-analytics-facebook-pixel'
 import './registerServiceWorker'
@@ -44,7 +44,7 @@ if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
     em: process.env.VUE_APP_FACEBOOK_EMAIL
   })
 }
-/*Vue.use(VuePusher, {
+Vue.use(VuePusher, {
   api_key: process.env.VUE_APP_PUSHER_KEY,
   options: {
     cluster: process.env.VUE_APP_PUSHER_CLUSTER,
@@ -52,14 +52,14 @@ if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
     disableStats: true,
     //encrypted: true,
   }
-})*/
+})
 Vue.use(VueHtmlToPaper, {
   name: '_blank',
   specs: ['fullscreen=yes'],
   styles: ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css']
 })
-router.beforeEach(async ($to, $from, $next) => {
-  /*if ( Object.keys( $to.meta ).length > 0){
+/*router.beforeEach(async ($to, $from, $next) => {
+  if ( Object.keys( $to.meta ).length > 0){
     if (
       ($to.meta.perfil && hasPerfil($to.meta.perfil)) ||
       ($to.meta.permission && await can($to.meta.permission))
@@ -70,9 +70,10 @@ router.beforeEach(async ($to, $from, $next) => {
         $next({name: 'Denied'})
       }
     }
-  }*/
+  }
   $next()
 })
+*/
 
 new Vue({
   router,

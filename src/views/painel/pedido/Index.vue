@@ -31,6 +31,13 @@
           <Pedido :pedido="item" class="shadow"/>
         </template>
       </b-table>
+      <Paginator
+        v-if="pagination.total > pagination.per_page"
+        :page="pagination.page"
+        :per-page="pagination.per_page"
+        :total="pagination.total"
+        @change="evt => $store.dispatch('pedido/listAllPaginated', evt)"
+      />
     </b-card>
   </div>
 </template>
@@ -38,13 +45,15 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Pedido from '@/views/painel/pedido/Pedido'
+  import Paginator from '@/components/Paginator'
 
   export default {
     name: 'Index',
-    components: { Pedido },
+    components: { Paginator, Pedido },
     computed: {
       ...mapGetters({
-        pedidos: 'pedido/getAll'
+        pedidos: 'pedido/getAll',
+        pagination: 'pedido/pagination'
       })
     },
     data() {
@@ -60,14 +69,14 @@
     },
     methods: {
       ...mapActions([
-        'pedido/listAll'
+        'pedido/listAllPaginated'
       ])
     },
     mounted () {
       if (!parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO)){
         this.fields = this.fields.filter(f => f.key !== 'agendamento')
       }
-      this['pedido/listAll']()
+      this['pedido/listAllPaginated'](this.pagination)
 
       this.pusher.subscribe(`novo-pedido`, channel => {
         channel.bind('pedidoEvent', () => {

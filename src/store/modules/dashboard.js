@@ -1,4 +1,4 @@
-import DashboardRepository from '@/services/painel/Dashboard'
+import DashboardRepository from '@/services/Dashboard'
 
 export default {
   name: 'dashboard',

@@ -1,15 +1,13 @@
 <template>
-    <div class="row align-items-center justify-content-center m-1">
-        <b-btn class="col-md-3" variant="link" @click="changePage(page-1)">
-            {{ $t('components.paginator.anterior') }}</b-btn>
-        <div class="col-md-3 d-flex">
-            <span class="m-auto pr-2">{{$t('components.paginator.pagina')}}</span>
+    <div class="d-flex justify-content-around m-1">
+        <b-btn variant="link" @click="changePage(page-1)">Anterior</b-btn>
+        <div class="d-flex">
+            <span class="m-auto pr-2">Página</span>
             <b-input :max="totalPages" type="number" v-model="local_page" @change="changePage(local_page)" />
-            <span class="m-auto pl-2" style="white-space: nowrap;">{{ $t('components.paginator.de') + ' ' + totalPages }}</span>
+            <span class="m-auto pl-2" style="white-space: nowrap;">{{ `de ${totalPages}`  }}</span>
         </div>
-        <b-btn class="col-md-3" variant="link" @click="changePage(page+1)">
-            {{ $t('components.paginator.proxima') }}</b-btn>
-        <div class="col-md-3 d-inline-flex">
+        <b-btn variant="link" @click="changePage(page+1)">Próxima</b-btn>
+        <div class="d-inline-flex">
             <b-select :options="perPageOptions" v-model="per_page" @change="changePerPage(per_page)" />
             <!-- <span>{{ total }}</span>-->
         </div>
@@ -43,23 +41,23 @@
             perPageOptions() {
                 return [
                     {
-                        text: '10 ' + this.$t('components.paginator.por_pagina'),
+                        text: '10 por página',
                         value: 10
                     },
                     {
-                        text: '20 ' + this.$t('components.paginator.por_pagina'),
+                        text: '20 por página',
                         value: 20
                     },
                     {
-                        text: '30 ' + this.$t('components.paginator.por_pagina'),
+                        text: '30 por página',
                         value: 30
                     },
                     {
-                        text: '40 ' + this.$t('components.paginator.por_pagina'),
+                        text: '40 por página',
                         value: 40
                     },
                     {
-                        text: '50 ' + this.$t('components.paginator.por_pagina'),
+                        text: '50 por página',
                         value: 50
                     }
                 ]
@@ -102,6 +100,5 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>

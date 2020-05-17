@@ -80,8 +80,8 @@
   </div>
 </template>
 <script>
-  import TokenService from '@/api/TokenService'
-  import Auth from '@/services/painel/Auth'
+  import APIService from '@/api/APIService'
+  import Auth from '@/services/Auth'
 
   export default {
     name: 'login',
@@ -108,9 +108,9 @@
 
         await Auth.login(this.model)
           .then(async response => {
-            await TokenService._setToken(response.data.access_token)
-            await TokenService._setExpiration(response.data.expires_in)
-            await TokenService._setDomain('/painel')
+            await APIService._setToken(response.data.access_token)
+            await APIService._setExpiration(response.data.expires_in)
+            await APIService._setDomain('painel')
             this.$router.push({ name: 'painel.dashboard' })
           })
           .catch(() => {

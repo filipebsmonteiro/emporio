@@ -1,6 +1,6 @@
 export default class ActionsClass{
-  constructor ($repository) {
-    this.$repository = $repository
+  constructor (repository) {
+    this.$repository = repository
   }
 
   classToObject () {
@@ -25,11 +25,9 @@ export default class ActionsClass{
 
   listAllPaginated = async ({ commit }, params) => {
     commit('setLoading', true)
-    await this.$repository.fetchAll(params).then(response => {
-      if (response.data.meta) {
-        commit('setAll', response.data.data)
-        commit('setPagination', response.data.meta)
-      }
+    await this.$repository.fetchPaginated(params).then(response => {
+      commit('setAll', response.data.data)
+      commit('setPagination', response.data)
     })
     commit('setLoading', false)
   }
