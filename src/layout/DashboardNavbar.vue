@@ -10,7 +10,7 @@
                 <base-dropdown class="nav-link pr-0">
                     <div class="media align-items-center" slot="title">
                       <div class="media-body ml-2 d-none d-lg-block">
-                          <span class="mb-0 text-sm  font-weight-bold">Lojista Principal</span>
+                          <span class="mb-0 text-sm  font-weight-bold">Olá, Bem-vindo(a)!</span>
                       </div>
                     </div>
 
@@ -22,7 +22,7 @@
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
                         </router-link>
-                        <router-link to="/profile" class="dropdown-item">
+                        <!--router-link to="/profile" class="dropdown-item">
                             <i class="ni ni-settings-gear-65"></i>
                             <span>Settings</span>
                         </router-link>
@@ -34,11 +34,11 @@
                             <i class="ni ni-support-16"></i>
                             <span>Support</span>
                         </router-link>
-                        <div class="dropdown-divider"></div>
-                        <router-link to="/profile" class="dropdown-item">
+                        <div class="dropdown-divider"></div-->
+                        <b-button variant="link" class="dropdown-item" @click="logout">
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
-                        </router-link>
+                        </b-button>
                     </template>
                 </base-dropdown>
             </li>
@@ -46,6 +46,10 @@
     </base-nav>
 </template>
 <script>
+  import APIService from '@/api/APIService'
+  import AuthPainel from '@/services/AuthPainel'
+  import { redirectLogin } from '@/guards'
+
   export default {
     name: 'DashboardNavbar',
     data() {
@@ -64,6 +68,19 @@
       },
       toggleMenu() {
         this.showMenu = !this.showMenu;
+      },
+      logout() {
+        AuthPainel.logout().then(() => {
+          APIService._clearToken()
+          redirectLogin('/painel')
+        }).catch(() => {
+          this.$notify({
+            type: 'danger',
+            title: `Erro ao Sair!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+        })
       }
     }
   };

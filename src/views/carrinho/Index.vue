@@ -250,17 +250,18 @@
             })
           }
 
+          const referencia = response.data.data.referencia
           await this.$localStorage.remove('carrinho')
+          this['mainbar/setQuantidade'](0)
           await this.$swal({
-            type: 'success',
             icon: 'success',
             title: `Pedido Realizado com Sucesso!`,
             text: 'Deseja acompanhar o Status do seu Pedido?',
             focusConfirm: true,
             confirmButtonText: 'Acompanhar!',
-          }).then(result => {
+          }).then((result, referencia=referencia) => {
             if (result.value) {
-              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.referencia } })
+              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
             }
           })
 

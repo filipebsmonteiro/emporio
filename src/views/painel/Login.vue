@@ -81,7 +81,8 @@
 </template>
 <script>
   import APIService from '@/api/APIService'
-  import Auth from '@/services/Auth'
+  import AuthPainel from '@/services/AuthPainel'
+  import { redirectLogin } from '@/guards'
 
   export default {
     name: 'login',
@@ -106,12 +107,12 @@
           return
         }
 
-        await Auth.login(this.model)
+        await AuthPainel.login(this.model)
           .then(async response => {
             await APIService._setToken(response.data.access_token)
             await APIService._setExpiration(response.data.expires_in)
             await APIService._setDomain('painel')
-            this.$router.push({ name: 'painel.dashboard' })
+            redirectLogin('/painel')
           })
           .catch(() => {
             this.$notify({
