@@ -6,7 +6,8 @@
           <div class="card-body">
             <div class="text-center">
               <h3>
-                {{ cliente.nome }}<span class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
+                {{ cliente.nome }}<span
+                class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
               </h3>
 
               <div v-if="enderecos.length > 0" class="h5 font-weight-300">
@@ -17,27 +18,10 @@
               </div>
 
               <div class="h5 mt-4">
-                <i class="ni business_briefcase-24 mr-2"></i>Cadastrado desde: {{ cliente.created_at | formatDate(false) }}
+                <i class="ni business_briefcase-24 mr-2"></i>Cadastrado desde: {{ cliente.created_at | formatDate(false)
+                }}
               </div>
             </div>
-            <!--div class="row">
-              <div class="col">
-                <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                  <div>
-                    <span class="heading">{{ pedidos.length }}</span>
-                    <span class="description">Pedidos</span>
-                  </div>
-                  <div>
-                    <span class="heading">{{ finalizados }}</span>
-                    <span class="description">Finalizados</span>
-                  </div>
-                  <div>
-                    <span class="heading">{{ andamento }}</span>
-                    <span class="description">Andamento</span>
-                  </div>
-                </div>
-              </div>
-            </div-->
             <base-button size="sm" class="bg-custom border-custom color-custom"
                          @click="$router.push({name: 'endereco.index'})" block>
               Selecionar Endereço
@@ -76,27 +60,29 @@
           </div>
           <template>
             <p v-if="pedidos.length === 0" class="m-auto">Ops! Não temos nada aqui ainda!</p>
-            <b-table :fields="fields" :items="pedidos">
-              <template v-slot:cell(data)="{ item: { created_at: date } }">
-                {{ date.date | formatDate }}
-              </template>
-              <template v-slot:cell(valor)="{ item }">
-                {{ item.valor | formatMoney }}
-              </template>
-              <template v-slot:cell(status)="{ item }">
-                <b-badge variant="success">{{ item.status }}</b-badge>
-              </template>
-              <template v-slot:cell(id)="{ item }">
-                <div class="w-100 d-flex justify-content-between">
-                  <base-button
-                    size="sm"
-                    icon="fas fa-eye fa-2x"
-                    @click="$router.push({name: 'pedido.show', params: { referencia: item.referencia }})"
-                    icon-only
-                  />
-                </div>
-              </template>
-            </b-table>
+            <b-overlay :show="isLoading">
+              <b-table :fields="fields" :items="pedidos">
+                <template v-slot:cell(data)="{ item: { created_at: date } }">
+                  {{ date.date | formatDate }}
+                </template>
+                <template v-slot:cell(valor)="{ item }">
+                  {{ item.valor | formatMoney }}
+                </template>
+                <template v-slot:cell(status)="{ item }">
+                  <b-badge variant="success">{{ item.status }}</b-badge>
+                </template>
+                <template v-slot:cell(id)="{ item }">
+                  <div class="w-100 d-flex justify-content-between">
+                    <base-button
+                      size="sm"
+                      icon="fas fa-eye fa-2x"
+                      @click="$router.push({name: 'pedido.show', params: { referencia: item.referencia }})"
+                      icon-only
+                    />
+                  </div>
+                </template>
+              </b-table>
+            </b-overlay>
           </template>
         </card>
       </div>
@@ -113,10 +99,11 @@
       ...mapGetters({
         cliente: 'cliente/getCurrent',
         pedidos: 'pedido/getAll',
+        isLoading: 'pedido/isLoading',
         enderecos: 'endereco/getAll',
       }),
     },
-    data() {
+    data () {
       return {
         fields: [
           { key: 'data', label: 'Data' },
@@ -133,7 +120,7 @@
         'cliente/listMe',
       ]),
     },
-    mounted() {
+    mounted () {
       this['endereco/listAll']()
       this['pedido/listAllPaginated']({ per_page: 5 })
       this['cliente/listMe']()

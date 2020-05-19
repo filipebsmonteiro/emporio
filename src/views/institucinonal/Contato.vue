@@ -1,28 +1,33 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col">
-        <h1>Mande sua Mensagem</h1>
-        <p>Quer saber mais informações sobre nosssos produtos e serviços? Quer dar sua opinião? Pedir orçamentos? Então utilize o formulário para enviar sua mensagem. Se preferir , fale conosco também através de nossos números telefônicos. Ou utilize nossos perfis nas redes sociais.</p>
-        <p>Você é sempre bem-vindo(a)</p>
-        <b-form-group label="Nome">
-          <b-form-input />
-        </b-form-group>
-        <b-form-group label="Email">
-          <b-form-input />
-        </b-form-group>
-        <b-form-group label="Telefone">
-          <b-form-input />
-        </b-form-group>
-        <b-form-group label="Mensagem">
-          <b-form-textarea />
-        </b-form-group>
-        <b-btn variant="success" block>Enviar</b-btn>
+    <form @submit="onSubmit">
+      <div class="row">
+        <div class="col">
+          <h1>Mande sua Mensagem</h1>
+          <p>Quer saber mais informações sobre nosssos produtos e serviços? Quer dar sua opinião? Pedir orçamentos?
+            Então
+            utilize o formulário para enviar sua mensagem. Se preferir , fale conosco também através de nossos números
+            telefônicos. Ou utilize nossos perfis nas redes sociais.</p>
+          <p>Você é sempre bem-vindo(a)</p>
+          <b-form-group label="Nome">
+            <b-form-input v-model="model.nome" required/>
+          </b-form-group>
+          <b-form-group label="Email">
+            <b-form-input v-model="model.email" required/>
+          </b-form-group>
+          <b-form-group label="Telefone">
+            <b-form-input v-model="model.phone" required/>
+          </b-form-group>
+          <b-form-group label="Mensagem">
+            <b-form-textarea v-model="model.mensagem" required/>
+          </b-form-group>
+          <b-btn variant="success" block type="submit">Enviar</b-btn>
+        </div>
+        <div class="col d-flex">
+          <img src="/img/brand/logo-gamela.png" class="m-auto">
+        </div>
       </div>
-      <div class="col d-flex">
-        <img src="/img/brand/logo-gamela.png" class="m-auto">
-      </div>
-    </div>
+    </form>
 
     <div class="row mt-5">
       <div class="col">
@@ -56,8 +61,52 @@
 </template>
 
 <script>
+  import Loja from '@/services/Loja'
+
   export default {
     name: 'Contato',
+    data () {
+      return {
+        model: {
+          nome: null,
+          email: null,
+          phone: null,
+          mensagem: null,
+          loja: 1
+        }
+      }
+    },
+    methods: {
+      validaRetornoErro (error) {
+        const data = error.response ? error.response.data : null
+        if (data.errors && data.message === 'The given data was invalid.') {
+          Object.keys(data.errors).map(campo => {
+            data.errors[campo].map(msg => {
+              this.$notify({
+                type: 'danger',
+                title: msg,
+                verticalAlign: 'bottom',
+                horizontalAlign: 'center'
+              })
+            })
+          })
+        }
+      },
+      async onSubmit (evt) {
+        evt.preventDefault()
+        Loja.enviaSac(this.model).then(() => {
+          this.$notify({
+            type: 'success',
+            title: `Contato Realizado com Sucesso!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          this.$router.push({ name: 'produtos' })
+        }).catch(error => {
+          this.validaRetornoErro(error)
+        })
+      },
+    },
     mounted () {
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
         this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
@@ -70,10 +119,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .gamela-color{
+  .gamela-color {
     color: #5E3D0B;
   }
-  .gamela-title{
+
+  .gamela-title {
     font-size: 70px;
   }
 </style>

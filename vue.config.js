@@ -6,9 +6,15 @@ module.exports = {
     // Set up all the aliases we use in our app.
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 6
+        maxChunks: 5
       })
-    ]
+    ],
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000,
+      }
+    }
   },
   pwa: {
     name: 'Empório Virtual',
