@@ -13,7 +13,7 @@
           <template v-slot:overlay>
             <div class="d-flex mt-5">
               <div class="m-auto">
-                <!--b-icon icon="stopwatch" font-scale="3" animation="cylon"/-->
+                <b-icon icon="stopwatch" font-scale="3" animation="cylon"/>
                 <p>Carregando...</p>
               </div>
             </div>

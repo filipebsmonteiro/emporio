@@ -1,47 +1,50 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col">
-        <b-card class="bg-gradient-primary">
-          <h5 class="card-title text-uppercase text-muted mb-0 text-white">Pedidos Concluidos</h5>
-          <span class="h2 font-weight-bold mb-0 text-white">{{ pedidos.length }}</span>
-        </b-card>
-      </div>
-      <div class="col">
-        <b-card class="bg-gradient-success">
-          <div class="row">
-            <div class="col">
-              <h5 class="card-title text-uppercase text-muted mb-0 text-white">Valor Acummulado</h5>
-              <span class="h2 font-weight-bold mb-0 text-white">{{ fidelidade.acumulado_total | formatMoney }}</span>
-            </div>
-            <div class="col-auto">
-              <div class="icon icon-shape bg-gradient-cyan text-white rounded-circle shadow">
-                <i class="fas fa-arrow-up"/>
+    <b-overlay :show="isLoading">
+      <div class="row">
+        <div class="col">
+          <b-card class="bg-gradient-primary">
+            <h5 class="card-title text-uppercase text-muted mb-0 text-white">Pedidos Concluidos</h5>
+            <span class="h2 font-weight-bold mb-0 text-white">{{ pedidos.length }}</span>
+          </b-card>
+        </div>
+        <div class="col">
+          <b-card class="bg-gradient-success">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0 text-white">Valor Acummulado</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">{{ fidelidade.acumulado_total | formatMoney }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-gradient-cyan text-white rounded-circle shadow">
+                  <i class="fas fa-arrow-up"/>
+                </div>
               </div>
             </div>
-          </div>
-        </b-card>
-      </div>
-      <div class="col">
-        <b-card class="bg-gradient-danger">
-          <div class="row">
-            <div class="col">
-              <h5 class="card-title text-uppercase text-muted mb-0 text-white">Valor Resgatado</h5>
-              <span class="h2 font-weight-bold mb-0 text-white">{{ fidelidade.resgatado_total | formatMoney }}</span>
-            </div>
-            <div class="col-auto">
-              <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                <i class="fas fa-arrow-down"/>
+          </b-card>
+        </div>
+        <div class="col">
+          <b-card class="bg-gradient-danger">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0 text-white">Valor Resgatado</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">{{ fidelidade.resgatado_total | formatMoney }}</span>
+              </div>
+              <div class="col-auto">
+                <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                  <i class="fas fa-arrow-down"/>
+                </div>
               </div>
             </div>
-          </div>
-        </b-card>
+          </b-card>
+        </div>
       </div>
-    </div>
+    </b-overlay>
 
     <div class="row mt-4 mb-5">
       <div class="col-md-7">
-        <b-card no-body class="shadow">
+        <b-overlay :show="isLoadingPedidos">
+          <b-card no-body class="shadow">
           <b-table :items="pedidos" :fields="pedidos_fields" responsive>
             <template v-slot:cell(created_at)="{ item }">
               {{ item.created_at | formatDate }}
@@ -57,18 +60,23 @@
             </template>
           </b-table>
         </b-card>
+        </b-overlay>
       </div>
+
+
       <div class="col-md-5">
-        <b-card no-body class="shadow">
-          <b-table :items="fidelidade.resgates" :fields="resgates_fields" responsive>
-            <template v-slot:cell(valorResgate)="{ item: { valorResgate }}">
-              {{ valorResgate | formatMoney }}
-            </template>
-            <template v-slot:cell(created_at)="{ item: { created_at }}">
-              {{ created_at | formatDate }}
-            </template>
-          </b-table>
-        </b-card>
+        <b-overlay :show="isLoadingFidelidade">
+          <b-card no-body class="shadow">
+            <b-table :items="fidelidade.resgates" :fields="resgates_fields" responsive>
+              <template v-slot:cell(valorResgate)="{ item: { valorResgate }}">
+                {{ valorResgate | formatMoney }}
+              </template>
+              <template v-slot:cell(created_at)="{ item: { created_at }}">
+                {{ created_at | formatDate }}
+              </template>
+            </b-table>
+          </b-card>
+        </b-overlay>
       </div>
     </div>
   </div>
@@ -81,9 +89,11 @@
   export default {
     name: 'Index',
     computed: {
-      ...mapGetters({
+      ...mapGetters(  {
         pedidos: 'pedido/getAll',
-        store_fidelidade: 'fidelidade/getAll'
+        isLoadingPedidos: 'pedido/isLoading',
+        store_fidelidade: 'fidelidade/getAll',
+        isLoadingFidelidade: 'fidelidade/isLoading'
       }),
       fidelidade () {
         if (this.store_fidelidade && this.store_fidelidade.acumulados && this.store_fidelidade.resgates) {
@@ -101,7 +111,14 @@
           return fidelidade
         }
         return []
-      }
+      },
+      isLoading () {
+        if (this.isMounted && !this.isLoadingPedidos && !this.isLoadingFidelidade) {
+          return true
+        }
+
+        return false
+      },
     },
     data () {
       return {
@@ -127,7 +144,7 @@
     async mounted () {
       await this['pedido/listAll']([
         ['status', '!=', 'Cancelado'],
-        ['created_at', '>=', moment().subtract(12, 'month').format()]
+        ['created_at', '>=', moment().subtract(12, 'month').startOf('day').format()]
       ])
       await this['fidelidade/listAll']()
     }

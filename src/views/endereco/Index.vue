@@ -12,25 +12,29 @@
         <b-button v-else variant="primary" @click="selectLoja(store_lojas[0].id)"
                   size="sm">Retirar na Loja</b-button>
       </template>
-      <b-table :fields="fields" :items="enderecos" responsive>
-        <template v-slot:cell(id)="{ item: { id }}">
-          <base-button
-            size="sm"
-            type="link"
-            icon="fas fa-edit fa-2x"
-            @click="$router.push({ name: 'endereco.editar', params: {id} })"
-            icon-only
-          />
-        </template>
-        <template v-slot:cell(select)="{ item }">
-          <base-button
-            size="sm"
-            type="link"
-            class="bg-custom color-custom border-custom"
-            @click="selectEndereco(item)"
-          >Selecionar</base-button>
-        </template>
-      </b-table>
+
+      <b-overlay :show="isLoading">
+        <b-table :fields="fields" :items="enderecos" responsive>
+          <template v-slot:cell(id)="{ item: { id }}">
+            <base-button
+              size="sm"
+              type="link"
+              icon="fas fa-edit fa-2x"
+              @click="$router.push({ name: 'endereco.editar', params: {id} })"
+              icon-only
+            />
+          </template>
+          <template v-slot:cell(select)="{ item }">
+            <base-button
+              size="sm"
+              type="link"
+              class="bg-custom color-custom border-custom"
+              @click="selectEndereco(item)"
+            >Selecionar</base-button>
+          </template>
+        </b-table>
+      </b-overlay>
+
     </b-card>
   </div>
 </template>
@@ -43,6 +47,7 @@
     computed: {
       ...mapGetters({
         enderecos: 'endereco/getAll',
+        isLoading: 'endereco/isLoading',
         store_lojas: 'loja/getAll',
         loja: 'loja/getCurrent',
       }),

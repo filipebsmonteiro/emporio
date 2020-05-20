@@ -250,7 +250,6 @@
             })
           }
 
-          const referencia = response.data.data.referencia
           await this.$localStorage.remove('carrinho')
           this['mainbar/setQuantidade'](0)
           await this.$swal({
@@ -267,7 +266,7 @@
 
         }).catch(error => {
           const data = error.response.data
-          if (data.errors && data.message === 'The given data was invalid.') {
+          if (error.response.status === 422) {
             if (data.errors.endereco_id) {
               this.$swal({
                 type: 'danger',
@@ -295,6 +294,15 @@
               })
             })
           }
+          if (error.response.status === 400) {
+            this.$notify({
+              type: 'danger',
+              title: error.response.data.message,
+              verticalAlign: 'bottom',
+              horizontalAlign: 'center'
+            })
+          }
+
         })
       }
     },

@@ -18,7 +18,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { BootstrapVue } from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLocalStorage from 'vue-localstorage'
 import VuePusher from 'vue-pusher'
@@ -32,6 +32,7 @@ import '@/plugins/globalFilters'
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
 Vue.use(ArgonDashboard)
 Vue.use(VueSweetalert2)
 Vue.use(VueLocalStorage)
