@@ -4,16 +4,36 @@
       <div class="row">
         <!--Cards Header-->
         <div class="col-md-3">
-          <stats-card title="Abertos" :sub-title="`${cards.abertos}`" type="gradient-info" icon="ni ni-active-40"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Abertos"
+                        :sub-title="`${cards.abertos}`"
+                        type="gradient-info"
+                        icon="ni ni-active-40"/>
+          </b-overlay>
         </div>
         <div class="col-md-3">
-          <stats-card title="Confirmados" :sub-title="`${cards.confirmados}`" type="gradient-green" icon="ni ni-check-bold"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Confirmados"
+                        :sub-title="`${cards.confirmados}`"
+                        type="gradient-green"
+                        icon="ni ni-check-bold"/>
+          </b-overlay>
         </div>
         <div class="col-md-3">
-          <stats-card title="Enviados" :sub-title="`${cards.enviados}`" type="gradient-green" icon="ni ni-delivery-fast"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Enviados"
+                        :sub-title="`${cards.enviados}`"
+                        type="gradient-green"
+                        icon="ni ni-delivery-fast"/>
+          </b-overlay>
         </div>
         <div class="col-md-3">
-          <stats-card title="Cancelados" :sub-title="`${cards.cancelados}`" type="gradient-danger" icon="fas fa-ban"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Cancelados"
+                        :sub-title="`${cards.cancelados}`"
+                        type="gradient-danger"
+                        icon="fas fa-ban"/>
+          </b-overlay>
         </div>
         <!--End Cards Header-->
       </div>
@@ -23,44 +43,48 @@
       <!--Charts-->
       <div class="row">
         <div class="col-xl-8 mb-5 mb-xl-0">
-          <card type="gradient-primary" header-classes="bg-transparent">
-            <div slot="header" class="row align-items-center">
-              <div class="col">
-                <h6 class="text-light text-uppercase ls-1 mb-1">Visão Geral</h6>
-                <h5 class="h3 text-white mb-0">Quantidade de Vendas</h5>
-              </div>
-              <div class="col">
-                <div class="nav nav-pills justify-content-end">
-                  <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart('last_month')">
-                    Mês Ant.
-                  </b-btn>
-                  <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart('month')">
-                    Mês
-                  </b-btn>
-                  <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart('two_weeks')">
-                    2 Semanas
-                  </b-btn>
-                  <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart()">Semana</b-btn>
+          <b-overlay :show="isLoading">
+            <card type="gradient-primary" header-classes="bg-transparent">
+              <div slot="header" class="row align-items-center">
+                <div class="col">
+                  <h6 class="text-light text-uppercase ls-1 mb-1">Visão Geral</h6>
+                  <h5 class="h3 text-white mb-0">Quantidade de Vendas</h5>
+                </div>
+                <div class="col">
+                  <div class="nav nav-pills justify-content-end">
+                    <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart('last_month')">
+                      Mês Ant.
+                    </b-btn>
+                    <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart('month')">
+                      Mês
+                    </b-btn>
+                    <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart('two_weeks')">
+                      2 Semanas
+                    </b-btn>
+                    <b-btn class="font-weight-light text-blue" size="sm" @click="loadBigChart()">Semana</b-btn>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!--  ref="bigChart"  :extra-options="bigChart.extraOptions"/> -->
-            <line-chart :height="350" :chart-data="bigChart.chartData"/>
-          </card>
+              <!--  ref="bigChart"  :extra-options="bigChart.extraOptions"/> -->
+              <line-chart :height="350" :chart-data="bigChart.chartData"/>
+            </card>
+          </b-overlay>
         </div>
 
         <div class="col-xl-4">
-          <card type="gradient-warning" header-classes="bg-transparent">
-            <div slot="header" class="row align-items-center">
-              <div class="col">
-                <h6 class="text-light text-uppercase ls-1 mb-1">Semanal</h6>
-                <h5 class="h3 text-white mb-0">Semana Atual</h5>
+          <b-overlay :show="isLoading">
+            <card type="gradient-warning" header-classes="bg-transparent">
+              <div slot="header" class="row align-items-center">
+                <div class="col">
+                  <h6 class="text-light text-uppercase ls-1 mb-1">Semanal</h6>
+                  <h5 class="h3 text-white mb-0">Semana Atual</h5>
+                </div>
               </div>
-            </div>
 
-            <!-- ref="barChart" -->
-            <bar-chart :height="350" :chart-data="weekChart"/>
-          </card>
+              <!-- ref="barChart" -->
+              <bar-chart :height="350" :chart-data="weekChart"/>
+            </card>
+          </b-overlay>
         </div>
       </div>
       <!--End charts-->
@@ -68,25 +92,31 @@
       <!--Cards Bottom-->
       <div class="row mt-5">
         <div class="col-md-4">
-          <stats-card title="Faturamento no período"
-                      :sub-title="cards.faturamento | formatMoney"
-                      class="shadow"
-                      type="gradient-success"
-                      icon="fas fa-dollar-sign"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Faturamento no período"
+                        :sub-title="cards.faturamento | formatMoney"
+                        class="shadow"
+                        type="gradient-success"
+                        icon="fas fa-dollar-sign"/>
+          </b-overlay>
         </div>
         <div class="col-md-4">
-          <stats-card title="Ticket Médio no período"
-                      type="gradient-success"
-                      :sub-title="cards.media_valor | formatMoney"
-                      class="shadow"
-                      icon="fas fa-dollar-sign"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Ticket Médio no período"
+                        type="gradient-success"
+                        :sub-title="cards.media_valor | formatMoney"
+                        class="shadow"
+                        icon="fas fa-dollar-sign"/>
+          </b-overlay>
         </div>
         <div class="col-md-4">
-          <stats-card title="Ticket Médio Entrega"
-                      type="gradient-success"
-                      :sub-title="cards.media_entrega | formatMoney"
-                      class="shadow"
-                      icon="fas fa-dollar-sign"/>
+          <b-overlay :show="isLoading">
+            <stats-card title="Ticket Médio Entrega"
+                        type="gradient-success"
+                        :sub-title="cards.media_entrega | formatMoney"
+                        class="shadow"
+                        icon="fas fa-dollar-sign"/>
+          </b-overlay>
         </div>
       </div>
       <!--End Cards Bottom-->
@@ -107,7 +137,8 @@
     computed: {
       ...mapGetters({
         qtd_pedidos: 'dashboard/getAll',
-        cards: 'dashboard/getCards'
+        cards: 'dashboard/getCards',
+        isLoading: 'dashboard/isLoading'
       }),
       bigChart () {
         let datasets = []

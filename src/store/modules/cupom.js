@@ -9,9 +9,22 @@ const $actions = new ActionsClass(CupomRepository)
 export default {
   name: 'cupom',
   namespaced: true,
-  state: Object.assign({}, State),
-  getters: Object.assign({}, Getters),
-  mutations: Object.assign({}, Mutations),
+  state: {
+    ...Object.assign({}, State),
+    tipos: []
+  },
+  getters: {
+    ...Object.assign({}, Getters),
+    getTipos (state) {
+      return state.tipos
+    }
+  },
+  mutations: {
+    ...Object.assign({}, Mutations),
+    setTipos (state, array) {
+      state.tipos = array
+    }
+  },
   actions: {
     ...$actions.classToObject(),
     async listTipos ({ commit }, params) {

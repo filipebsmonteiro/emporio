@@ -18,7 +18,7 @@
           'col text-center': true,
           'img-transparent': !['Pedido Realizado', 'Em Fabricação', 'Enviado'].includes(pedido.status)
         }">
-          <img src="/img/pedido/icon-cart.png">
+          <img src="/img/pedido/icon-cart.png" class="w-100">
         </div>
         <div :class="{
           'col d-flex': true,
@@ -30,7 +30,7 @@
           'col text-center': true,
           'img-transparent': !['Em Fabricação', 'Enviado'].includes(pedido.status)
         }">
-          <img src="/img/pedido/icon-feature.png">
+          <img src="/img/pedido/icon-feature.png" class="w-100">
         </div>
         <div :class="{
           'col d-flex': true,
@@ -42,7 +42,7 @@
           'col text-center': true,
           'img-transparent': !['Enviado'].includes(pedido.status)
         }">
-          <img src="/img/pedido/icon-delivery.png">
+          <img src="/img/pedido/icon-delivery.png" class="w-100">
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
       </div>
       <div v-else class="m-auto text-center">
         <h3 class="mb-3">Cancelado</h3>
-        <img src="/img/pedido/icon-cancel.png" alt="" class="h-25 m-auto">
+        <img src="/img/pedido/icon-cancel.png" class="h-25 m-auto">
       </div>
     </div>
 
@@ -139,8 +139,15 @@
 </script>
 
 <style lang="scss" scoped>
-  img {
-    max-height: 35vh;
+  .col {
+    img {
+      max-height: 35vh;
+    }
+    i.fas{
+      @media (max-width: 776px) {
+        font-size: 2em !important;
+      }
+    }
   }
   .img-transparent{
     opacity:0.2;

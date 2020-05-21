@@ -1,6 +1,6 @@
 <template>
   <div class="row w-100 justify-content-center">
-    <div class="col-lg-5 col-md-7">
+    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-10">
       <div class="card bg-secondary shadow border-0 mt-5">
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">

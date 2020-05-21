@@ -1,3 +1,4 @@
+<script src="../../../main.js"></script>
 <template>
   <b-card :id="`printMe-${pedido.referencia}`">
 
