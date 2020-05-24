@@ -28,11 +28,6 @@ export default new Router({
     { path: '*', component: () => import('@/views/NotFound') },
 
     {
-      path: '/dist', component: DashboardLayout,
-      children: [{ path: '', component: () => import('@/views/dist/Dashboard') }]
-    },
-
-    {
       path: '/painel/login',
       name: 'painel.login',
       component: () => import('@/views/painel/Login'),
