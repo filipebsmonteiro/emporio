@@ -23,7 +23,7 @@
                 <div class="col-lg-4">
                   <base-input alternative=""
                               label="Nome"
-                              placeholder="Nome"
+                              placeholder="Descrição"
                               input-classes="form-control-alternative"
                               v-model="model.nome"
                               required/>

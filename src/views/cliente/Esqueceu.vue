@@ -4,7 +4,7 @@
       <div class="card bg-secondary shadow border-0 mt-5">
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
-            <small>Confirme suas Credenciais para resetar a Senha</small>
+            <small>Confirme suas credenciais para resetar a senha</small>
           </div>
           <form role="form">
             <base-input class="input-group-alternative mb-3"
@@ -88,7 +88,7 @@
           .then( async () => {
             this.$notify({
               type: 'success',
-              title: `Senha atualizada com Sucesso!`,
+              title: `Senha atualizada com sucesso!`,
               verticalAlign: 'bottom',
               horizontalAlign: 'center'
             })
@@ -96,7 +96,7 @@
           .catch(() => {
             this.$notify({
               type: 'danger',
-              title: `Credenciais Inválidas!`,
+              title: `Credenciais inválidas!`,
               verticalAlign: 'bottom',
               horizontalAlign: 'center'
             })

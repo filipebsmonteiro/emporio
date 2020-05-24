@@ -11,25 +11,25 @@
         <div class="mt-5 mb-2">
           <div class="row">
             <div class="col d-flex">
-              <img src="/img/theme/gamela-logo.png" class="float-lg-right m-md-auto">
+              <img src="/img/brand/gamela.png" class="float-lg-right m-md-auto">
             </div>
             <div class="col text-center">
               <p class="text-white">Siga a gente:</p>
               <a class="btn btn-link text-white" style="border-radius: 50%;"
                  target="_blank" href="https://www.facebook.com/230451693800177">
-                <i class="fas fa-facebook-f"/>
+                <i class="fab fa-facebook-f"/>
               </a>
               <a class="btn btn-link text-white" style="border-radius: 50%;"
                  target="_blank" href="https://www.tripadvisor.com.br/8188664">
-                <i class="fas fa-tripadvisor"/>
+                <i class="fab fa-tripadvisor"/>
               </a>
               <a class="btn btn-link text-white" style="border-radius: 50%;"
                  target="_blank" href="https://www.instagram.com/gamelabiscoitoscaseiros">
-                <i class="fas fa-instagram"/>
+                <i class="fab fa-instagram"/>
               </a>
             </div>
             <div class="col d-flex">
-              <img src="/img/theme/advisor.png" style="max-height: 97px;" class="m-md-auto">
+              <img src="/img/brand/advisor.png" style="max-height: 97px;" class="m-md-auto">
             </div>
           </div>
         </div>
