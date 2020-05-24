@@ -11,7 +11,7 @@
         <div class="mt-5 mb-2">
           <div class="row">
             <div class="col d-flex">
-              <img src="/img/brand/gamela.png" class="float-lg-right m-md-auto">
+              <img src="/img/brand/gamela-logo.png" class="float-lg-right m-md-auto">
             </div>
             <div class="col text-center">
               <p class="text-white">Siga a gente:</p>

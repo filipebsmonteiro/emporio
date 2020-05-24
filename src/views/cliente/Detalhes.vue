@@ -76,13 +76,11 @@
                     <b-badge variant="success">{{ item.status }}</b-badge>
                   </template>
                   <template v-slot:cell(id)="{ item }">
-                    <div class="w-100 d-flex justify-content-between">
-                      <base-button
-                        size="sm"
-                        icon="fas fa-eye fa-2x"
-                        @click="$router.push({name: 'pedido.show', params: { referencia: item.referencia }})"
-                        icon-only
-                      />
+                    <div class="w-100 d-flex justify-content-center">
+                      <router-link :to="{name: 'pedido.show', params: { referencia: item.referencia }}"
+                                   class="text-default">
+                        <i class="fas fa-eye fa-2x"/>
+                      </router-link>
                     </div>
                   </template>
                 </b-table>
