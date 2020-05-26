@@ -40,13 +40,6 @@
                 <b-form-group label="Sexo *" label-class="form-control-label">
                   <b-select v-model="model.sexo" :options="['Masculino', 'Feminino']" required/>
                 </b-form-group>
-                <!-- base-input alternative=""
-                            label="Sexo"
-                            type="é Uma SELECT"
-                            placeholder="jesse@example.com"
-                            input-classes="form-control-alternative"
-                            required
-                /-->
               </div>
             </div>
             <div class="row">
@@ -56,6 +49,7 @@
                             placeholder="Telefone"
                             input-classes="form-control-alternative"
                             v-model="model.phone"
+                            v-mask="['(##) ####-####', '(##) #####-####']"
                 />
               </div>
               <div class="col-lg-6">
