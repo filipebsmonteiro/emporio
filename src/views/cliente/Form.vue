@@ -75,6 +75,7 @@
                             placeholder="nome@email.com"
                             input-classes="form-control-alternative"
                             v-model="model.email"
+                            :disabled="this.$route.name === 'cliente.auto_editar'"
                             required
                 />
               </div>
