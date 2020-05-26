@@ -63,7 +63,7 @@
               </div>
             </div>
             <template>
-              <p v-if="pedidos.length === 0" class="m-auto">Ops! Não temos nada aqui ainda!</p>
+              <p v-if="pedidos.length === 0" class="m-auto">Ops... não temos nada aqui ainda!</p>
               <b-overlay :show="isLoadingPedidos">
                 <b-table :fields="fields" :items="pedidos">
                   <template v-slot:cell(data)="{ item: { created_at: date } }">

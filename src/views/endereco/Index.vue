@@ -1,16 +1,22 @@
 <template>
   <div class="container">
     <b-card no-body>
-      <template v-if="retiradaAllowed" v-slot:header>
-        <b-form-group v-if="lojas.length > 1"
-                      label-cols-lg="2"
-                      label="Retirar na Loja"
-                      label-size="lg"
-                      class="mb-0">
-          <b-form-select :options="lojas" @change="selectLoja"/>
-        </b-form-group>
-        <b-button v-else variant="primary" @click="selectLoja(store_lojas[0].id)"
-                  size="sm">Retirar na Loja</b-button>
+      <template v-slot:header>
+        <div class="d-flex justify-content-between">
+          <div v-if="retiradaAllowed">
+            <b-form-group v-if="lojas.length > 1"
+                          label-cols-lg="2"
+                          label="Retirar na Loja"
+                          label-size="lg"
+                          class="mb-0">
+              <b-form-select :options="lojas" @change="selectLoja"/>
+            </b-form-group>
+            <b-button v-else variant="primary" @click="selectLoja(store_lojas[0].id)"
+                      size="sm">Retirar na Loja
+            </b-button>
+          </div>
+          <router-link class="btn btn-sm btn-primary" :to="{name: 'endereco.criar'}">Novo</router-link>
+        </div>
       </template>
 
       <b-overlay :show="isLoading">
@@ -30,7 +36,8 @@
               type="link"
               class="bg-custom color-custom border-custom"
               @click="selectEndereco(item)"
-            >Selecionar</base-button>
+            >Selecionar
+            </base-button>
           </template>
         </b-table>
       </b-overlay>
@@ -51,10 +58,10 @@
         store_lojas: 'loja/getAll',
         loja: 'loja/getCurrent',
       }),
-      retiradaAllowed() {
+      retiradaAllowed () {
         return parseInt(process.env.VUE_APP_PERMITE_RETIRADA_LOJA)
       },
-      lojas() {
+      lojas () {
         if (this.store_lojas && Array.isArray(this.store_lojas)) {
           return this.store_lojas.map(loja => {
             return {
@@ -66,7 +73,7 @@
         return []
       }
     },
-    data() {
+    data () {
       return {
         fields: [
           { key: 'select', label: 'Selecionar' },
@@ -84,17 +91,17 @@
         'endereco/listResponsavel',
         'loja/listAll'
       ]),
-      async selectEndereco(item) {
+      async selectEndereco (item) {
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
         await this['endereco/listResponsavel']({ CEP: item.CEP, vm: this })
-        if (Object.keys( this.loja ).length > 0 && this.loja.constructor !== Object){
+        if (Object.keys(this.loja).length > 0 && this.loja.constructor !== Object) {
           this.$localStorage.set('endereco_id', item.id)
           this.$localStorage.set('loja_id', this.loja.id)
           this.$router.push({ name: 'produtos' })
         }
       },
-      selectLoja(id) {
+      selectLoja (id) {
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
         // Endereço 1 Reservado para retirada na Loja

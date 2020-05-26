@@ -31,19 +31,22 @@
                             label="CPF"
                             placeholder="000.000.000-00"
                             input-classes="form-control-alternative"
-                            v-model="model.cpf"
+                            v-model="model.CPF"
+                            v-mask="'###.###.###-##'"
                             required
                 />
               </div>
               <div class="col-lg-4">
-                <base-input alternative=""
+                <b-form-group label="Sexo *" label-class="form-control-label">
+                  <b-select v-model="model.sexo" :options="['Masculino', 'Feminino']" required/>
+                </b-form-group>
+                <!-- base-input alternative=""
                             label="Sexo"
                             type="é Uma SELECT"
                             placeholder="jesse@example.com"
                             input-classes="form-control-alternative"
-                            v-model="model.sexo"
                             required
-                />
+                /-->
               </div>
             </div>
             <div class="row">
@@ -97,9 +100,11 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import ClienteRepository from '@/services/Cliente'
+  import { mask } from 'vue-the-mask'
 
   export default {
     name: 'Form',
+    directives: { mask },
     computed: {
       ...mapGetters({
         cliente: 'cliente/getCurrent'
@@ -122,9 +127,9 @@
       ...mapActions([
         'cliente/listMe'
       ]),
-      validaRetornoErro(error) {
+      validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
-        if ( data.errors && data.message === "The given data was invalid.") {
+        if (data.errors && data.message === 'The given data was invalid.') {
           Object.keys(data.errors).map(campo => {
             data.errors[campo].map(msg => {
               this.$notify({
@@ -134,10 +139,10 @@
                 horizontalAlign: 'center'
               })
             })
-          });
+          })
         }
       },
-      async onSubmit(evt) {
+      async onSubmit (evt) {
         evt.preventDefault()
         if (this.$route.name === 'cliente.auto_editar') {
           this.update()
@@ -145,7 +150,7 @@
           this.create()
         }
       },
-      create() {
+      create () {
         ClienteRepository.post(this.model).then(() => {
           this.$notify({
             type: 'success',
@@ -153,12 +158,12 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'cliente'})
+          this.$router.push({ name: 'cliente' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
       },
-      update() {
+      update () {
         ClienteRepository.put(this.cliente.id, this.model).then(() => {
           this.$notify({
             type: 'success',
@@ -166,7 +171,7 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'cliente'})
+          this.$router.push({ name: 'cliente' })
         }).catch(error => {
           // eslint-disable-next-line no-console
           this.validaRetornoErro(error)

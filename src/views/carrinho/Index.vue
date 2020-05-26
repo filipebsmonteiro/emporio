@@ -1,94 +1,98 @@
 <template>
   <div class="container mt-5 mb-5">
-    <div v-if="this.carrinho.length === 0">
-      <h2>Poxa! Seu carrinho parece estar vazio!</h2>
-      <p>Não tem problema!</p>
-      <router-link :to="{name: 'produtos'}">Compre algum de nossos produtos agora!</router-link>
-    </div>
-    <div v-else>
-      <div class="row">
-        <div class="col-lg-4 col-md-6">
-          <Endereco/>
-        </div>
-        <div class="col d-md-none d-sm-none"/>
-        <div class="col-lg-4 col-md-6">
-          <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
-        </div>
+    <b-overlay :show="!mounted">
+      <div v-if="this.carrinho.length === 0 && mounted">
+        <h2>Poxa! Seu carrinho parece estar vazio!</h2>
+        <p>Não tem problema!</p>
+        <router-link :to="{name: 'produtos'}">Compre algum de nossos produtos agora!</router-link>
       </div>
-      <TableProduto class="mt-4" :produtos="produtos" @remove="removeCartItem" @updqtd="updateProdQtd"/>
-      <div class="row mt-5">
-        <div class="col-md-6 col-sm-12">
-          <b-form-group label="Observações deste pedido" label-for="observacoes">
-            <b-form-textarea id="observacoes" v-model="observacoes" rows="3"/>
-          </b-form-group>
+      <div v-else>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <Endereco/>
+          </div>
+          <div class="col d-sm-none"/>
+          <div class="col-lg-4 col-md-6">
+            <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
+          </div>
         </div>
-        <div class="col-md-6 col-sm-12">
-          <b-form-group label="Forma de Pagamento" label-for="formas-pagamentos">
-            <SelectComponent :options="formaspagamento" @input="evt => {forma_pagamento = evt ? evt.value : null}">
-              <template slot="option" slot-scope="option">
-                <span v-if="option.imagem" class="b-avatar rounded size-3 mr-2 ml-0">
-                  <span class="b-avatar-custom">
-                    <img :src="`/img/pagamento/${option.imagem}`"/>
+        <b-overlay :show="produtos_loading">
+          <TableProduto class="mt-4" :produtos="produtos" @remove="removeCartItem" @updqtd="updateProdQtd"/>
+        </b-overlay>
+        <div class="row mt-5">
+          <div class="col-md-6 col-sm-12">
+            <b-form-group label="Observações deste pedido" label-for="observacoes">
+              <b-form-textarea id="observacoes" v-model="observacoes" rows="3"/>
+            </b-form-group>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <b-form-group label="Forma de Pagamento" label-for="formas-pagamentos">
+              <SelectComponent :options="formaspagamento" @input="evt => {forma_pagamento = evt ? evt.value : null}">
+                <template slot="option" slot-scope="option">
+                  <span v-if="option.imagem" class="b-avatar rounded size-3 mr-2 ml-0">
+                    <span class="b-avatar-custom">
+                      <img :src="`/img/pagamento/${option.imagem}`"/>
+                    </span>
                   </span>
-                </span>
-                {{ option.label }}
+                  {{ option.label }}
+                </template>
+              </SelectComponent>
+            </b-form-group>
+            <b-form-group v-if="forma_pagamento && forma_pagamento === 1"
+                          label="Troco"
+                          description="Ex.: Compra de 47,00 peça troco para 50,00">
+              <b-form-input type="number" step="0.01" v-model="troco"/>
+            </b-form-group>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6 col-sm-12">
+
+            <b-form-group v-if="allowed.fidelidade && fidelidade > 0" label="Fidelidade">
+              <b-input type="number" step="0.01" :max="fidelidade" v-model="fidelidade_field"/>
+              <template v-slot:description>
+                Valor disponível: {{ fidelidade | formatMoney }}
               </template>
-            </SelectComponent>
-          </b-form-group>
-          <b-form-group v-if="forma_pagamento && forma_pagamento === 1"
-                        label="Troco"
-                        description="Ex.: Compra de 47,00 peça troco para 50,00">
-            <b-form-input type="number" step="0.01" v-model="troco"/>
-          </b-form-group>
+            </b-form-group>
+
+            <Cupom v-if="allowed.cupom" @validated="evt => {cupom_field = evt}"/>
+
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <h1>Valor do Pedido</h1>
+            <b-list-group>
+              <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
+                Subtotal:
+                <span>{{ subtotal | formatMoney }}</span>
+              </b-list-group-item>
+
+              <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
+                Taxa de Entrega:
+                <span>{{ taxa_entrega | formatMoney }}</span>
+              </b-list-group-item>
+
+              <b-list-group-item v-if="fidelidade_field && fidelidade_field > 0"
+                                 class="d-flex justify-content-between align-items-center bg-transparent">
+                Fidelidade:
+                <span>{{ fidelidade_field | formatMoney }}</span>
+              </b-list-group-item>
+
+              <b-list-group-item v-if="cupom_field"
+                                 class="d-flex justify-content-between align-items-center bg-transparent">
+                Cupom:
+                <span>{{ cupom_field.description }}</span>
+              </b-list-group-item>
+
+              <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
+                Total:
+                <span>{{ total | formatMoney }}</span>
+              </b-list-group-item>
+            </b-list-group>
+          </div>
         </div>
+        <base-button type="success" icon="fas fa-save" @click="persist" block>Finalizar Pedido</base-button>
       </div>
-      <div class="row mb-3">
-        <div class="col-md-6 col-sm-12">
-
-          <b-form-group v-if="allowed.fidelidade && fidelidade > 0" label="Fidelidade">
-            <b-input type="number" step="0.01" :max="fidelidade" v-model="fidelidade_field"/>
-            <template v-slot:description>
-              Valor disponível: {{ fidelidade | formatMoney }}
-            </template>
-          </b-form-group>
-
-          <Cupom v-if="allowed.cupom" @validated="evt => {cupom_field = evt}"/>
-
-        </div>
-        <div class="col-md-6 col-sm-12">
-          <h1>Valor do Pedido</h1>
-          <b-list-group>
-            <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
-              Subtotal:
-              <span>{{ subtotal | formatMoney }}</span>
-            </b-list-group-item>
-
-            <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
-              Taxa de Entrega:
-              <span>{{ taxa_entrega | formatMoney }}</span>
-            </b-list-group-item>
-
-            <b-list-group-item v-if="fidelidade_field && fidelidade_field > 0"
-                               class="d-flex justify-content-between align-items-center bg-transparent">
-              Fidelidade:
-              <span>{{ fidelidade_field | formatMoney }}</span>
-            </b-list-group-item>
-
-            <b-list-group-item v-if="cupom_field"
-                               class="d-flex justify-content-between align-items-center bg-transparent">
-              Cupom:
-              <span>{{ cupom_field.description }}</span>
-            </b-list-group-item>
-
-            <b-list-group-item class="d-flex justify-content-between align-items-center bg-transparent">
-              Total:
-              <span>{{ total | formatMoney }}</span>
-            </b-list-group-item>
-          </b-list-group>
-        </div>
-      </div>
-      <base-button type="success" icon="fas fa-save" @click="persist" block>Finalizar Pedido</base-button>
-    </div>
+    </b-overlay>
   </div>
 </template>
 
@@ -107,7 +111,8 @@
       ...mapGetters({
         fidelidade: 'fidelidade/getCurrent',
         store_formaspagamento: 'formapagamento/getAll',
-        store_produtos: 'produto/getAll'
+        store_produtos: 'produto/getAll',
+        produtos_loading: 'produto/isLoading'
       }),
       allowed () {
         return {
@@ -195,6 +200,7 @@
     },
     data () {
       return {
+        mounted: false,
         agendamento: null,
         carrinho: [],
         cupom_field: null,
@@ -254,8 +260,8 @@
           this['mainbar/setQuantidade'](0)
           await this.$swal({
             icon: 'success',
-            title: `Pedido Realizado com Sucesso!`,
-            text: 'Deseja acompanhar o Status do seu Pedido?',
+            title: `Pedido realizado com sucesso!`,
+            text: 'Deseja acompanhar o status do seu pedido?',
             focusConfirm: true,
             confirmButtonText: 'Acompanhar!',
           }).then((result, referencia=referencia) => {
@@ -270,7 +276,7 @@
             if (data.errors.endereco_id) {
               this.$swal({
                 type: 'danger',
-                title: `Local de Entrega`,
+                title: `Local de entrega`,
                 text: 'Você ainda não selecionou o local de entrega!',
                 focusConfirm: true,
                 confirmButtonText: 'Selecionar endereço!',
@@ -313,8 +319,10 @@
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
       if (this.carrinho.length > 0) {
-        await this['produto/listAll']({ ids: this.carrinho.map(p => p.produto) })
+        this['produto/listAll']({ ids: this.carrinho.map(p => p.produto) })
       }
+
+      this.mounted = true
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED) && this.carrinho.length > 0) {
         this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {

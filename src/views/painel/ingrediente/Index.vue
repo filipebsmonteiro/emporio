@@ -62,7 +62,6 @@
           { key: 'nome', label: 'Nome' },
           { key: 'status', label: 'Status' },
           { key: 'preco', label: 'Preço' },
-          { key: 'codigo_PDV', label: 'PDV' },
           { key: 'id', label: 'Editar' }
         ]
       }

@@ -16,12 +16,9 @@
           <div class="pl-lg-4">
             <div class="row">
               <div class="col-lg-4">
-                <base-input alternative=""
-                            label="CEP"
-                            placeholder="Digite"
-                            input-classes="form-control-alternative"
-                            v-model="model.CEP"
-                />
+                <b-form-group label="CEP *" label-class="form-control-label">
+                  <b-form-input placeholder="Digite" v-model="model.CEP" v-mask="'#####-###'" @keyup="procuraCep"/>
+                </b-form-group>
               </div>
               <div class="col-lg-4">
                 <base-input alternative=""
@@ -61,7 +58,7 @@
               </div>
             </div>
           </div>
-          <hr class="my-4" />
+          <hr class="my-4"/>
         </form>
       </template>
     </card>
@@ -71,9 +68,12 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import EnderecoRepository from '@/services/Endereco'
+  import { mask } from 'vue-the-mask'
+  import axios from 'axios'
 
   export default {
     name: 'Form',
+    directives: { mask },
     computed: {
       ...mapGetters({
         endereco: 'endereco/getCurrent'
@@ -86,8 +86,7 @@
           Logradouro: '',
           Bairro: '',
           Cidade: '',
-          Referencia: '',
-          Ufs_idUfs: 1,
+          Referencia: ''
         }
       }
     },
@@ -95,9 +94,9 @@
       ...mapActions([
         'endereco/listOne'
       ]),
-      validaRetornoErro(error) {
+      validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
-        if ( data.errors && data.message === "The given data was invalid.") {
+        if (data.errors && data.message === 'The given data was invalid.') {
           Object.keys(data.errors).map(campo => {
             data.errors[campo].map(msg => {
               this.$notify({
@@ -107,10 +106,10 @@
                 horizontalAlign: 'center'
               })
             })
-          });
+          })
         }
       },
-      async onSubmit(evt) {
+      async onSubmit (evt) {
         evt.preventDefault()
         if (this.$route.params.id) {
           this.update()
@@ -118,20 +117,28 @@
           this.create()
         }
       },
-      create() {
-        EnderecoRepository.post(this.credential).then(() => {
+      create () {
+        EnderecoRepository.post(this.model).then(() => {
           this.$notify({
             type: 'success',
             title: `Dados Salvos com Sucesso!`,
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'endereco.index'})
+          this.$router.push({ name: 'endereco.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
+          if (error.response.status === 400) {
+            this.$notify({
+              type: 'danger',
+              title: error.response.data.message,
+              verticalAlign: 'bottom',
+              horizontalAlign: 'center'
+            })
+          }
         })
       },
-      update() {
+      update () {
         EnderecoRepository.put(this.$route.params.id, this.model).then(() => {
           this.$notify({
             type: 'success',
@@ -139,11 +146,46 @@
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
-          this.$router.push({name: 'endereco.index'})
+          this.$router.push({ name: 'endereco.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
-      }
+      },
+      procuraCep () {
+        // Nova variável "cep" somente com dígitos.
+        const cep = this.model.CEP.replace(/\D/g, '')
+
+        // Verifica se campo cep possui valor informado.
+        if (cep.length > 7) {
+          // Expressão regular para validar o CEP.
+          const validacep = /^[0-9]{8}$/
+
+          //Valida o formato do CEP.
+          if (validacep.test(cep)) {
+
+            // Preenche os campos com "..." enquanto consulta webservice.
+            this.model.Logradouro = '...'
+            this.model.Bairro = '...'
+            this.model.Cidade = '...'
+
+            //Consulta o webservice viacep.com.br/
+            axios.get('//viacep.com.br/ws/' + cep + '/json/?callback=').then(dados => {
+              if (!dados.erro) {
+                const end = dados.data
+                //Atualiza os campos com os valores da consulta.
+                this.model.Logradouro = `${end.logradouro} ${end.localidade} ${end.complemento}`
+                this.model.Bairro = end.bairro
+                this.model.Cidade = end.cidade
+
+              }
+            }).catch(() =>{
+              this.model.Logradouro = ''
+              this.model.Bairro = ''
+              this.model.Cidade = ''
+            })
+          }
+        }
+      },
     },
     async mounted () {
       if (this.$route.params.id) {

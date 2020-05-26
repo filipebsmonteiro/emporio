@@ -77,7 +77,7 @@
         ){
           this.$notify({
             type: 'danger',
-            title: `Credenciais Inválidas!`,
+            title: `Credenciais inválidas!`,
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })

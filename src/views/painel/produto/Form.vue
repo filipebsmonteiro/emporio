@@ -23,7 +23,7 @@
                 <div class="col-lg-4">
                   <base-input alternative=""
                               label="Nome"
-                              placeholder="Descrição"
+                              placeholder="Nome"
                               input-classes="form-control-alternative"
                               v-model="model.nome"
                               required/>
@@ -298,7 +298,7 @@
     },
     methods: {
       ...mapActions([
-        'produto/listOnePainel',
+        'produto/listOne',
         'produto/categoria/listAll'
       ]),
       validaRetornoErro (error) {
@@ -393,7 +393,7 @@
     async mounted () {
       await this['produto/categoria/listAll']()
       if (this.$route.params.id) {
-        await this['produto/listOnePainel'](this.$route.params.id)
+        await this['produto/listOne'](this.$route.params.id)
         this.model = {
           ...this.model,
           ...this.produto,

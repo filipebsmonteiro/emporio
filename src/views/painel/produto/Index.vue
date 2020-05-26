@@ -21,7 +21,8 @@
               {{ preco | formatMoney }}
             </template>
             <template v-slot:cell(category)="{ item: { categoria } }">
-              {{ `${categoria.grupo} ${categoria.nome}` }}
+              <span v-if="categoria.grupo"><b>Grupo: </b> {{ categoria.grupo }}</span><br>
+              <span><b>Nome: </b> {{ categoria.nome }}</span>
             </template>
             <template v-slot:cell(id)="{ item: { id, status } }">
               <b-btn v-if="status==='Desabilitado'" variant="outline-warning" size="sm"
