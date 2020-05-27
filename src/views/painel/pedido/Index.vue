@@ -29,7 +29,7 @@
             {{ created_at.date | formatDate }}
           </template>
           <template v-slot:row-details="{ item }">
-            <Pedido :pedido="item" class="shadow"/>
+            <Pedido :pedido="item" @update="$store.dispatch('pedido/listAllPaginated')" class="shadow"/>
           </template>
         </b-table>
         <Paginator

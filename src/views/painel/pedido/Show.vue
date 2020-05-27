@@ -10,7 +10,7 @@
       </b-btn>
     </base-header>
 
-    <Pedido :pedido="pedido" class="m-3 mt-n5"/>
+    <Pedido :pedido="pedido" @update="listPedido" class="m-3 mt-n5"/>
 
   </div>
 </template>
@@ -31,6 +31,10 @@
       ...mapActions([
         'pedido/listOne'
       ]),
+      listPedido () {
+        this['pedido/listOne'](this.pedido.referencia)
+        this.$emit('update')
+      }
     },
     async mounted () {
       if (this.$route.params.referencia) {

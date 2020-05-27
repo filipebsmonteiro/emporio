@@ -33,6 +33,8 @@
                             input-classes="form-control-alternative"
                             v-model="model.CPF"
                             v-mask="'###.###.###-##'"
+                            :valid="isCPFValid"
+                            :disabled="cliente && isCPFValid"
                             required
                 />
               </div>
@@ -103,7 +105,47 @@
     computed: {
       ...mapGetters({
         cliente: 'cliente/getCurrent'
-      })
+      }),
+      isCPFValid() {
+        let Soma;
+        let Resto;
+        Soma = 0;
+        let strCPF = this.model.CPF.replace(/\D/g, '')
+        if (strCPF.length < 11)
+          return null
+
+        if (
+          strCPF === "00000000000" ||
+          strCPF === "11111111111" ||
+          strCPF === "22222222222" ||
+          strCPF === "33333333333" ||
+          strCPF === "44444444444" ||
+          strCPF === "55555555555" ||
+          strCPF === "66666666666" ||
+          strCPF === "77777777777" ||
+          strCPF === "88888888888" ||
+          strCPF === "99999999999"
+        ){
+          return false;
+        }
+
+        for (let i=1; i<=9; i++)
+          Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+        Resto = (Soma * 10) % 11;
+        if ((Resto === 10) || (Resto === 11))
+          Resto = 0;
+        if (Resto !== parseInt(strCPF.substring(9, 10)) )
+          return false;
+        Soma = 0;
+        for (let i = 1; i <= 10; i++)
+          Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+        Resto = (Soma * 10) % 11;
+        if ((Resto === 10) || (Resto === 11))
+          Resto = 0;
+        if (Resto !== parseInt(strCPF.substring(10, 11) ) )
+          return false;
+        return true;
+      }
     },
     data () {
       return {
@@ -125,6 +167,7 @@
       validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
         if (data.errors && data.message === 'The given data was invalid.') {
+          // const reverse = data.errors.reverse()
           Object.keys(data.errors).map(campo => {
             data.errors[campo].map(msg => {
               this.$notify({
@@ -139,6 +182,15 @@
       },
       async onSubmit (evt) {
         evt.preventDefault()
+        if ( typeof this.isCPFValid === "boolean" && !this.isCPFValid){
+          this.$notify({
+            type: 'danger',
+            title: 'CPF Inválido',
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          return
+        }
         if (this.$route.name === 'cliente.auto_editar') {
           this.update()
         } else {
@@ -168,7 +220,6 @@
           })
           this.$router.push({ name: 'cliente' })
         }).catch(error => {
-          // eslint-disable-next-line no-console
           this.validaRetornoErro(error)
         })
       }

@@ -7,8 +7,7 @@
             <div class="text-center">
               <b-overlay :show="isLoadingCliente">
                 <h3>
-                  {{ cliente.nome }}<span
-                  class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
+                  {{ cliente.nome }}<span class="font-weight-light">, {{ cliente.nascimento | ageFromBirthday }} anos</span>
                 </h3>
 
                 <b-overlay :show="isLoadingEndrecos">
@@ -21,8 +20,7 @@
                 </b-overlay>
 
               <div class="h5 mt-4">
-                <i class="ni business_briefcase-24 mr-2"></i>Cadastrado desde: {{ cliente.created_at | formatDate(false)
-                }}
+                <i class="ni business_briefcase-24 mr-2"></i>Cadastrado desde: {{ cliente.created_at | formatDate(false) }}
               </div>
               </b-overlay>
             </div>

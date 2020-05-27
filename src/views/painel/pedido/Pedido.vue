@@ -144,6 +144,7 @@
               title: 'Pedido Atualizado com Sucesso!',
               verticalAlign: 'bottom'
             })
+            this.$emit('update')
           })
       },
       moment (dateTime = null) {
