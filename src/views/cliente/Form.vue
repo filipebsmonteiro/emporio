@@ -173,7 +173,7 @@
               this.$notify({
                 type: 'danger',
                 title: msg,
-                verticalAlign: 'bottom',
+                verticalAlign: 'top',
                 horizontalAlign: 'center'
               })
             })
