@@ -11,12 +11,11 @@ export default {
     if (obj.meta){
       obj = obj.meta
     }
-    const newObj = {
+    state.pagination = {
       per_page: parseInt(obj.per_page),
       page: parseInt(obj.current_page),
       total: parseInt(obj.total)
     }
-    state.pagination = newObj
   },
 
   setLoading (state, boolean) {

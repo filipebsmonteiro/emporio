@@ -11,56 +11,68 @@
           </div>
         </div>
       </div>
-      <template>
-        <form @submit.prevent>
-          <div class="pl-lg-4">
-            <div class="row">
-              <div class="col-lg-4">
-                <b-form-group label="CEP *" label-class="form-control-label">
-                  <b-form-input placeholder="Digite" v-model="model.CEP" v-mask="'#####-###'" @keyup="procuraCep"/>
-                </b-form-group>
+      <b-overlay :show="!mounted">
+        <template>
+          <form @submit.prevent>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-4">
+                  <b-form-group label="CEP *" label-class="form-control-label">
+                    <b-overlay :show="loadingEndereco">
+                      <b-form-input placeholder="Digite" v-model="model.CEP" v-mask="'#####-###'" @keyup="procuraCep"/>
+                    </b-overlay>
+                  </b-form-group>
+                </div>
+                <div class="col-lg-4">
+                  <b-overlay :show="loadingEndereco">
+                    <base-input alternative=""
+                                label="Cidade"
+                                placeholder="Cidade"
+                                input-classes="form-control-alternative"
+                                v-model="model.Cidade"
+                    />
+                  </b-overlay>
+                </div>
+                <div class="col-lg-4">
+                  <b-overlay :show="loadingEndereco">
+                    <base-input alternative=""
+                                label="Bairro"
+                                placeholder="Bairro"
+                                input-classes="form-control-alternative"
+                                v-model="model.Bairro"
+                    />
+                  </b-overlay>
+                </div>
               </div>
-              <div class="col-lg-4">
-                <base-input alternative=""
-                            label="Cidade"
-                            placeholder="Cidade"
-                            input-classes="form-control-alternative"
-                            v-model="model.Cidade"
-                />
+              <div class="row">
+                <div class="col-md-12">
+                  <b-overlay :show="loadingEndereco">
+                    <base-input alternative=""
+                                label="Logradouro"
+                                placeholder="Logradouro"
+                                input-classes="form-control-alternative"
+                                v-model="model.Logradouro"
+                    />
+                  </b-overlay>
+                </div>
               </div>
-              <div class="col-lg-4">
-                <base-input alternative=""
-                            label="Bairro"
-                            placeholder="Bairro"
-                            input-classes="form-control-alternative"
-                            v-model="model.Bairro"
-                />
+              <div class="row">
+                <div class="col-md-12">
+                  <b-overlay :show="loadingEndereco">
+                    <base-input alternative=""
+                                label="Referência"
+                                placeholder="Referência"
+                                input-classes="form-control-alternative"
+                                v-model="model.Referencia"
+                    />
+                  </b-overlay>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <base-input alternative=""
-                            label="Logradouro"
-                            placeholder="Logradouro"
-                            input-classes="form-control-alternative"
-                            v-model="model.Logradouro"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <base-input alternative=""
-                            label="Referência"
-                            placeholder="Referência"
-                            input-classes="form-control-alternative"
-                            v-model="model.Referencia"
-                />
-              </div>
-            </div>
-          </div>
-          <hr class="my-4"/>
-        </form>
-      </template>
+            <hr class="my-4"/>
+          </form>
+        </template>
+      </b-overlay>
     </card>
   </div>
 </template>
@@ -76,11 +88,13 @@
     directives: { mask },
     computed: {
       ...mapGetters({
-        endereco: 'endereco/getCurrent'
+        endereco: 'endereco/getCurrent',
+        loadingEndereco: 'endereco/isLoading'
       })
     },
     data () {
       return {
+        mounted: false,
         model: {
           CEP: '',
           Logradouro: '',
@@ -152,7 +166,9 @@
         })
       },
       procuraCep () {
+        return
         // Nova variável "cep" somente com dígitos.
+        // eslint-disable-next-line no-unreachable
         const cep = this.model.CEP.replace(/\D/g, '')
 
         // Verifica se campo cep possui valor informado.
@@ -178,7 +194,7 @@
                 this.model.Cidade = end.cidade
 
               }
-            }).catch(() =>{
+            }).catch(() => {
               this.model.Logradouro = ''
               this.model.Bairro = ''
               this.model.Cidade = ''
@@ -189,12 +205,13 @@
     },
     async mounted () {
       if (this.$route.params.id) {
-        await this['endereco/listOne'](this.$route.params.id)
+        this['endereco/listOne'](this.$route.params.id)
         this.model = {
           ...this.model,
           ...this.endereco
         }
       }
+      this.mounted = true
     }
   }
 </script>

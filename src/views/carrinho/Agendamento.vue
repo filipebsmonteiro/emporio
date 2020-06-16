@@ -11,7 +11,7 @@
                             :date-disabled-fn="dateDisabled" class="mb-2"
                             @input="changed"/>
          <b-form-timepicker v-model="time" placeholder="Escolha o Horário"
-                            locale="en" :minutes-step="allowed.minutes"
+                            :minutes-step="allowed.minutes"
                             @input="changed"/>
        </b-card-body>
      </b-collapse>

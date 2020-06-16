@@ -47,7 +47,7 @@
             <div class="row">
               <div class="col-lg-6">
                 <base-input alternative=""
-                            label="Telefone"
+                            label="Telefone *"
                             placeholder="Telefone"
                             input-classes="form-control-alternative"
                             v-model="model.phone"
@@ -56,7 +56,7 @@
               </div>
               <div class="col-lg-6">
                 <base-input alternative=""
-                            label="Data de Nascimento"
+                            label="Data de Nascimento *"
                             placeholder="Nascimento"
                             input-classes="form-control-alternative"
                             type="date"

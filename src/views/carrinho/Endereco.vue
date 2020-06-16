@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Endereço de Entrega</h1>
-    <div v-if="$localStorage.get('loja_id') && $localStorage.get('loja_id') === '1'">
+    <div v-if="$localStorage.get('endereco_id') && $localStorage.get('endereco_id') === '1'">
       Retirada na Loja<br/>
     </div>
     <div v-else>

@@ -21,15 +21,6 @@
 
       <b-overlay :show="isLoading">
         <b-table :fields="fields" :items="enderecos" responsive>
-          <template v-slot:cell(id)="{ item: { id }}">
-            <base-button
-              size="sm"
-              type="link"
-              icon="fas fa-edit fa-2x"
-              @click="$router.push({ name: 'endereco.editar', params: {id} })"
-              icon-only
-            />
-          </template>
           <template v-slot:cell(select)="{ item }">
             <base-button
               size="sm"
@@ -38,6 +29,15 @@
               @click="selectEndereco(item)"
             >Selecionar
             </base-button>
+          </template>
+          <template v-slot:cell(id)="{ item: { id }}">
+            <base-button
+              size="sm"
+              type="link"
+              icon="fas fa-edit fa-2x"
+              @click="$router.push({ name: 'endereco.editar', params: { id } })"
+              icon-only
+            />
           </template>
         </b-table>
       </b-overlay>
@@ -95,7 +95,7 @@
         this.$localStorage.remove('loja_id')
         this.$localStorage.remove('endereco_id')
         await this['endereco/listResponsavel']({ CEP: item.CEP, vm: this })
-        if (Object.keys(this.loja).length > 0 && this.loja.constructor !== Object) {
+        if (Object.keys(this.loja).length > 0) {
           this.$localStorage.set('endereco_id', item.id)
           this.$localStorage.set('loja_id', this.loja.id)
           this.$router.push({ name: 'produtos' })

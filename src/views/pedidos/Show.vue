@@ -141,7 +141,8 @@
 <style lang="scss" scoped>
   .col {
     img {
-      max-height: 35vh;
+      max-height: 130px;
+      max-width: 130px;
     }
     i.fas{
       @media (max-width: 776px) {

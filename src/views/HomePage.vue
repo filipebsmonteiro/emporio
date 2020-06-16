@@ -105,7 +105,12 @@
   text-transform: inherit;
   position: relative;
   line-height: 0.9em;
-  font-weight: bold
+  font-weight: bold;
+  @media (max-width: 776px) {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    font-size: 95px !important;
+  }
 }
 .gamela-color{
   color: #5E3D0B;
@@ -113,4 +118,5 @@
 .gamela-title{
   font-size: 70px;
 }
+
 </style>
