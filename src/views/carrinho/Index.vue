@@ -103,6 +103,7 @@
   import { mapActions, mapGetters } from 'vuex'
   import Pedido from '@/services/Pedido'
   import TableProduto from '@/views/carrinho/TableProduto'
+  import moment from 'moment'
 
   export default {
     name: 'Index',
@@ -231,6 +232,20 @@
         })
       },
       async persist () {
+        if (this.agendamento) {
+          let minimumMinutes = 5
+          try {
+            minimumMinutes = parseInt(process.env.VUE_APP_MINIMO_ESPERA_AGENDAMENTO)
+          } catch (e) {e}
+          if (moment(this.agendamento).diff(moment(), 'minutes') <= minimumMinutes) {
+            this.$notify({
+              type: 'danger',
+              title: `Tempo minimo para agendamento: ${minimumMinutes} minutos`,
+              verticalAlign: 'bottom',
+              horizontalAlign: 'center'
+            })
+          }
+        }
         await Pedido.post({
           endereco_id: this.$localStorage.get('endereco_id'),
           loja_id: this.$localStorage.get('loja_id'),
@@ -264,7 +279,7 @@
             text: 'Deseja acompanhar o status do seu pedido?',
             focusConfirm: true,
             confirmButtonText: 'Acompanhar!',
-          }).then((result, referencia=referencia) => {
+          }).then((result, referencia = referencia) => {
             if (result.value) {
               this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
             }

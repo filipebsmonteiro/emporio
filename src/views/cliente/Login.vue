@@ -50,9 +50,15 @@
 <script>
   import Auth from '@/services/Auth'
   import APIService from '@/api/APIService'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Login',
+    computed: {
+      ...mapGetters({
+        quantidade_carrinho: 'mainbar/getQuantidade',
+      })
+    },
     data() {
       return {
         model: {
@@ -77,7 +83,13 @@
           .then( async response => {
             await APIService._setToken(response.data.access_token)
             await APIService._setExpiration(response.data.expires_in)
-            this.$router.push({ name: 'produtos' })
+
+            if (this.quantidade_carrinho > 0){
+              this.$router.push({ name: 'carrinho' })
+            }else{
+              this.$router.push({ name: 'produtos' })
+            }
+
           })
           .catch(() => {
             this.$notify({

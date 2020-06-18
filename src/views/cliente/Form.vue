@@ -19,7 +19,7 @@
             <div class="row">
               <div class="col-lg-4">
                 <base-input alternative=""
-                            label="Nome"
+                            label="Nome *"
                             placeholder="Nome"
                             input-classes="form-control-alternative"
                             v-model="model.nome"
@@ -28,13 +28,13 @@
               </div>
               <div class="col-lg-4">
                 <base-input alternative=""
-                            label="CPF"
+                            label="CPF *"
                             placeholder="000.000.000-00"
                             input-classes="form-control-alternative"
                             v-model="model.CPF"
                             v-mask="'###.###.###-##'"
                             :valid="isCPFValid"
-                            :disabled="cliente && isCPFValid"
+                            :disabled="this.$route.name === 'cliente.auto_editar' && isCPFValid"
                             required
                 />
               </div>
@@ -67,7 +67,7 @@
             <div class="row">
               <div class="col-lg-6">
                 <base-input alternative=""
-                            label="Email"
+                            label="Email *"
                             placeholder="nome@email.com"
                             input-classes="form-control-alternative"
                             v-model="model.email"
@@ -77,7 +77,7 @@
               </div>
               <div class="col-lg-6">
                 <base-input alternative=""
-                            label="Senha"
+                            label="Senha *"
                             type="password"
                             placeholder=" + + + +"
                             input-classes="form-control-alternative"

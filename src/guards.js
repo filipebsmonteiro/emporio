@@ -13,11 +13,12 @@ export const isAuthenticatedSite = ($to, $from, $next) => {
   $next({ name: 'cliente.login' })
 }
 
-export const redirectLogin = (url = null) => {
-  if (url && url.indexOf('/painel') > -1) {
-    window.location.href = `${window.location.origin}/painel/login`
-    return
-  }
+export const redirectLogin = () => {
+//export const redirectLogin = (url = null) => {
+  //if (url && url.indexOf('/painel') > -1) {
+  //  window.location.href = `${window.location.origin}/painel/login`
+  //  return
+  //}
 
   if (window.location.href !== `${window.location.origin}/login`){
     window.location.href = `${window.location.origin}/login`

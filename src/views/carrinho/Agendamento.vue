@@ -7,12 +7,10 @@
      </b-card-header>
      <b-collapse id="accordion-agendamento" accordion="my-accordion" role="tabpanel">
        <b-card-body>
-         <b-form-datepicker v-model="date" placeholder="Selecione o Dia"
-                            :date-disabled-fn="dateDisabled" class="mb-2"
-                            @input="changed"/>
-         <b-form-timepicker v-model="time" placeholder="Escolha o Horário"
-                            :minutes-step="allowed.minutes"
-                            @input="changed"/>
+         <b-form-datepicker v-model="date" :min="minDate" :date-disabled-fn="dateDisabled"
+                            placeholder="Selecione o Dia" class="mb-2" @input="changed" hide-header/>
+         <b-form-timepicker v-model="time" :minutes-step="allowed.minutes"
+                            placeholder="Escolha o Horário" @input="changed"/>
        </b-card-body>
      </b-collapse>
    </b-card>
@@ -22,36 +20,39 @@
 <script>
   export default {
     name: 'Agendamento',
-    data() {
-      return {
-        date: '',
-        time: ''
-      }
-    },
     computed: {
       allowed () {
         try {
           return {
-            days: JSON.parse(process.env.VUE_APP_DIAS_NAO_AGENDAMENTO),
-            minutes: parseInt(process.env.VUE_APP_INT_MINUTOS_AGENDAMENTO)
+            weekdays: JSON.parse(process.env.VUE_APP_DIAS_SEMANA_NAO_AGENDAMENTO),
+            yeardays: JSON.parse(process.env.VUE_APP_DIAS_ANO_NAO_AGENDAMENTO),
+            minutes: parseInt(process.env.VUE_APP_INTERVALO_MINUTOS_AGENDAMENTO)
           }
         } catch (e) {
           return {
-            days: [],
+            weekdays: [],
+            yeardays: [],
             minutes: 10
           }
         }
+      }
+    },
+    data() {
+      const minDate = new Date()
+      return {
+        minDate,
+        date: '',
+        time: ''
       }
     },
     methods: {
       dateDisabled (ymd, date) {
         // Disable weekends (Sunday = `0`, Saturday = `6`) and
         // disable days that fall on the 13th of the month
-        const weekday = date.getDay()
-        //const day = date.getDate()
         // Return `true` if the date should be disabled
         //return weekday === 0 || weekday === 6 || day === 13
-        return this.allowed.days.includes(weekday)
+        const weekday = date.getDay()
+        return this.allowed.weekdays.includes(weekday) || this.allowed.yeardays.includes(ymd)
       },
       changed() {
         if (this.date && this.time){
