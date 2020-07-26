@@ -18,9 +18,9 @@
           />
         </b-form-group>
 
-        <b-form-group label="Combinações" label-size="lg" label-class="pt-0" class="mb-5">
-          <CombinacaoList v-if="produto.categoria && produto.categoria.permiteCombinacao"
-                          :list="combinacoes"
+        <b-form-group v-if="produto.categoria && produto.categoria.permiteCombinacao"
+                      label="Combinações" label-size="lg" label-class="pt-0" class="mb-5">
+          <CombinacaoList :list="combinacoes"
                           :quantidade-max="parseInt(produto.categoria.quantidadeCombinacoes)"
                           @loadCombinacoes="loadProducts"
                           @update="evt => {combinacoes = evt}"/>

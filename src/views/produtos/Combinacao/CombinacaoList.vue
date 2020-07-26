@@ -17,13 +17,15 @@
     <b-button v-if="list.length < quantidadeMax" variant="white border-light w-50 m-1" @click="addCombinacao">
       <i class="fas fa-plus fa-2x"></i>
     </b-button>
-    <b-modal :title="combinacaoText"
-             id="modal-combinacoes"
+    <b-modal id="modal-combinacoes"
              size="xl"
              @shown="$emit('loadCombinacoes')"
              @hidden="actualCombinacaoIndex = null"
              no-close-on-backdrop
              hide-footer>
+      <template slot="modal-title">
+        <h1 class="modal-title">{{ combinacaoText }}</h1>
+      </template>
       <ListProducts
         :produtos="produtos"
         @select="evt => {
@@ -125,5 +127,9 @@
 
   .r-2 {
     right: 2px !important;
+  }
+
+  /deep/.product {
+    border-color: #adb5bd !important;
   }
 </style>
