@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <TableProduto class="mt-5 mb-5" :produtos="pedido.produtos" hide-img/>
+    <TableProduto class="mt-5 mb-5" :produtos="pedido.produtos"/>
     <div v-if="pedido.observacoes">
       <h3>Observações</h3>
       <p>{{ pedido.observacoes }}</p>

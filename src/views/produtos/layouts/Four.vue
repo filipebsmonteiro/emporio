@@ -7,12 +7,9 @@
     class="p-0 shadow product"
     body-class="p-3"
   >
-    <!--:img-src="'/img/produtos/' + produto.imagem"
-    img-top
-    < !-- https://image.shutterstock.com/image-photo/dieting-260nw-113112424.jpg -->
     <template v-slot:header>
       <div class="product__imagem jumbotron mb-0"
-           :style="{'background-image': `url('/img/produtos/${produto.imagem}')`}">
+           :style="{'background-image': `url('${getImageUrl(produto.imagem)}')`}">
         <span v-if="produto.imagem"/>
         <span v-else class="b-avatar rounded w-100 m-auto">
         <span class="b-avatar-custom">
@@ -48,6 +45,11 @@
             ingredientes: ''
           }
         }
+      }
+    },
+    methods: {
+      getImageUrl (imageName) {
+        return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
       }
     }
   }

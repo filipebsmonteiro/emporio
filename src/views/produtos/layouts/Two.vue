@@ -2,7 +2,9 @@
   <b-card class="overflow-hidden product shadow" no-body>
     <b-row no-gutters>
       <b-col md="6" class="product__image">
-        <b-card-img v-if="produto.imagem" :src="'/img/produtos/' + produto.imagem" class="rounded-0"/>
+        <b-card-img v-if="produto.imagem"
+                    :src="getImageUrl(produto.imagem)"
+                    class="rounded-0"/>
         <span v-else class="b-avatar rounded">
           <span class="b-avatar-custom">
             <i class="fas fa-camera-retro fa-2x m-auto"/>
@@ -37,6 +39,11 @@
             ingredientes: ''
           }
         }
+      }
+    },
+    methods: {
+      getImageUrl (imageName) {
+        return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
       }
     }
   }

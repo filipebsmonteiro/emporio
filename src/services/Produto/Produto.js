@@ -6,6 +6,10 @@ class ProdutoRepository extends Repository {
   changeStatus (id, params) {
     return this.$axios.put(`${this.endpoint}/changeStatus/${id}`, params)
   }
+
+  uploadImagem (formData) {
+    return this.$axios.post(`${this.endpoint}/uploadImagem`, formData)
+  }
 }
 
 export default new ProdutoRepository()

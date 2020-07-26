@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8" />
+    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8" />
     <b-card no-body class="m-3 mt-n5">
       <b-overlay :show="isLoading">
         <b-table :fields="fields" :items="pedidos" striped responsive>

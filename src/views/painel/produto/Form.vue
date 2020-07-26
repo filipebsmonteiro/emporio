@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"/>
+    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8"/>
     <div class="container-fluid mt--7">
       <card shadow type="secondary">
         <div slot="header" class="bg-white border-0">
@@ -15,7 +15,7 @@
           </div>
         </div>
         <template>
-          <form @submit.prevent>
+          <form ref="form" @submit.prevent>
 
             <h6 class="heading-small text-muted mb-4">Informações</h6>
             <div class="pl-lg-4">
@@ -71,6 +71,24 @@
                               :options="categorias"
                               required/>
                   </b-form-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 d-flex">
+                  <b-form-file
+                    name="imagem"
+                    class="m-auto"
+                    placeholder="Selecione a imagem ou solte aqui..."
+                    browse-text="Selecionar"
+                  />
+                </div>
+                <div class="col-lg-6 d-flex">
+                  <b-img v-if="this.produto.imagem"
+                         class="p-0 m-auto"
+                         :src="getImageUrl(model.imagem)"
+                         width="150"
+                         height="150"
+                         thumbnail fluid/>
                 </div>
               </div>
             </div>
@@ -259,7 +277,6 @@
         model: {
           nome: null,
           preco: null,
-          //imagem: null,
           status: null,
           unidade_medida: null,
           intervalo: null,
@@ -291,6 +308,9 @@
         'produto/listOne',
         'produto/categoria/listAll'
       ]),
+      getImageUrl (imageName) {
+        return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
+      },
       validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
         if (data.errors && data.message === 'The given data was invalid.') {
@@ -354,30 +374,58 @@
         }
       },
       create () {
-        Produto.post(this.model).then(() => {
+        Produto.post(this.model).then(async response => {
           this.$notify({
             type: 'success',
             title: `Dados Salvos com Sucesso!`,
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
+
+          await this.uploadImagem(response.data.data.id)
+
           this.$router.push({ name: 'painel.produto.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
       },
       update () {
-        Produto.put(this.produto.id, this.model).then(() => {
+        Produto.put(this.produto.id, this.model).then(async response => {
           this.$notify({
             type: 'success',
             title: `Dados Atualizados com Sucesso!`,
             verticalAlign: 'bottom',
             horizontalAlign: 'center'
           })
+
+          await this.uploadImagem(response.data.id)
+
           this.$router.push({ name: 'painel.produto.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
+      },
+      async uploadImagem(idProduto) {
+        if (this.$refs.form.imagem.files[0]) {
+          this.$notify({
+            type: 'info',
+            title: `Carregando a imagem!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+
+          let formData = new FormData();
+          formData.append('id', idProduto)
+          formData.append('imagem', this.$refs.form.imagem.files[0])
+          await Produto.uploadImagem(formData).then(() => {
+            this.$notify({
+              type: 'success',
+              title: `Imagem carregada com Sucesso!`,
+              verticalAlign: 'bottom',
+              horizontalAlign: 'center'
+            })
+          })
+        }
       }
     },
     async mounted () {

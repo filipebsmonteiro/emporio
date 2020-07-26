@@ -3,7 +3,7 @@
     <template v-if="!hideImg" v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
-          <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`"/>
+          <img v-if="linha.item.imagem" :src="getImageUrl(linha.item.imagem)"/>
           <i v-else class="fas fa-camera-retro fa-2x m-auto"/>
         </span>
       </span>
@@ -62,6 +62,9 @@
       }
     },
     methods: {
+      getImageUrl (imageName) {
+        return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
+      },
       combinacoesPrefix (produto) {
         if (produto.combinacoes.length === 1) {
           return 'Metade'

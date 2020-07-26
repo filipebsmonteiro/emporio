@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
+    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8">
       <b-btn variant="outline-white p-1 pl-4 pr-4" @click="$router.back()">
         <i class="fas fa-arrow-left"/>
       </b-btn>
