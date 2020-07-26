@@ -3,7 +3,11 @@
     <Categorias v-if="this.$route.name !== 'produtos.categoria'"
                 class="sticky-top" @clickCategoria="loadProducts"/>
     <b-overlay :show="isLoadingProduto">
-      <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
+      <ListProducts
+        :produtosPorLinha="layout"
+        :produtos="produtos"
+        @select="evt => $router.push({name: 'produto.show', params: {id: evt.id}})"
+      />
     </b-overlay>
   </div>
 </template>

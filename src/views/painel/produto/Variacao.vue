@@ -27,10 +27,10 @@
         <b-form-group label="Opções" label-class="text-white" class="mt-4 mb-0">
           <SelectOpcao :model="opcao_model" @input="addOpcao" class="mb-2"/>
         </b-form-group>
-        <b-table :fields="fields" :items="variacao.ingredientes" responsive>
+        <b-table :fields="fields" :items="variacao.ingredientes" class="subtable-variacao" responsive>
           <template v-slot:cell(nome)="{ item: { nome, nesseMultiplo, preco } }">
-            <div class="d-flex justify-content-between">
-              <span>{{ nome }}</span>
+            <div class="d-flex justify-content-between nome-sub-variacao">
+              <span v-b-tooltip :title="nome">{{ nome }}</span>
               <span v-if="preco > 0" :class="{'text-through': nesseMultiplo && nesseMultiplo > 0}">{{ preco | formatMoney }}</span>
             </div>
           </template>
@@ -75,17 +75,18 @@
     methods: {
       addOpcao (opcao) {
         if (opcao) {
+          if (!this.variacao.ingredientes.find(i => i.id === opcao.id)) {
+            opcao = { id: opcao.id, nome: opcao.nome, preco: opcao.preco, nesseMultiplo: null }
+            this.variacao.ingredientes = [...this.variacao.ingredientes, opcao]
+            this.opcao_model = null
+            this.$emit('update', this.variacao)
+          }
           this.$notify({
             type: 'success',
             title: 'Adicionado !',
             timeout: 1000,
             verticalAlign: 'bottom'
           })
-          if (!this.variacao.ingredientes.find(i => i.id === opcao.id)) {
-            this.variacao.ingredientes = [...this.variacao.ingredientes, opcao]
-            this.opcao_model = null
-            this.$emit('update', this.variacao)
-          }
         }
       },
       updateOpcao (id, key, value) {
@@ -119,6 +120,40 @@
       i.fa-times {
         right: 2px;
         cursor: pointer;
+      }
+    }
+
+    .subtable-variacao {
+      max-height: 30vh !important;
+
+      /*SCROLLBAR*/
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #AAA;
+        border-radius: 10px;
+      }
+
+      /* END SCROLLBAR */
+
+      /deep/ table td {
+        padding: 0.25rem !important;
+
+        .nome-sub-variacao span {
+          max-width: 80%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
     }
 

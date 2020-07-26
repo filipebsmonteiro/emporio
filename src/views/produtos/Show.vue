@@ -18,6 +18,14 @@
           />
         </b-form-group>
 
+        <b-form-group label="Combinações" label-size="lg" label-class="pt-0" class="mb-5">
+          <CombinacaoList v-if="produto.categoria && produto.categoria.permiteCombinacao"
+                          :list="combinacoes"
+                          :quantidade-max="parseInt(produto.categoria.quantidadeCombinacoes)"
+                          @loadCombinacoes="loadProducts"
+                          @update="evt => {combinacoes = evt}"/>
+        </b-form-group>
+
         <div v-for="(multiplo, i) in produto.multiplos" :key="i">
           <MultipleChoice v-if="multiplo.isMultipleChoice" :multiplo="multiplo" @change="updateMultiplos"/>
           <SimpleChoice v-else :multiplo="multiplo" @change="updateMultiplos"/>
@@ -34,13 +42,13 @@
   import MultipleChoice from '@/views/Ingredientes/Multiplos/MultipleChoice'
   import SimpleChoice from '@/views/Ingredientes/Multiplos/SimpleChoice'
   import moment from 'moment'
+  import CombinacaoList from '@/views/produtos/Combinacao/CombinacaoList'
 
   export default {
     name: 'Show',
-    components: { SimpleChoice, MultipleChoice },
+    components: { CombinacaoList, SimpleChoice, MultipleChoice },
     computed: {
       ...mapGetters({
-        categorias: 'produto/categoria/getAll',
         isLoadingCategoria: 'produto/categoria/isLoading',
         store_produto: 'produto/getCurrent',
         isLoadingProduto: 'produto/isLoading'
@@ -51,21 +59,26 @@
           unidade_medida: this.store_produto.unidade_medida ? this.store_produto.unidade_medida : null,
           intervalo: this.store_produto.intervalo ? this.store_produto.intervalo : 1,
           minimo_unidade: this.store_produto.minimo_unidade ? this.store_produto.minimo_unidade : 1,
-          preco: this.store_produto.promocionar ? this.store_produto.valorPromocao : this.store_produto.preco
+          preco: this.store_produto.promocionar ? this.store_produto.valorPromocao : this.store_produto.preco,
+          multiplos: this.store_produto.categoria ? [
+            ...this.store_produto.categoria.multiplos,
+            ...this.store_produto.multiplos
+          ] : [],
         }
-      },
+      }
     },
     data () {
       return {
         quantidade: 1,
-        multiplos: []
+        multiplos: [],
+        combinacoes: []
       }
     },
     methods: {
       ...mapActions([
-        'produto/categoria/listAll',
         'produto/listOne',
-        'mainbar/setQuantidade'
+        'mainbar/setQuantidade',
+        'produto/listAll'
       ]),
       quantidadeFormatter (value) {
         if (this.produto.unidade_medida) {
@@ -121,7 +134,8 @@
           time: moment().format(),
           produto: this.produto.id,
           quantidade: this.quantidade,
-          multiplos: this.multiplos
+          multiplos: this.multiplos,
+          combinacoes: this.combinacoes
         }
 
         let carrinho = this.$localStorage.get('carrinho', null)
@@ -161,13 +175,18 @@
             this.$router.push({ name: 'produtos.categoria', params: { id: this.store_produto.categoria.id } })
           }
         })
+      },
+      async loadProducts () {
+        await this['produto/listAll']([
+          ['Cat_produtos_idCat_produtos', '=', this.produto.categoria.id],
+          ['status', '=', 'Disponível']
+        ])
       }
     },
     async mounted () {
+      window.scrollTo(0, 0)
       await this['produto/listOne'](this.$route.params.id)
       this.quantidade = this.produto.minimo_unidade
-
-      window.scrollTo(0,0)
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
         this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {

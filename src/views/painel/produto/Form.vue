@@ -210,18 +210,12 @@
             <hr class="my-4"/>
 
             <!-- Multiplos -->
-            <h6 class="heading-small text-muted mb-4">Variaçoẽs de Produto</h6>
-            <div class="pl-lg-4">
-              <div class="row">
-                <div v-for="(variacao, index) in model.multiplos" :key="index" class="col-md-6 mt-3">
-                  <Variacao :variacao="variacao"
-                            @update="evt => { updateVariacao(index, evt) }"
-                            @remove="removeVariacao(index)"/>
-                </div>
-                <div class="col-md-6 mt-3">
-                  <button type="button" class="btn btn-block btn-info" @click="addVariacao">Adicionar Variaçao</button>
-                </div>
-              </div>
+            <h6 v-if="isVariacaoAllowed" class="heading-small text-muted mb-4">Variaçoẽs de Produto</h6>
+            <div v-if="isVariacaoAllowed" class="pl-lg-4">
+              <VariacaoList :list="model.multiplos"
+                            @update="updateVariacao"
+                            @add="addVariacao"
+                            @remove="removeVariacao"/>
             </div>
           </form>
         </template>
@@ -233,13 +227,13 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/services/Produto/Produto'
-  import Variacao from '@/views/painel/produto/Variacao'
   import SelectOpcao from '@/views/painel/ingrediente/SelectOpcao'
   import IngredienteList from '@/views/painel/produto/IngredienteList'
+  import VariacaoList from '@/views/painel/produto/Variacao/VariacaoList'
 
   export default {
     name: 'Form',
-    components: { IngredienteList, SelectOpcao, Variacao },
+    components: { VariacaoList, IngredienteList, SelectOpcao },
     computed: {
       ...mapGetters({
         produto: 'produto/getCurrent',
@@ -256,16 +250,12 @@
         }
         return []
       },
+      isVariacaoAllowed () {
+        return (this.produto.categoria && this.produto.categoria.layout === 'Padrão') || !this.produto.id
+      }
     },
     data () {
       return {
-        variacao_exemplo: {
-          nome: null,
-          quantidade_min: null,
-          quantidade_max: null,
-          obrigatorio: true,
-          ingredientes: []
-        },
         model: {
           nome: null,
           preco: null,
@@ -316,8 +306,8 @@
           })
         }
       },
-      addVariacao () {
-        const copy = Object.assign({}, this.variacao_exemplo)
+      addVariacao (variacao) {
+        const copy = Object.assign({}, variacao)
         this.model.multiplos = [...this.model.multiplos, copy]
       },
       addIngrediente (ingrediente) {
@@ -340,9 +330,9 @@
       removeIngrediente (id) {
         this.model.ingredientes = this.model.ingredientes.filter(i => i.id !== id)
       },
-      updateVariacao (index, variacao) {
+      updateVariacao (variacao) {
         this.model.multiplos = this.model.multiplos.map((mult, idx) => {
-          if (idx === index) {
+          if (idx === variacao.index) {
             return variacao
           }
           return mult

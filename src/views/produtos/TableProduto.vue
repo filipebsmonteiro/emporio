@@ -11,6 +11,12 @@
     <template v-slot:cell(quantidade)="{ item }">
       {{ item.quantidade }}<strong v-if="item.unidade_medida"> {{ item.unidade_medida }}</strong>
     </template>
+    <template v-slot:cell(nome)="{ item }">
+      {{ `${combinacoesPrefix(item)} ${item.nome}` }}
+      <span v-for="(combinacao, i) in item.combinacoes" :key="i">
+        <br>{{ `${combinacoesPrefix(item)} ${combinacao.nome}` }}
+      </span>
+    </template>
     <template v-slot:cell(detalhes)="linha">
       <base-button v-if="linha.item.multiplos.length > 0" type="link" @click="linha.toggleDetails">
         <u>Detalhes</u>
@@ -53,6 +59,20 @@
           { key: 'detalhes', label: 'Detalhes' },
           { key: 'valor', label: 'Valor' },
         ]
+      }
+    },
+    methods: {
+      combinacoesPrefix (produto) {
+        if (produto.combinacoes.length === 1) {
+          return 'Metade'
+        }
+        if (produto.combinacoes.length === 2) {
+          return 'Um terço'
+        }
+        if (produto.combinacoes.length === 3) {
+          return 'Um quarto'
+        }
+        return ''
       }
     },
     mounted () {

@@ -3,7 +3,7 @@
     <template v-slot:cell(imagem)="linha">
       <span class="b-avatar rounded size-5">
         <span class="b-avatar-custom">
-          <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`" />
+          <img v-if="linha.item.imagem" :src="`/img/produtos/${linha.item.imagem}`"/>
           <i v-else class="fas fa-camera-retro fa-2x m-auto"/>
         </span>
       </span>
@@ -25,15 +25,20 @@
       </b-input-group>
 
     </template>
+    <template v-slot:cell(nome)="{ item }">
+      {{ `${combinacoesPrefix(item)} ${item.nome}` }}
+      <span v-for="(combinacao, i) in item.combinacoes" :key="i">
+        <br>{{ `${combinacoesPrefix(item)} ${combinacao.nome}` }}
+      </span>
+    </template>
     <template v-slot:cell(detalhes)="linha">
-      <base-button v-if="linha.item.multiplos.length > 0"
-                   type="link" @click="linha.toggleDetails">
+      <base-button v-if="linha.item.multiplos.length > 0" type="link" @click="linha.toggleDetails">
         <u>Detalhes</u>
       </base-button>
     </template>
     <template v-slot:row-details="linha">
       <b-card class="shadow" no-body>
-        <detalhes-produto :detalhes="linha.item.detalhes" />
+        <DetalhesProduto :detalhes="linha.item.detalhes"/>
       </b-card>
     </template>
     <template v-slot:cell(valor)="linha">
@@ -70,6 +75,20 @@
         ]
       }
     },
+    methods: {
+      combinacoesPrefix (produto) {
+        if (produto.combinacoes.length === 1) {
+          return 'Metade'
+        }
+        if (produto.combinacoes.length === 2) {
+          return 'Um terço'
+        }
+        if (produto.combinacoes.length === 3) {
+          return 'Um quarto'
+        }
+        return ''
+      }
+    },
   }
 </script>
 
@@ -78,6 +97,7 @@
     width: 5rem;
     height: 5rem;
   }
+
   /deep/ th {
     &:last-child {
       text-align: center !important;

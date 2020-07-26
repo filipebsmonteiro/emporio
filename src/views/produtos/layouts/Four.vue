@@ -28,9 +28,8 @@
           }}</small>
       </div>
     </b-card-text>
-    <router-link :to="{ name: 'produto.show', params: { id: produto.id } }" class="btn product__button">
-      Pedir
-    </router-link>
+
+    <b-button variant="success product__button" @click="$emit('select', produto)" block>Pedir</b-button>
   </b-card>
 </template>
 

@@ -11,7 +11,7 @@
           <div class="col-lg-4 col-md-6">
             <Endereco/>
           </div>
-          <div class="col d-sm-none"/>
+          <div class="col-lg-4 d-sm-none d-md-block"/>
           <div class="col-lg-4 col-md-6">
             <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
           </div>
@@ -104,16 +104,18 @@
   import Pedido from '@/services/Pedido'
   import TableProduto from '@/views/carrinho/TableProduto'
   import moment from 'moment'
+  import APIService from '@/api/APIService'
 
   export default {
     name: 'Index',
     components: { TableProduto, Cupom, Agendamento, Endereco },
     computed: {
       ...mapGetters({
+        cliente: 'cliente/getCurrent',
         fidelidade: 'fidelidade/getCurrent',
         store_formaspagamento: 'formapagamento/getAll',
         store_produtos: 'produto/getAll',
-        produtos_loading: 'produto/isLoading'
+        produtos_loading: 'produto/isLoading',
       }),
       allowed () {
         return {
@@ -139,10 +141,28 @@
           const unidade_medida = backendProd.unidade_medida ? backendProd.unidade_medida : null
           let valor = preco / minimo_unidade
           let detalhes = []
+          let combinacoes = []
+
+          if (produto.combinacoes.length > 0) {
+            combinacoes = produto.combinacoes.map(c => {
+              const combinacao = this.store_produtos.find(pbe => pbe.id === c.id)
+              return {
+                index: c.index,
+                id: combinacao.id,
+                nome: combinacao.nome,
+                preco: combinacao.preco
+              }
+            })
+
+            valor = ( valor + combinacoes.reduce((p, c) => {return p + c.preco}, 0) ) / ( combinacoes.length+1 )
+          }
 
           if (produto.multiplos.length > 0) {
             produto.multiplos.map(cartMult => {
-              const backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+              let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+              if (!backendMult) {
+                backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+              }
               const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
               let valorIng = 0
               if (backendIng.nesseMultiplo) {
@@ -172,7 +192,8 @@
             minimo_unidade,
             nome,
             unidade_medida,
-            valor
+            valor,
+            combinacoes
           }
           return produto
 
@@ -214,10 +235,11 @@
     },
     methods: {
       ...mapActions([
+        'cliente/listMe',
         'fidelidade/listOne',
         'formapagamento/listAll',
-        'produto/listAll',
-        'mainbar/setQuantidade'
+        'produto/listAllPaginated',
+        'mainbar/setQuantidade',
       ]),
       removeCartItem (time) {
         this.carrinho = this.carrinho.filter(item => item.time !== time)
@@ -233,10 +255,12 @@
       },
       async persist () {
         if (this.agendamento) {
-          let minimumMinutes = 5
+          let minimumMinutes = 0
           try {
             minimumMinutes = parseInt(process.env.VUE_APP_MINIMO_ESPERA_AGENDAMENTO)
-          } catch (e) {e}
+          } catch (e) {
+            minimumMinutes = 5
+          }
           if (moment(this.agendamento).diff(moment(), 'minutes') <= minimumMinutes) {
             this.$notify({
               type: 'danger',
@@ -271,8 +295,8 @@
             })
           }
 
-          await this.$localStorage.remove('carrinho')
-          this['mainbar/setQuantidade'](0)
+          // await this.$localStorage.remove('carrinho')
+          // this['mainbar/setQuantidade'](0)
           await this.$swal({
             icon: 'success',
             title: `Pedido realizado com sucesso!`,
@@ -281,7 +305,7 @@
             confirmButtonText: 'Acompanhar!',
           }).then((result, referencia = referencia) => {
             if (result.value) {
-              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
+              // this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
             }
           })
 
@@ -329,12 +353,21 @@
     },
     async mounted () {
       await this['formapagamento/listAll']()
-      //TODO: REMOVER DADOS MOCKADOS CLIENTE
-      await this['fidelidade/listOne'](1)
+      if (APIService._isAuthenticated()) {
+        await this['cliente/listMe']()
+        await this['fidelidade/listOne'](this.cliente.id)
+      }
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
       if (this.carrinho.length > 0) {
-        this['produto/listAll']({ ids: this.carrinho.map(p => p.produto) })
+        const ids = this.carrinho.reduce((previousValue, currentValue) => {
+          let ids = [...previousValue, currentValue.produto]
+          if (currentValue.combinacoes.length > 0) {
+            ids = [...ids, ...currentValue.combinacoes.map(c => c.id)]
+          }
+          return ids
+        }, [])
+        this['produto/listAllPaginated']({ ids })
       }
 
       this.mounted = true

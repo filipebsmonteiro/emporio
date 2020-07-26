@@ -1,20 +1,24 @@
 <template>
   <div>
-    <b-card-group
-      v-for="(line, lineIndex) in chunk(produtos)"
-      :key="lineIndex"
-      class="mt-4"
-      deck
-    >
-      <!-- eslint-disable-next-line vue/require-component-is -->
-      <Component
-        v-bind:is="componentName"
-        v-for="produto in line"
-        :key="produto.id"
-        :produto="produto"
-        :class="line.length < produtosPorLinha ? `col-md-${12/produtosPorLinha}` : ''"
-      />
-    </b-card-group>
+    <div v-if="produtos.length > 0">
+      <b-card-group
+        v-for="(line, lineIndex) in chunk(produtos)"
+        :key="lineIndex"
+        class="mt-4"
+        deck
+      >
+        <!-- eslint-disable-next-line vue/require-component-is -->
+        <Component
+          v-bind:is="componentName"
+          v-for="produto in line"
+          :key="produto.id"
+          :produto="produto"
+          :class="line.length < produtosPorLinha ? `col-md-${12/produtosPorLinha}` : ''"
+          @select="evt => $emit('select', evt)"
+        />
+      </b-card-group>
+    </div>
+    <p v-else class="m-auto">Nenhum produto carregado/encontrado</p>
   </div>
 </template>
 

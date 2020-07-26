@@ -18,7 +18,11 @@
               </div>
             </div>
           </template>
-          <ListProducts :produtosPorLinha="layout" :produtos="produtos"/>
+          <ListProducts
+            :produtosPorLinha="layout"
+            :produtos="produtos"
+            @select="evt => $router.push({name: 'produto.show', params: {id: evt.id}})"
+          />
         </b-overlay>
       </div>
     </div>
