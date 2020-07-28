@@ -58,7 +58,7 @@ axios.interceptors.response.use(response => {
           return axios(originalRequest)
         }
       }
-      redirectLogin(originalRequest.url)
+      redirectLogin()
     }
 
     // return Error object with Promise
