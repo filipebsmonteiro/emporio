@@ -42,6 +42,7 @@ export default new Router({
       path: '/painel',
       component: DashboardLayout,
       beforeEnter: isAuthenticatedPainel,
+      redirect: {name: 'painel.dashboard'},
       children: [
         { path: 'dashboard', name: 'painel.dashboard', component: () => import('@/views/painel/Dashboard') },
         ...painelCliente,

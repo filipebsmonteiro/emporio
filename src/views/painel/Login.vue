@@ -82,7 +82,6 @@
 <script>
   import APIService from '@/api/APIService'
   import AuthPainel from '@/services/AuthPainel'
-  import { redirectLogin } from '@/guards'
 
   export default {
     name: 'login',
@@ -112,7 +111,7 @@
             await APIService._setToken(response.data.access_token)
             await APIService._setExpiration(response.data.expires_in)
             await APIService._setDomain('painel')
-            redirectLogin('/painel')
+            this.$router.push({name: 'painel.dashboard'})
           })
           .catch(() => {
             this.$notify({

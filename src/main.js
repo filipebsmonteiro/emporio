@@ -27,6 +27,8 @@ import ArgonDashboard from './plugins/argon-dashboard'
 import { store } from './store'
 import '@/plugins/globalFilters'
 
+// import '@/assets/scss/custom_store/dark_mode.scss'
+
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
