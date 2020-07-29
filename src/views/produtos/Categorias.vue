@@ -9,18 +9,18 @@
             <template slot="title">{{ grupo }}</template>
             <template>
               <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="dropdown-item">
-                    <span @click="loadProducts(categoria.id)">
-                      {{ categoria.nome }}
-                    </span>
+                <span @click="loadProducts(categoria.id)">
+                  {{ categoria.nome }}
+                </span>
               </b-button>
             </template>
           </base-dropdown>
         </li>
         <li v-else class="nav-item">
           <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="nav-link d-inline-flex">
-                    <span @click="loadProducts(categoria.id)">
-                      {{ categoria.nome }}
-                    </span>
+            <span @click="loadProducts(categoria.id)">
+              {{ categoria.nome }}
+            </span>
           </b-button>
         </li>
       </ul>
