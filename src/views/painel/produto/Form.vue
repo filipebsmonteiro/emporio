@@ -262,7 +262,7 @@
           return this.store_categorias.map(c => {
             return {
               value: c.id,
-              text: `${c.grupo} - ${c.nome}`
+              text: `${c.grupo || ''} - ${c.nome}`
             }
           })
         }
@@ -398,7 +398,18 @@
             horizontalAlign: 'center'
           })
 
-          await this.uploadImagem(response.data.id)
+
+          this.$notify({
+            type: 'info',
+            title: `Carregando a imagem!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          try{
+            await this.uploadImagem(response.data.id)
+          }catch (e) {
+            await this.uploadImagem(response.data.data.id)
+          }
 
           this.$router.push({ name: 'painel.produto.index' })
         }).catch(error => {
@@ -407,12 +418,6 @@
       },
       async uploadImagem(idProduto) {
         if (this.$refs.form.imagem.files[0]) {
-          this.$notify({
-            type: 'info',
-            title: `Carregando a imagem!`,
-            verticalAlign: 'bottom',
-            horizontalAlign: 'center'
-          })
 
           let formData = new FormData();
           formData.append('id', idProduto)
