@@ -62,7 +62,7 @@
                   <base-input alternative=""
                               label="Quantidade de combinações"
                               placeholder="Quantidade"
-                              type="number" step="1" min="1" max="4"
+                              type="number" step="1" min="2" max="4"
                               input-classes="form-control-alternative"
                               :disabled="!model.permiteCombinacao"
                               v-model="model.quantidadeCombinacoes"/>
@@ -107,7 +107,7 @@
           grupo: '',
           layout: '',
           permiteCombinacao: false,
-          quantidadeCombinacoes: '',
+          quantidadeCombinacoes: 2,
           multiplos: [],
         }
       }

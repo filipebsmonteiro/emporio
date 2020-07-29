@@ -4,7 +4,7 @@
     id="navbar-categorias"
     :class="{'navbar-top rounded': true, 'sticky-top': flexColumn }" :flex-column="flexColumn" expand>
       <ul class="navbar-nav mr-auto" v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo">
-        <li class="nav-item dropdown">
+        <li v-if="grupo !== ''" class="nav-item dropdown">
           <base-dropdown class="nav-link">
             <template slot="title">{{ grupo }}</template>
             <template>
@@ -15,6 +15,13 @@
               </b-button>
             </template>
           </base-dropdown>
+        </li>
+        <li v-else class="nav-item">
+          <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="nav-link d-inline-flex">
+                    <span @click="loadProducts(categoria.id)">
+                      {{ categoria.nome }}
+                    </span>
+          </b-button>
         </li>
       </ul>
     </base-nav>
