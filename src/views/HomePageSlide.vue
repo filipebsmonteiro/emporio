@@ -1,6 +1,12 @@
 <template>
   <div>
     <section class="first-section d-flex flex-column">
+      <b-carousel :interval="4000">
+        <b-carousel-slide img-src="https://disciplinanadieta.com/wp-content/uploads/2018/01/dinner-601576_960_720.jpg"/>
+        <b-carousel-slide
+          img-src="https://static-otelico.com/cache/montmartre_apolonia/hotel_paris_montmartre_resto.jpg"/>
+        <b-carousel-slide img-src="https://cdn.pixabay.com/photo/2015/03/26/10/07/restaurant-690975_960_720.jpg"/>
+      </b-carousel>
       <SiteBaseNav/>
       <div class="container h-100 justify-content-center text-center m-auto align-items-center">
         <div class="row">
@@ -79,48 +85,19 @@
         <b-carousel-slide img-src="https://cdn.pixabay.com/photo/2015/03/26/10/07/restaurant-690975_960_720.jpg"/>
       </b-carousel>
     </section>
-
-    <Footer/>
   </div>
 </template>
 
 <script>
 import SiteBaseNav from '@/layout/SiteNavbar/SiteBaseNav'
-import Footer from '@/layout/Footer'
 
 export default {
   name: 'HomePage',
-  components: { Footer, SiteBaseNav },
+  components: { SiteBaseNav },
   data () {
     return {
       mainProps: { blank: false, blankColor: '#777', width: 250, height: 250 }
     }
-  },
-  mounted () {
-    const { spawn } = require("child_process");
-
-    const ls = spawn("ls", ["-la"]);
-
-    ls.stdout.on("data", data => {
-      // eslint-disable-next-line no-console
-      console.log(`stdout: ${data}`);
-    });
-
-    ls.stderr.on("data", data => {
-      // eslint-disable-next-line no-console
-      console.log(`stderr: ${data}`);
-    });
-
-    ls.on('error', (error) => {
-      // eslint-disable-next-line no-console
-      console.log(`error: ${error.message}`);
-    });
-
-    ls.on("close", code => {
-      // eslint-disable-next-line no-console
-      console.log(`child process exited with code ${code}`);
-    });
-
   }
 }
 </script>
@@ -128,9 +105,15 @@ export default {
 <style lang="scss" scoped>
 $title: 'Mawns Serif';
 .first-section {
-  background: url("http://opa.themicspk.com/assets/img/hero-bg.jpg") top center;
-  background-size: cover;
   min-height: 100vh !important;
+
+  /deep/ .carousel {
+    z-index: -1;
+
+    .carousel-inner .carousel-item {
+      height: 100vh !important;
+    }
+  }
 
   &::before {
     content: "";
@@ -143,8 +126,9 @@ $title: 'Mawns Serif';
   }
 
   .container {
-    text-transform: inherit;
+    margin-top: -100vh;
     position: relative;
+    text-transform: inherit;
     font-weight: bold;
 
     .row {

@@ -53,12 +53,14 @@ export default new Router({
       ]
     },
 
+
+    { path: '/home', name: 'homepage', component: () => import('@/views/HomePage') },
+    { path: '/home-slide', name: 'homepage-slide', component: () => import('@/views/HomePageSlide') },
     {
       path: '/',
       redirect: '/produtos',
       component: SiteLayout,
       children: [
-        { path: '/', name: 'homepage', component: () => import('@/views/HomePage') },
         ...cliente,
         ...endereco,
         ...pedido,

@@ -3,6 +3,7 @@
     <SiteBaseNav/>
     <FadeTransition :duration="200" mode="out-in">
       <router-view></router-view>
+      <slot></slot>
     </FadeTransition>
     <div class="mt-5 mb-5 w-100" style="color: transparent;">.</div>
     <CustomFooter v-if="hasCustomFooter"/>

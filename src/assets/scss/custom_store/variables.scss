@@ -3,7 +3,7 @@
 $primary-font-custom: "Damion-regular";
 $primary-font-extension: "ttf";
 
-$secondary-font-custom: "Damion-regular";
+$secondary-font-custom: "Mawns Serif";
 $secondary-font-extension: "ttf";
 
 $font-title: '';
@@ -16,20 +16,20 @@ $body-fonts: #525f7f;
 // NavBar
 $navbar-bg-start: transparent;
 $navbar-bg-end: transparent;
-$navbar-text-color: #5E3D0B;
-$navbar-border-color: #5E3D0B;
+$navbar-text-color: #fff;
+$navbar-border-color: #fff;
 $navbar-border-left-px: 0px;
 $navbar-border-top-px: 0px;
 $navbar-border-right-px: 0px;
-$navbar-border-bottom-px: 2px;
+$navbar-border-bottom-px: 0px;
 $navbar-border-type: solid;
 $navbar-cart-color: rgba(255, 255, 255, 0.8);;
 $navbar-font: '';
 $navbar-font-size: '';
 
 // NavCat
-$navcat-bg-start: #813f0b;
-$navcat-bg-end: #793902;
+$navcat-bg-start: rgba(0, 0, 0, 0.85);
+$navcat-bg-end: rgba(0, 0, 0, 0.85);
 $navcat-text-color: rgba(255, 255, 255, 0.8);
 $navcat-border-color: transparent;
 $navcat-border-left-px: 1px;
@@ -45,6 +45,6 @@ $btn-prod-bg-color: $success;
 $btn-prod-color: $white;
 
 // Footer
-$footer-bg-start: #813f0b;
-$footer-bg-end: #793902;
+$footer-bg-start: #272522;
+$footer-bg-end: #444;
 $footer-text-color: rgba(255, 255, 255, 0.8);
