@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import Auth from '@/services/Auth'
+  import Auth from '@/repositories/Auth'
 
   export default {
     name: 'Esqueceu',

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import Loja from '@/services/Loja'
+  import Loja from '@/repositories/Loja'
 
   export default {
     name: 'Contato',

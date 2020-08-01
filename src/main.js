@@ -24,7 +24,7 @@ import VueHtmlToPaper from 'vue-html-to-paper'
 import VueFacebookPixel from 'vue-analytics-facebook-pixel'
 import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
-import { store } from './store'
+import { store } from './storages'
 import '@/plugins/globalFilters'
 
 // import '@/assets/scss/custom_store/dark_mode.scss'

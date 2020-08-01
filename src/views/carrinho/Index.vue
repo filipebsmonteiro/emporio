@@ -101,7 +101,7 @@
   import Agendamento from '@/views/carrinho/Agendamento'
   import Cupom from '@/views/carrinho/Cupom'
   import { mapActions, mapGetters } from 'vuex'
-  import Pedido from '@/services/Pedido'
+  import Pedido from '@/repositories/Pedido'
   import TableProduto from '@/views/carrinho/TableProduto'
   import moment from 'moment'
   import APIService from '@/api/APIService'

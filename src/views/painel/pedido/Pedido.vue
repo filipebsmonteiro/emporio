@@ -113,7 +113,7 @@
 
 <script>
   import TableProduto from '@/views/produtos/TableProduto'
-  import Pedido from '@/services/Pedido'
+  import Pedido from '@/repositories/Pedido'
   import moment from 'moment'
 
   export default {

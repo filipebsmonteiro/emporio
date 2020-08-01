@@ -74,13 +74,13 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Fidelidade from '@/services/Fidelidade'
+  import Fidelidade from '@/repositories/Fidelidade'
 
   export default {
     name: 'Form',
     computed: {
       ...mapGetters({
-        cliente: 'cliente/getCurrent'
+        cliente: 'cliente/current'
       })
     },
     data () {

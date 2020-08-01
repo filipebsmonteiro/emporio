@@ -3,7 +3,7 @@
     <div id="navbar-main">
       <Component :is="sidebar.logo" :class="` logo-${sidebar.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
         <template  v-slot:brand>
-          <router-link to="/">
+          <router-link to="/home">
             <img ref="logo" src="/img/brand/logo.png"/>
           </router-link>
         </template>

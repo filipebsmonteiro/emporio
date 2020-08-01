@@ -244,7 +244,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Produto from '@/services/Produto/Produto'
+  import Produto from '@/repositories/Produto/Produto'
   import SelectOpcao from '@/views/painel/ingrediente/SelectOpcao'
   import IngredienteList from '@/views/painel/produto/IngredienteList'
   import VariacaoList from '@/views/painel/produto/Variacao/VariacaoList'
@@ -254,8 +254,8 @@
     components: { VariacaoList, IngredienteList, SelectOpcao },
     computed: {
       ...mapGetters({
-        produto: 'produto/getCurrent',
-        store_categorias: 'produto/categoria/getAll'
+        produto: 'produto/current',
+        store_categorias: 'produto/categoria/all'
       }),
       categorias () {
         if (this.store_categorias && Array.isArray(this.store_categorias)) {

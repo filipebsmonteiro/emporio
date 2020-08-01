@@ -16,7 +16,16 @@
             </div>
           </div>
 
-          <b-table :items="categorias" :fields="fields">
+          <TableData
+            :fields="fields"
+            :fields-filter="filter"
+            :items="categorias"
+            :loading="isLoading"
+            :paginator="pagination"
+            route-new="painel.produto.categoria.create"
+            text-new="Nova categoria"
+            text-empty="Nenhuma categoria encontrada"
+            @list="evt => $store.dispatch('produto/cateogria/listAllPaginated', evt)">
             <template v-slot:cell(created_at)="{ item: { created_at } }">
               {{ created_at | formatDate }}
             </template>
@@ -26,55 +35,51 @@
                 <i class="fas fa-edit"/>
               </router-link>
             </template>
-          </b-table>
-          <Paginator
-            v-if="pagination.total > pagination.per_page"
-            :page="pagination.page"
-            :per-page="pagination.per_page"
-            :total="pagination.total"
-            @change="evt => $store.dispatch('produto/categoria/listAllPaginated', evt)"
-          />
+          </TableData>
         </div>
       </b-overlay>
     </div>
   </div>
 </template>
 <script>
-  import { mapActions, mapGetters } from 'vuex'
-  import Paginator from '@/components/Paginator'
+import { mapActions, mapGetters } from 'vuex'
+import TableData from '@/components/TableData'
 
-  export default {
-    name: 'Index',
-    components: { Paginator },
-    computed: {
-      ...mapGetters({
-        categorias: 'produto/categoria/getAll',
-        isLoading: 'produto/categoria/isLoading',
-        pagination: 'produto/categoria/pagination'
-      })
-    },
-    data () {
-      return {
-        fields: [
-          { key: 'nome', label: 'Descrição' },
-          { key: 'grupo', label: 'Grupo' },
-          //{ key: 'created_at', label: 'Criado em' },
-          { key: 'id', label: 'Editar' }
-        ]
-      }
-    },
-    methods: {
-      ...mapActions([
-        'produto/categoria/listAllPaginated'
-      ])
-    },
-    mounted () {
-      this['produto/categoria/listAllPaginated'](this.pagination)
+export default {
+  name: 'Index',
+  components: { TableData },
+  computed: {
+    ...mapGetters({
+      categorias: 'produto/categoria/all',
+      isLoading: 'produto/categoria/isLoading',
+      pagination: 'produto/categoria/pagination'
+    })
+  },
+  data () {
+    return {
+      fields: [
+        { key: 'nome', label: 'Descrição' },
+        { key: 'grupo', label: 'Grupo' },
+        { key: 'id', label: 'Editar' }
+      ],
+      filter: [
+        { key: 'nome', label: 'Descrição' },
+        { key: 'grupo', label: 'Grupo' }
+      ]
     }
+  },
+  methods: {
+    ...mapActions([
+      'produto/categoria/listAllPaginated'
+    ])
+  },
+  mounted () {
+    this['produto/categoria/listAllPaginated'](this.pagination)
   }
+}
 </script>
 <style lang="scss" scoped>
-  i.fas {
-    font-size: 1.5em;
-  }
+i.fas {
+  font-size: 1.5em;
+}
 </style>

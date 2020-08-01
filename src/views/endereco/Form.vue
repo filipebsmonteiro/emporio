@@ -79,7 +79,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import EnderecoRepository from '@/services/Endereco'
+  import EnderecoRepository from '@/repositories/Endereco'
   import { mask } from 'vue-the-mask'
   import axios from 'axios'
 

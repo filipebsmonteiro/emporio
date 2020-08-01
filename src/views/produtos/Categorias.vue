@@ -42,7 +42,7 @@
     },
     computed: {
       ...mapGetters({
-        categorias: 'produto/categoria/getAll',
+        categorias: 'produto/categoria/all',
         isLoading: 'produto/categoria/isLoading'
       }),
       categoriasAgrupadas() {
@@ -63,14 +63,14 @@
     },
     methods: {
       ...mapActions([
-        'produto/categoria/listAll',
+        'produto/categoria/listAvailable',
       ]),
       loadProducts(id) {
         this.$emit('clickCategoria', id)
       }
     },
     async mounted() {
-      await this['produto/categoria/listAll']()
+      await this['produto/categoria/listAvailable']()
 
       if (this.$route.name === 'produtos.categoria') {
         this.loadProducts(this.$route.params.id)

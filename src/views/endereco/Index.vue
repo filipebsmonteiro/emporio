@@ -5,11 +5,12 @@
         <div class="d-flex justify-content-between">
           <div v-if="retiradaAllowed">
             <b-form-group v-if="lojas.length > 1"
-                          label-cols-lg="2"
+                          label-cols-lg="3"
                           label="Retirar na Loja"
                           label-size="lg"
-                          class="mb-0">
-              <b-form-select :options="lojas" @change="selectLoja"/>
+                          class="m-0"
+                          label-class="p-0">
+              <b-form-select :options="lojas" size="sm" @change="selectLoja"/>
             </b-form-group>
             <b-button v-else variant="primary" @click="selectLoja(store_lojas[0].id)"
                       size="sm">Retirar na Loja
@@ -53,10 +54,10 @@
     name: 'Index',
     computed: {
       ...mapGetters({
-        enderecos: 'endereco/getAll',
+        enderecos: 'endereco/all',
         isLoading: 'endereco/isLoading',
-        store_lojas: 'loja/getAll',
-        loja: 'loja/getCurrent',
+        store_lojas: 'loja/all',
+        loja: 'loja/current',
       }),
       retiradaAllowed () {
         return parseInt(process.env.VUE_APP_PERMITE_RETIRADA_LOJA)

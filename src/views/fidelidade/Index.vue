@@ -90,9 +90,9 @@
     name: 'Index',
     computed: {
       ...mapGetters(  {
-        pedidos: 'pedido/getAll',
+        pedidos: 'pedido/all',
         isLoadingPedidos: 'pedido/isLoading',
-        store_fidelidade: 'fidelidade/getAll',
+        store_fidelidade: 'fidelidade/all',
         isLoadingFidelidade: 'fidelidade/isLoading'
       }),
       fidelidade () {
@@ -142,10 +142,12 @@
       ]),
     },
     async mounted () {
-      await this['pedido/listAll']([
-        ['status', '!=', 'Cancelado'],
-        ['created_at', '>=', moment().subtract(12, 'month').startOf('day').format()]
-      ])
+      await this['pedido/listAll']({
+        'filters': [
+          ['status', '!=', 'Cancelado'],
+          ['created_at', '>=', moment().subtract(12, 'month').startOf('day').format()]
+        ]
+      })
       await this['fidelidade/listAll']()
     }
   }

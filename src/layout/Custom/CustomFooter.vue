@@ -6,30 +6,30 @@
         <div class="mt-3 mb-5 text-center">
           <span class="h1 text-white">Assine para receber as novidades mais quentinhas e gostosas</span>
           <b-input class="mb-2" placeholder="Digite seu melhor e-mail"/>
-          <b-btn variant="white" block>Assine Já</b-btn>
+          <b-btn variant="outline-white" block>Assine Já</b-btn>
         </div>
         <div class="mt-5 mb-2">
           <div class="row">
             <div class="col d-flex">
-              <img src="/img/brand/gamela-logo.png" class="float-lg-right m-md-auto">
+              <!--img src="/img/brand/gamela-logo.png" class="float-lg-right m-md-auto"-->
             </div>
             <div class="col text-center">
               <p class="text-white">Siga a gente:</p>
               <a class="btn btn-link text-white" style="border-radius: 50%;"
-                 target="_blank" href="https://www.facebook.com/230451693800177">
+                 target="_blank" href="#">
                 <i class="fab fa-facebook-f"/>
               </a>
               <a class="btn btn-link text-white" style="border-radius: 50%;"
-                 target="_blank" href="https://www.tripadvisor.com.br/8188664">
+                 target="_blank" href="#">
                 <i class="fab fa-tripadvisor"/>
               </a>
               <a class="btn btn-link text-white" style="border-radius: 50%;"
-                 target="_blank" href="https://www.instagram.com/gamelabiscoitoscaseiros">
+                 target="_blank" href="#">
                 <i class="fab fa-instagram"/>
               </a>
             </div>
             <div class="col d-flex">
-              <img src="/img/brand/advisor.png" style="max-height: 97px;" class="m-md-auto">
+              <!--img src="/img/brand/advisor.png" style="max-height: 97px;" class="m-md-auto"-->
             </div>
           </div>
         </div>

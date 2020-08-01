@@ -89,7 +89,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Categoria from '@/services/Produto/Categoria'
+  import Categoria from '@/repositories/Produto/Categoria'
   import VariacaoList from '@/views/painel/produto/Variacao/VariacaoList'
 
   export default {
@@ -97,7 +97,7 @@
     components: { VariacaoList },
     computed: {
       ...mapGetters({
-        categoria: 'produto/categoria/getCurrent'
+        categoria: 'produto/categoria/current'
       })
     },
     data () {

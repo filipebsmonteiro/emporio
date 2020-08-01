@@ -56,7 +56,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Auth from '@/services/Auth'
+  import Auth from '@/repositories/Auth'
   import APIService from '@/api/APIService'
 
   export default {

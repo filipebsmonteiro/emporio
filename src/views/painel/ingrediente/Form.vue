@@ -63,13 +63,13 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Ingrediente from '@/services/Ingrediente'
+  import Ingrediente from '@/repositories/Ingrediente'
 
   export default {
     name: 'Form',
     computed: {
       ...mapGetters({
-        ingrediente: 'ingrediente/getCurrent'
+        ingrediente: 'ingrediente/current'
       })
     },
     data () {

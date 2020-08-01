@@ -30,51 +30,53 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
-  import ListProducts from '@/views/produtos/layouts/ListProducts'
-  import Categorias from '@/views/produtos/Categorias'
+import { mapActions, mapGetters } from 'vuex'
+import ListProducts from '@/views/produtos/layouts/ListProducts'
+import Categorias from '@/views/produtos/Categorias'
 
-  export default {
-    name: 'Index',
-    components: { Categorias, ListProducts },
-    props: {
-      layout: {
-        type: Number,
-        default: parseInt(process.env.VUE_APP_LAYOUT_PRODUTOS)
+export default {
+  name: 'Index',
+  components: { Categorias, ListProducts },
+  props: {
+    layout: {
+      type: Number,
+      default: parseInt(process.env.VUE_APP_LAYOUT_PRODUTOS)
+    }
+  },
+  computed: {
+    ...mapGetters({
+      produtos: 'produto/all',
+      isLoadingProduto: 'produto/isLoading',
+    }),
+    catLayout () {
+      if (process.env.VUE_APP_LAYOUT_CATEGORIAS === 'Side') {
+        return 'Side'
       }
-    },
-    computed: {
-      ...mapGetters({
-        produtos: 'produto/getAll',
-        isLoadingProduto: 'produto/isLoading',
-      }),
-      catLayout () {
-        if (process.env.VUE_APP_LAYOUT_CATEGORIAS === 'Side') {
-          return 'Side'
-        }
 
-        return 'Top'
-      }
-    },
-    methods: {
-      ...mapActions([
-        'produto/listAll'
-      ]),
-      async loadProducts (id) {
-        await this['produto/listAll']([
+      return 'Top'
+    }
+  },
+  methods: {
+    ...mapActions([
+      'produto/listAll'
+    ]),
+    async loadProducts (id) {
+      await this['produto/listAll']({
+        'filters': [
           ['Cat_produtos_idCat_produtos', '=', id],
           ['status', '=', 'Disponível']
-        ])
-      }
-    },
-    async mounted () {
-      window.scrollTo(0,0)
-    },
-  }
+        ]
+      })
+    }
+  },
+  async mounted () {
+    window.scrollTo(0, 0)
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .sticky-top {
-    top: 1rem;
-  }
+.sticky-top {
+  top: 1rem;
+}
 </style>

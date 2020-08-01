@@ -24,7 +24,7 @@
     components: { Pedido },
     computed: {
       ...mapGetters({
-        pedido: 'pedido/getCurrent'
+        pedido: 'pedido/current'
       }),
     },
     methods: {

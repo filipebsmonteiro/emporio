@@ -15,7 +15,7 @@
         </div>
         <template>
           <form @submit.prevent>
-            <h6 class="heading-small text-muted mb-4">User information</h6>
+            <h6 class="heading-small text-muted mb-4">Informações do Cupom</h6>
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-md-6">
@@ -86,16 +86,16 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Cupom from '@/services/Cupom'
+  import Cupom from '@/repositories/Cupom'
 
   export default {
     name: 'Form',
     computed: {
       ...mapGetters({
         tipos_cupons: 'cupom/getTipos',
-        cupom: 'cupom/getCurrent',
-        categorias_produtos: 'produto/categoria/getAll',
-        produtos: 'produto/getAll',
+        cupom: 'cupom/current',
+        categorias_produtos: 'produto/categoria/all',
+        produtos: 'produto/all',
       }),
       tiposDeCupons () {
         let array_tipos = []

@@ -93,17 +93,17 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Cliente from '@/services/Cliente'
+  import Cliente from '@/repositories/Cliente'
 
   export default {
     name: 'Detalhes',
     computed: {
       ...mapGetters({
-        cliente: 'cliente/getCurrent',
+        cliente: 'cliente/current',
         isLoadingCliente: 'cliente/isLoading',
-        pedidos: 'pedido/getAll',
+        pedidos: 'pedido/all',
         isLoadingPedidos: 'pedido/isLoading',
-        enderecos: 'endereco/getAll',
+        enderecos: 'endereco/all',
         isLoadingEndrecos: 'endereco/isLoading',
       }),
     },
@@ -119,7 +119,7 @@
     },
     methods: {
       ...mapActions([
-        'endereco/listAll',
+        'endereco/listAllPaginated',
         'pedido/listAllPaginated',
         'cliente/listMe',
       ]),
@@ -140,7 +140,7 @@
       }
     },
     mounted () {
-      this['endereco/listAll']()
+      this['endereco/listAllPaginated']({ per_page: 2 })
       this['pedido/listAllPaginated']({ per_page: 5 })
       this['cliente/listMe']()
     }

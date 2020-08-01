@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import Auth from '@/services/Auth'
+  import Auth from '@/repositories/Auth'
   import APIService from '@/api/APIService'
   import { mapGetters } from 'vuex'
 

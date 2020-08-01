@@ -81,7 +81,7 @@
 </template>
 <script>
   import APIService from '@/api/APIService'
-  import AuthPainel from '@/services/AuthPainel'
+  import AuthPainel from '@/repositories/AuthPainel'
 
   export default {
     name: 'login',

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import Cupom from '@/services/Cupom'
+  import Cupom from '@/repositories/Cupom'
 
   export default {
     name: 'Cupom',

@@ -16,7 +16,16 @@
             </div>
           </div>
 
-          <b-table :items="ingredientes" :fields="fields">
+          <TableData
+            :fields="fields"
+            :fields-filter="filter"
+            :items="ingredientes"
+            :loading="isLoading"
+            :paginator="pagination"
+            route-new="painel.ingrediente.create"
+            text-new="Novo ingrediente"
+            text-empty="Nenhum ingrediente encontrado"
+            @list="evt => $store.dispatch('ingrediente/listAllPaginated', evt)">
             <template v-slot:cell(status)="{ item: { status } }">
               <b-badge v-if="status" variant="success">Habilitado</b-badge>
               <b-badge v-else variant="danger">Desabilitado</b-badge>
@@ -29,14 +38,7 @@
                 <i class="fas fa-edit"/>
               </router-link>
             </template>
-          </b-table>
-          <Paginator
-            v-if="pagination.total > pagination.per_page"
-            :page="pagination.page"
-            :per-page="pagination.per_page"
-            :total="pagination.total"
-            @change="evt => $store.dispatch('ingrediente/listAllPaginated', evt)"
-          />
+          </TableData>
         </b-overlay>
       </div>
     </div>
@@ -44,14 +46,14 @@
 </template>
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Paginator from '@/components/Paginator'
+  import TableData from '@/components/TableData'
 
   export default {
     name: 'Index',
-    components: { Paginator },
+    components: { TableData },
     computed: {
       ...mapGetters({
-        ingredientes: 'ingrediente/getAll',
+        ingredientes: 'ingrediente/all',
         isLoading: 'ingrediente/isLoading',
         pagination: 'ingrediente/pagination'
       })
@@ -63,6 +65,10 @@
           { key: 'status', label: 'Status' },
           { key: 'preco', label: 'Preço' },
           { key: 'id', label: 'Editar' }
+        ],
+        filter: [
+          { key: 'nome', label: 'Nome' },
+          { key: 'preco', label: 'Preço' }
         ]
       }
     },

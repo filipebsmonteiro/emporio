@@ -22,7 +22,7 @@
 <script>
   import SelectComponent from '@/components/Select/SelectComponent'
   import { mapActions, mapGetters } from 'vuex'
-  import IngredienteRepository from '@/services/Ingrediente'
+  import IngredienteRepository from '@/repositories/Ingrediente'
 
   export default {
     name: 'SelectOpcao',

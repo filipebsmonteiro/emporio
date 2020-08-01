@@ -96,7 +96,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import ClienteRepository from '@/services/Cliente'
+  import ClienteRepository from '@/repositories/Cliente'
   import { mask } from 'vue-the-mask'
 
   export default {
@@ -104,7 +104,7 @@
     directives: { mask },
     computed: {
       ...mapGetters({
-        cliente: 'cliente/getCurrent'
+        cliente: 'cliente/current'
       }),
       isCPFValid() {
         let Soma;

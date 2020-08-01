@@ -50,7 +50,7 @@
     computed: {
       ...mapGetters({
         isLoadingCategoria: 'produto/categoria/isLoading',
-        store_produto: 'produto/getCurrent',
+        store_produto: 'produto/current',
         isLoadingProduto: 'produto/isLoading'
       }),
       produto () {

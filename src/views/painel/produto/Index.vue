@@ -16,7 +16,16 @@
             </div>
           </div>
 
-          <b-table :items="produtos" :fields="fields" responsive>
+          <TableData
+            :fields="fields"
+            :fields-filter="filter"
+            :items="produtos"
+            :loading="isLoading"
+            :paginator="pagination"
+            route-new="painel.produto.create"
+            text-new="Novo"
+            text-empty="Nenhum produto encontrado"
+            @list="evt => $store.dispatch('produto/listAllPaginated', evt)">
             <template v-slot:cell(preco)="{ item: { preco } }">
               {{ preco | formatMoney }}
             </template>
@@ -41,14 +50,7 @@
                 <i class="fas fa-edit"/>
               </router-link>
             </template>
-          </b-table>
-          <Paginator
-            v-if="pagination.total > pagination.per_page"
-            :page="pagination.page"
-            :per-page="pagination.per_page"
-            :total="pagination.total"
-            @change="evt => $store.dispatch('produto/listAllPaginated', evt)"
-          />
+          </TableData>
         </div>
       </b-overlay>
     </div>
@@ -56,15 +58,15 @@
 </template>
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import Produto from '@/services/Produto/Produto'
-  import Paginator from '@/components/Paginator'
+  import Produto from '@/repositories/Produto/Produto'
+  import TableData from '@/components/TableData'
 
   export default {
     name: 'Index',
-    components: { Paginator },
+    components: { TableData },
     computed: {
       ...mapGetters({
-        produtos: 'produto/getAll',
+        produtos: 'produto/all',
         isLoading: 'produto/isLoading',
         pagination: 'produto/pagination'
       })
@@ -77,6 +79,11 @@
           { key: 'preco', label: 'Preço' },
           { key: 'category', label: 'Categoria' },
           { key: 'id', label: 'Editar' }
+        ],
+        filter: [
+          { key: 'nome', label: 'Nome' },
+          { key: 'preco', label: 'Preço' },
+          //{ key: 'category', label: 'Categoria' },
         ]
       }
     },
