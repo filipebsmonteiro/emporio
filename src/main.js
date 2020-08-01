@@ -14,17 +14,17 @@
 
 */
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
+import App from '@/App.vue'
+import router from '@/router'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLocalStorage from 'vue-localstorage'
 import VuePusher from 'vue-pusher'
 import VueHtmlToPaper from 'vue-html-to-paper'
 import VueFacebookPixel from 'vue-analytics-facebook-pixel'
-import './registerServiceWorker'
-import ArgonDashboard from './plugins/argon-dashboard'
-import { store } from './storages'
+import '@/registerServiceWorker'
+import ArgonDashboard from '@/plugins/argon-dashboard'
+import store from './storages'
 import '@/plugins/globalFilters'
 
 // import '@/assets/scss/custom_store/dark_mode.scss'

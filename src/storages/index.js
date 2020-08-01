@@ -15,7 +15,7 @@ import produto from './modules/produto/produto'
 
 Vue.use(Vuex)
 
-export const store = new Vuex.Store({
+export default new Vuex.Store({
   modules: {
     mainbar,
     cliente,
