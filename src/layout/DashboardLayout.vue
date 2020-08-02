@@ -4,7 +4,7 @@
       <template slot="links">
         <sidebar-item :link="{ text: 'Dashboard', icon: 'ni ni-tv-2 text-primary', name: 'painel.dashboard' }"/>
 
-        <sidebar-item>
+        <sidebar-item v-if="minimumPerfil('Gerente')">
           <base-dropdown tag="a" class="nav-link">
             <template v-slot:title>
               <i class="ni ni-collection text-red"/>
@@ -16,11 +16,12 @@
             </template>
           </base-dropdown>
         </sidebar-item>
+        <sidebar-item v-if="minimumPerfil('Gerente')"
+                      :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.ingrediente.index'}"/>
 
-        <sidebar-item :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.ingrediente.index'}"/>
         <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-active-40 text-blue', name: 'painel.pedido.index'}"/>
 
-        <sidebar-item>
+        <sidebar-item v-if="minimumPerfil('Gerente')">
           <base-dropdown tag="a" class="nav-link">
             <template v-slot:title>
               <i class="ni ni-planet text-red"/>
@@ -33,10 +34,16 @@
           </base-dropdown>
         </sidebar-item>
 
+        <sidebar-item v-if="minimumPerfil('Admin')"
+                      :link="{text: 'Usuários', icon: 'ni ni-single-02 text-yellow', name: 'painel.usuario.index'}"/>
+
+        <sidebar-item v-if="minimumPerfil('Admin')"
+                      :link="{text: 'Lojas', icon: 'ni ni-building text-yellow', name: 'painel.usuario.index'}"/>
+
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">
-      <dashboard-navbar />
+      <dashboard-navbar/>
 
       <div @click="toggleSidebar">
         <fade-transition :duration="200" origin="center top" mode="out-in">
@@ -49,32 +56,45 @@
   </div>
 </template>
 <script>
-  import DashboardNavbar from './DashboardNavbar.vue';
-  import ContentFooter from './ContentFooter.vue';
-  import { FadeTransition } from 'vue2-transitions';
+import DashboardNavbar from './DashboardNavbar.vue'
+import ContentFooter from './ContentFooter.vue'
+import { FadeTransition } from 'vue2-transitions'
 
-  export default {
-    components: {
-      DashboardNavbar,
-      ContentFooter,
-      FadeTransition
-    },
-    data() {
-      return {
-        sidebarBackground: 'orange' //vue|blue|orange|green|red|primary
-      };
-    },
-    methods: {
-      toggleSidebar() {
-        if (this.$sidebar.showSidebar) {
-          this.$sidebar.displaySidebar(false);
-        }
-      }
+export default {
+  components: {
+    DashboardNavbar,
+    ContentFooter,
+    FadeTransition
+  },
+  data () {
+    return {
+      sidebarBackground: 'orange' //vue|blue|orange|green|red|primary
     }
-  };
+  },
+  methods: {
+    toggleSidebar () {
+      if (this.$sidebar.showSidebar) {
+        this.$sidebar.displaySidebar(false)
+      }
+    },
+    minimumPerfil (perfil) {
+      const PERFIL = localStorage.getItem('perfil')
+      if (perfil === 'Admin' && PERFIL !== 'Admin'){
+        return false
+      }
+      if (perfil === 'Lojista' && !['Admin', 'Lojista'].includes(PERFIL) ){
+        return false
+      }
+      if (perfil === 'Gerente' && !['Admin', 'Lojista', 'Gerente'].includes(PERFIL) ){
+        return false
+      }
+      return true
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
-  .nav-item {
-    cursor: pointer;
-  }
+.nav-item {
+  cursor: pointer;
+}
 </style>

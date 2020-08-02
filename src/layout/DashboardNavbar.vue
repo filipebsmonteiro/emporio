@@ -48,7 +48,6 @@
 <script>
   import APIService from '@/api/APIService'
   import AuthPainel from '@/repositories/AuthPainel'
-  import { redirectLogin } from '@/guards'
 
   export default {
     name: 'DashboardNavbar',
@@ -72,7 +71,8 @@
       logout() {
         AuthPainel.logout().then(() => {
           APIService._clearToken()
-          redirectLogin('/painel')
+          localStorage.removeItem('perfil')
+          window.location.href = `${window.location.origin}/painel/login`
         }).catch(() => {
           this.$notify({
             type: 'danger',

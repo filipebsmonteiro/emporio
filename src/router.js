@@ -9,6 +9,7 @@ import painelCupom from '@/routes/painel/cupom'
 import painelIngrediente from '@/routes/painel/ingrediente'
 import painelProduto from '@/routes/painel/produto'
 import painelPedido from '@/routes/painel/pedido'
+import painelUsuario from '@/routes/painel/usuario'
 import pedido from '@/routes/pedido'
 import produto from '@/routes/produto'
 import SiteLayout from '@/layout/SiteLayout'
@@ -50,6 +51,7 @@ export default new Router({
         ...painelIngrediente,
         ...painelProduto,
         ...painelPedido,
+        ...painelUsuario
       ]
     },
 

@@ -111,7 +111,8 @@
             await APIService._setToken(response.data.access_token)
             await APIService._setExpiration(response.data.expires_in)
             await APIService._setDomain('painel')
-            this.$router.push({name: 'painel.dashboard'})
+            localStorage.setItem('perfil', response.data.perfil)
+            window.location.href = `${window.location.origin}/painel`
           })
           .catch(() => {
             this.$notify({
