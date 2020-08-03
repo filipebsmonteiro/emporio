@@ -16,10 +16,9 @@
             </template>
           </base-dropdown>
         </sidebar-item>
-        <sidebar-item v-if="minimumPerfil('Gerente')"
-                      :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.ingrediente.index'}"/>
+        <sidebar-item :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-success', name: 'painel.ingrediente.index'}"/>
 
-        <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-active-40 text-blue', name: 'painel.pedido.index'}"/>
+        <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-active-40 text-indigo', name: 'painel.pedido.index'}"/>
 
         <sidebar-item v-if="minimumPerfil('Gerente')">
           <base-dropdown tag="a" class="nav-link">
@@ -37,8 +36,8 @@
         <sidebar-item v-if="minimumPerfil('Admin')"
                       :link="{text: 'Usuários', icon: 'ni ni-single-02 text-yellow', name: 'painel.usuario.index'}"/>
 
-        <sidebar-item v-if="minimumPerfil('Admin')"
-                      :link="{text: 'Lojas', icon: 'ni ni-building text-yellow', name: 'painel.usuario.index'}"/>
+        <sidebar-item v-if="minimumPerfil('Lojista')"
+                      :link="{text: 'Lojas', icon: 'ni ni-building text-orange', name: 'painel.loja.index'}"/>
 
       </template>
     </side-bar>

@@ -69,6 +69,8 @@
                               class="form-control-alternative"
                               v-model="model.Cat_produtos_idCat_produtos"
                               :options="categorias"
+                              :disabled="(this.produto.categoria && this.produto.categoria.layout === 'Pizza' && this.model.multiplos.length > 0) ||
+                                  (this.produto.categoria && this.produto.categoria.layout === 'Combo' && this.model.combinacoes.length > 0)"
                               required/>
                   </b-form-group>
                 </div>
@@ -216,7 +218,7 @@
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-md-4">
-                  <SelectOpcao @input="addIngrediente" class="mb-2"/>
+                  <SelectIngredientes @input="addIngrediente" class="mb-2"/>
                 </div>
                 <div class="col-md-8">
                   <IngredienteList :ingredientes="model.ingredientes"
@@ -228,13 +230,19 @@
             <hr class="my-4"/>
 
             <!-- Multiplos -->
-            <h6 v-if="isVariacaoAllowed" class="heading-small text-muted mb-4">Variaçoẽs de Produto</h6>
-            <div v-if="isVariacaoAllowed" class="pl-lg-4">
-              <VariacaoList :list="model.multiplos"
-                            @update="updateVariacao"
-                            @add="addVariacao"
-                            @remove="removeVariacao"/>
+            <h6 v-if="this.produto.categoria && this.produto.categoria.layout === 'Padrão'"
+                class="heading-small text-muted mb-4">Variaçoẽs de Ingredientes</h6>
+            <div v-if="this.produto.categoria && this.produto.categoria.layout === 'Padrão'" class="pl-lg-4">
+              <IngredienteMultiploList :list="model.multiplos" @update="evt => {model.multiplos = evt}"/>
             </div>
+
+            <!-- Combo -->
+            <h6 v-if="this.produto.categoria && this.produto.categoria.layout === 'Combo'"
+                class="heading-small text-muted mb-4">Variaçoẽs de Produtos</h6>
+            <div v-if="this.produto.categoria && this.produto.categoria.layout === 'Combo'" class="pl-lg-4">
+              <ProdutoMultiploList :list="model.combinacoes" @update="evt => {model.combinacoes = evt}"/>
+            </div>
+
           </form>
         </template>
       </card>
@@ -245,13 +253,14 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Produto from '@/repositories/Produto/Produto'
-  import SelectOpcao from '@/views/painel/ingrediente/SelectOpcao'
+  import SelectIngredientes from '@/views/painel/ingrediente/SelectIngredientes'
   import IngredienteList from '@/views/painel/produto/IngredienteList'
-  import VariacaoList from '@/views/painel/produto/Variacao/VariacaoList'
+  import IngredienteMultiploList from '@/views/painel/ingrediente/Variacao/IngredienteMultiploList'
+  import ProdutoMultiploList from '@/views/painel/produto/Variacao/ProdutoMultiploList'
 
   export default {
     name: 'Form',
-    components: { VariacaoList, IngredienteList, SelectOpcao },
+    components: { ProdutoMultiploList, IngredienteMultiploList, IngredienteList, SelectIngredientes },
     computed: {
       ...mapGetters({
         produto: 'produto/current',
@@ -267,9 +276,6 @@
           })
         }
         return []
-      },
-      isVariacaoAllowed () {
-        return (this.produto.categoria && this.produto.categoria.layout === 'Padrão') || !this.produto.id
       }
     },
     data () {
@@ -300,6 +306,7 @@
           termino_periodo2: null,
           multiplos: [],
           ingredientes: [],
+          combinacoes: [],
         }
       }
     },
@@ -326,10 +333,6 @@
           })
         }
       },
-      addVariacao (variacao) {
-        const copy = Object.assign({}, variacao)
-        this.model.multiplos = [...this.model.multiplos, copy]
-      },
       addIngrediente (ingrediente) {
         if (ingrediente) {
           this.model.ingredientes = [...this.model.ingredientes, {
@@ -349,21 +352,6 @@
       },
       removeIngrediente (id) {
         this.model.ingredientes = this.model.ingredientes.filter(i => i.id !== id)
-      },
-      updateVariacao (variacao) {
-        this.model.multiplos = this.model.multiplos.map((mult, idx) => {
-          if (idx === variacao.index) {
-            return variacao
-          }
-          return mult
-        })
-      },
-      removeVariacao (index) {
-        this.model.multiplos = this.model.multiplos.filter((mult, idx) => {
-          if (idx !== index) {
-            return mult
-          }
-        })
       },
       async onSubmit (evt) {
         evt.preventDefault()

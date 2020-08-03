@@ -20,7 +20,7 @@
     name: 'Endereco',
     computed: {
       ...mapGetters({
-        store_endereco: 'endereco/getCurrent'
+        store_endereco: 'endereco/current'
       }),
       endereco() {
         if (!this.store_endereco.CEP){

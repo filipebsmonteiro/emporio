@@ -136,7 +136,7 @@
     components: { BarChart, LineChart },
     computed: {
       ...mapGetters({
-        qtd_pedidos: 'dashboard/getAll',
+        qtd_pedidos: 'dashboard/all',
         cards: 'dashboard/getCards',
         isLoading: 'dashboard/isLoading'
       }),

@@ -25,7 +25,7 @@
             route-new="painel.produto.categoria.create"
             text-new="Nova categoria"
             text-empty="Nenhuma categoria encontrada"
-            @list="evt => $store.dispatch('produto/cateogria/listAllPaginated', evt)">
+            @list="evt => $store.dispatch('produto/categoria/listAllPaginated', evt)">
             <template v-slot:cell(created_at)="{ item: { created_at } }">
               {{ created_at | formatDate }}
             </template>

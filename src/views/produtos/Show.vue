@@ -21,7 +21,7 @@
         <b-form-group v-if="produto.categoria && produto.categoria.permiteCombinacao"
                       label="Combinações" label-size="lg" label-class="pt-0" class="mb-5">
           <CombinacaoList :list="combinacoes"
-                          :quantidade-max="parseInt(produto.categoria.quantidadeCombinacoes)"
+                          :quantidade-max="parseInt(produto.categoria.quantidadeCombinacoes)-1"
                           @loadCombinacoes="loadProducts"
                           @update="evt => {combinacoes = evt}"/>
         </b-form-group>
@@ -38,169 +38,171 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
-  import MultipleChoice from '@/views/Ingredientes/Multiplos/MultipleChoice'
-  import SimpleChoice from '@/views/Ingredientes/Multiplos/SimpleChoice'
-  import moment from 'moment'
-  import CombinacaoList from '@/views/produtos/Combinacao/CombinacaoList'
+import { mapActions, mapGetters } from 'vuex'
+import MultipleChoice from '@/views/Ingredientes/Multiplos/MultipleChoice'
+import SimpleChoice from '@/views/Ingredientes/Multiplos/SimpleChoice'
+import moment from 'moment'
+import CombinacaoList from '@/views/produtos/Combinacao/CombinacaoList'
 
-  export default {
-    name: 'Show',
-    components: { CombinacaoList, SimpleChoice, MultipleChoice },
-    computed: {
-      ...mapGetters({
-        isLoadingCategoria: 'produto/categoria/isLoading',
-        store_produto: 'produto/current',
-        isLoadingProduto: 'produto/isLoading'
-      }),
-      produto () {
-        return {
-          ...this.store_produto,
-          unidade_medida: this.store_produto.unidade_medida ? this.store_produto.unidade_medida : null,
-          intervalo: this.store_produto.intervalo ? this.store_produto.intervalo : 1,
-          minimo_unidade: this.store_produto.minimo_unidade ? this.store_produto.minimo_unidade : 1,
-          preco: this.store_produto.promocionar ? this.store_produto.valorPromocao : this.store_produto.preco,
-          multiplos: this.store_produto.categoria ? [
-            ...this.store_produto.categoria.multiplos,
-            ...this.store_produto.multiplos
-          ] : [],
-        }
-      }
-    },
-    data () {
+export default {
+  name: 'Show',
+  components: { CombinacaoList, SimpleChoice, MultipleChoice },
+  computed: {
+    ...mapGetters({
+      isLoadingCategoria: 'produto/categoria/isLoading',
+      store_produto: 'produto/current',
+      isLoadingProduto: 'produto/isLoading'
+    }),
+    produto () {
       return {
-        quantidade: 1,
-        multiplos: [],
-        combinacoes: []
+        ...this.store_produto,
+        unidade_medida: this.store_produto.unidade_medida ? this.store_produto.unidade_medida : null,
+        intervalo: this.store_produto.intervalo ? this.store_produto.intervalo : 1,
+        minimo_unidade: this.store_produto.minimo_unidade ? this.store_produto.minimo_unidade : 1,
+        preco: this.store_produto.promocionar ? this.store_produto.valorPromocao : this.store_produto.preco,
+        multiplos: this.store_produto.categoria ? [
+          ...this.store_produto.categoria.multiplos,
+          ...this.store_produto.multiplos
+        ] : [],
       }
+    }
+  },
+  data () {
+    return {
+      quantidade: 1,
+      multiplos: [],
+      combinacoes: []
+    }
+  },
+  methods: {
+    ...mapActions([
+      'produto/listOne',
+      'mainbar/setQuantidade',
+      'produto/listAll'
+    ]),
+    quantidadeFormatter (value) {
+      if (this.produto.unidade_medida) {
+        return `${value} ${this.produto.unidade_medida}`
+      }
+      return value
     },
-    methods: {
-      ...mapActions([
-        'produto/listOne',
-        'mainbar/setQuantidade',
-        'produto/listAll'
-      ]),
-      quantidadeFormatter (value) {
-        if (this.produto.unidade_medida) {
-          return `${value} ${this.produto.unidade_medida}`
-        }
-        return value
-      },
-      updateMultiplos (multiplo) {
-        const exists = this.multiplos.find(m => m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente)
-        if (exists) {
-          if (multiplo.quantidade === 0) {
-            this.multiplos = this.multiplos.filter(m => m.multiplo !== multiplo.multiplo && m.ingrediente !== multiplo.ingrediente)
-            return
-          }
-          this.multiplos.map(m => {
-            if (m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente) {
-              m.quantidade = multiplo.quantidade
-            }
-          })
+    updateMultiplos (multiplo) {
+      const exists = this.multiplos.find(m => m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente)
+      if (exists) {
+        if (multiplo.quantidade === 0) {
+          this.multiplos = this.multiplos.filter(m => m.multiplo !== multiplo.multiplo && m.ingrediente !== multiplo.ingrediente)
           return
         }
-
-        this.multiplos = [...this.multiplos, multiplo]
-      },
-      adicionarCarrinho () {
-        let isValid = true
-        if (this.produto.multiplos) {
-          this.produto.multiplos.map(multBackEnd => {
-            if (multBackEnd.obrigatorio) {
-              let soma = 0
-              this.multiplos.map(multSelected => {
-                soma = multSelected.multiplo === multBackEnd.id ? soma + multSelected.quantidade : soma
-              })
-
-              if (soma < multBackEnd.quantidade_min) {
-                isValid = false
-                this.$notify({
-                  type: 'danger',
-                  title: `Selecione ao menos ${multBackEnd.quantidade_min} ${multBackEnd.nome}`,
-                  verticalAlign: 'bottom',
-                  horizontalAlign: 'center'
-                })
-              }
-            }
-          })
-        }
-
-        if (!isValid) {
-          return
-        }
-
-        const produto = {
-          time: moment().format(),
-          produto: this.produto.id,
-          quantidade: this.quantidade,
-          multiplos: this.multiplos,
-          combinacoes: this.combinacoes
-        }
-
-        let carrinho = this.$localStorage.get('carrinho', null)
-        if (carrinho) {
-          const carrinhoParsed = JSON.parse(carrinho)
-          carrinho = [...carrinhoParsed, produto]
-        } else {
-          carrinho = [produto]
-        }
-        this.$localStorage.set('carrinho', JSON.stringify(carrinho))
-
-        this['mainbar/setQuantidade'](carrinho.length)
-
-        if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
-          this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
-            em: process.env.VUE_APP_FACEBOOK_EMAIL
-          })
-          this.$analytics.fbq.event('AddToCart', {
-            content_ids: [`${this.produto.id}`],
-            content_type: 'product',
-            content_name: `${this.store_produto.nome}`,
-            content_category: `${this.produto.categoria.grupo} ${this.produto.categoria.nome}`,
-            currency: 'BRL',
-            value: (this.produto.preco / this.produto.minimo_unidade) * produto.quantidade,
-          })
-        }
-
-        this.$swal({
-          icon: 'success',
-          title: `Produto adicionado ao carrinho com sucesso`,
-          text: 'Deseja continuar comprando?',
-          footer: '<a href=/pedido/carrinho>Ir para o carrinho</a>',
-          focusConfirm: false,
-          confirmButtonText: 'Continuar!',
-        }).then(result => {
-          if (result.value) {
-            this.$router.push({ name: 'produtos.categoria', params: { id: this.store_produto.categoria.id } })
+        this.multiplos.map(m => {
+          if (m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente) {
+            m.quantidade = multiplo.quantidade
           }
         })
-      },
-      async loadProducts () {
-        await this['produto/listAll']([
-          ['Cat_produtos_idCat_produtos', '=', this.produto.categoria.id],
-          ['status', '=', 'Disponível']
-        ])
+        return
       }
+
+      this.multiplos = [...this.multiplos, multiplo]
     },
-    async mounted () {
-      window.scrollTo(0, 0)
-      await this['produto/listOne'](this.$route.params.id)
-      this.quantidade = this.produto.minimo_unidade
+    adicionarCarrinho () {
+      let isValid = true
+      if (this.produto.multiplos) {
+        this.produto.multiplos.map(multBackEnd => {
+          if (multBackEnd.obrigatorio) {
+            let soma = 0
+            this.multiplos.map(multSelected => {
+              soma = multSelected.multiplo === multBackEnd.id ? soma + multSelected.quantidade : soma
+            })
+
+            if (soma < multBackEnd.quantidade_min) {
+              isValid = false
+              this.$notify({
+                type: 'danger',
+                title: `Selecione ao menos ${multBackEnd.quantidade_min} ${multBackEnd.nome}`,
+                verticalAlign: 'bottom',
+                horizontalAlign: 'center'
+              })
+            }
+          }
+        })
+      }
+
+      if (!isValid) {
+        return
+      }
+
+      const produto = {
+        time: moment().format(),
+        produto: this.produto.id,
+        quantidade: this.quantidade,
+        multiplos: this.multiplos,
+        combinacoes: this.combinacoes
+      }
+
+      let carrinho = this.$localStorage.get('carrinho', null)
+      if (carrinho) {
+        const carrinhoParsed = JSON.parse(carrinho)
+        carrinho = [...carrinhoParsed, produto]
+      } else {
+        carrinho = [produto]
+      }
+      this.$localStorage.set('carrinho', JSON.stringify(carrinho))
+
+      this['mainbar/setQuantidade'](carrinho.length)
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
         this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
           em: process.env.VUE_APP_FACEBOOK_EMAIL
         })
-        this.$analytics.fbq.event('ViewContent', {
-          content_ids: [`${this.$route.params.id}`],
+        this.$analytics.fbq.event('AddToCart', {
+          content_ids: [`${this.produto.id}`],
           content_type: 'product',
           content_name: `${this.store_produto.nome}`,
-          content_category: `${this.store_produto.categoria.grupo} ${this.store_produto.categoria.nome}`,
+          content_category: `${this.produto.categoria.grupo} ${this.produto.categoria.nome}`,
+          currency: 'BRL',
+          value: (this.produto.preco / this.produto.minimo_unidade) * produto.quantidade,
         })
       }
+
+      this.$swal({
+        icon: 'success',
+        title: `Produto adicionado ao carrinho com sucesso`,
+        text: 'Deseja continuar comprando?',
+        footer: '<a href=/pedido/carrinho>Ir para o carrinho</a>',
+        focusConfirm: false,
+        confirmButtonText: 'Continuar!',
+      }).then(result => {
+        if (result.value) {
+          this.$router.push({ name: 'produtos.categoria', params: { id: this.store_produto.categoria.id } })
+        }
+      })
     },
-  }
+    async loadProducts () {
+      await this['produto/listAll']({
+        filters: [
+          ['Cat_produtos_idCat_produtos', '=', this.produto.categoria.id],
+          ['status', '=', 'Disponível']
+        ]
+      })
+    }
+  },
+  async mounted () {
+    window.scrollTo(0, 0)
+    await this['produto/listOne'](this.$route.params.id)
+    this.quantidade = this.produto.minimo_unidade
+
+    if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
+      this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
+        em: process.env.VUE_APP_FACEBOOK_EMAIL
+      })
+      this.$analytics.fbq.event('ViewContent', {
+        content_ids: [`${this.$route.params.id}`],
+        content_type: 'product',
+        content_name: `${this.store_produto.nome}`,
+        content_category: `${this.store_produto.categoria.grupo} ${this.store_produto.categoria.nome}`,
+      })
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>

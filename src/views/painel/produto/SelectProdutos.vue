@@ -2,7 +2,7 @@
   <b-overlay :show="isLoading">
     <SelectComponent
       :model="local_model"
-      :options="ingredientes"
+      :options="produtos"
       :disabled="disabled"
       :searching="isLoading"
       @search="autocomplete"
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-  import SelectComponent from '@/components/Select/SelectComponent'
   import { mapActions, mapGetters } from 'vuex'
-  import IngredienteRepository from '@/repositories/Ingrediente'
+  import SelectComponent from '@/components/Select/SelectComponent'
+  import ProdutoRepository from '@/repositories/Produto/Produto'
 
   export default {
-    name: 'SelectOpcao',
+    name: 'SelectProdutos',
     components: { SelectComponent },
     props: {
       model: {
@@ -39,8 +39,8 @@
     },
     computed: {
       ...mapGetters({
-        isLoading: 'ingrediente/isLoading',
-        ingredientes: 'ingrediente/getAll',
+        isLoading: 'produto/isLoading',
+        produtos: 'produto/all',
       }),
     },
     data () {
@@ -49,16 +49,9 @@
         local_model: null
       }
     },
-    mounted () {
-      this.local_model = this.model
-      this['ingrediente/listAll']()
-    },
-    beforeUpdate(){
-      this.local_model = this.model
-    },
     methods: {
       ...mapActions([
-        'ingrediente/listAll',
+        'produto/listAllPaginated',
       ]),
       async autocomplete (string) {
         this.stringSearch = string
@@ -66,32 +59,39 @@
           if (this.timer) { clearTimeout(this.timer); this.timer = null;}
 
           this.timer = await setTimeout(async () => {
-            await this['ingrediente/listAll']([['nome', 'LIKE', '%' + string + '%']])
+            await this['produto/listAllPaginated']([['nome', 'LIKE', '%' + string + '%']])
           }, 900) // delay 900 milsec
         }
       },
       async addNew () {
-        IngredienteRepository.post({
+        ProdutoRepository.post({
           nome: this.stringSearch,
           status: true,
           preco: 0,
         }).then(() => {
           this.$notify({
             type: 'success',
-            title: `Ingrediente criado com Sucesso!`
+            title: `Produto criado com Sucesso!`
           })
           this.autocomplete(this.stringSearch)
         }).catch(() => {
           this.$notify({
             type: 'danger',
-            title: `Erro ao inserir Ingrediente!`
+            title: `Erro ao inserir Produto!`
           })
         })
       },
       inputMethod(id) {
-        const ingrediente = this.ingredientes.find(i => i.id===id)
-        this.$emit('input', ingrediente)
+        const produto = this.produtos.find(i => i.id===id)
+        this.$emit('input', produto)
       }
+    },
+    mounted () {
+      this.local_model = this.model
+      this['produto/listAllPaginated']()
+    },
+    beforeUpdate(){
+      this.local_model = this.model
     }
   }
 </script>

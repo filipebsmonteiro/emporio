@@ -32,7 +32,7 @@
     name: 'Index',
     computed: {
       ...mapGetters({
-        categorias: 'produto/categoria/getAll'
+        categorias: 'produto/categoria/all'
       })
     },
     data() {

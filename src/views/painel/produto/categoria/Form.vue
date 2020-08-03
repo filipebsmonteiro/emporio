@@ -74,10 +74,7 @@
             <!-- Multiplos -->
             <h6 v-if="model.layout === 'Pizza'" class="heading-small text-muted mb-4">Variaçoẽs de Categoria</h6>
             <div v-if="model.layout === 'Pizza'" class="pl-lg-4">
-              <VariacaoList :list="model.multiplos"
-                            @update="updateVariacao"
-                            @add="addVariacao"
-                            @remove="removeVariacao"/>
+              <IngredienteMultiploList :list="model.multiplos" @update="evt => {model.multiplos = evt}"/>
             </div>
 
           </form>
@@ -90,11 +87,11 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import Categoria from '@/repositories/Produto/Categoria'
-  import VariacaoList from '@/views/painel/produto/Variacao/VariacaoList'
+  import IngredienteMultiploList from '@/views/painel/ingrediente/Variacao/IngredienteMultiploList'
 
   export default {
     name: 'Form',
-    components: { VariacaoList },
+    components: { IngredienteMultiploList },
     computed: {
       ...mapGetters({
         categoria: 'produto/categoria/current'

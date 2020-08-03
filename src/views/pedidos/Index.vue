@@ -44,7 +44,7 @@
     name: 'Index',
     computed: {
       ...mapGetters({
-        pedidos: 'pedido/getAll'
+        pedidos: 'pedido/all'
       })
     },
     data() {

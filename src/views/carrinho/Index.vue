@@ -111,10 +111,10 @@
     components: { TableProduto, Cupom, Agendamento, Endereco },
     computed: {
       ...mapGetters({
-        cliente: 'cliente/getCurrent',
-        fidelidade: 'fidelidade/getCurrent',
-        store_formaspagamento: 'formapagamento/getAll',
-        store_produtos: 'produto/getAll',
+        cliente: 'cliente/current',
+        fidelidade: 'fidelidade/current',
+        store_formaspagamento: 'formapagamento/all',
+        store_produtos: 'produto/all',
         produtos_loading: 'produto/isLoading',
       }),
       allowed () {
@@ -125,79 +125,84 @@
         }
       },
       produtos () {
-        return this.carrinho.map(cartProd => {
-          let produto = cartProd
-          const backendProd = this.store_produtos.find(pbe => pbe.id === cartProd.produto)
-          if (!backendProd) {
-            return produto
-          }
+        if (this.carrinho && Array.isArray(this.carrinho)) {
+          return this.carrinho.map(cartProd => {
+            let produto = cartProd
+            const backendProd = this.store_produtos.find(pbe => pbe.id === cartProd.produto)
+            if (!backendProd) {
+              return produto
+            }
 
-          const categoria = backendProd.categoria ? backendProd.categoria.nome : null
-          const imagem = backendProd.imagem ? backendProd.imagem : null
-          const intervalo = backendProd.intervalo ? backendProd.intervalo : 1
-          const minimo_unidade = backendProd.minimo_unidade ? backendProd.minimo_unidade : 1
-          const nome = backendProd.nome
-          const preco = backendProd.promocionar ? backendProd.valorPromocao : backendProd.preco
-          const unidade_medida = backendProd.unidade_medida ? backendProd.unidade_medida : null
-          let valor = preco / minimo_unidade
-          let detalhes = []
-          let combinacoes = []
+            const categoria = backendProd.categoria ? backendProd.categoria.nome : null
+            const imagem = backendProd.imagem ? backendProd.imagem : null
+            const intervalo = backendProd.intervalo ? backendProd.intervalo : 1
+            const minimo_unidade = backendProd.minimo_unidade ? backendProd.minimo_unidade : 1
+            const nome = backendProd.nome
+            const preco = backendProd.promocionar ? backendProd.valorPromocao : backendProd.preco
+            const unidade_medida = backendProd.unidade_medida ? backendProd.unidade_medida : null
+            let valor = preco / minimo_unidade
+            let detalhes = []
+            let combinacoes = []
 
-          if (produto.combinacoes.length > 0) {
-            combinacoes = produto.combinacoes.map(c => {
-              const combinacao = this.store_produtos.find(pbe => pbe.id === c.id)
-              return {
-                index: c.index,
-                id: combinacao.id,
-                nome: combinacao.nome,
-                preco: combinacao.preco
-              }
-            })
-
-            valor = ( valor + combinacoes.reduce((p, c) => {return p + c.preco}, 0) ) / ( combinacoes.length+1 )
-          }
-
-          if (produto.multiplos.length > 0) {
-            produto.multiplos.map(cartMult => {
-              let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
-              if (!backendMult) {
-                backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
-              }
-              const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
-              let valorIng = 0
-              if (backendIng.nesseMultiplo) {
-                valorIng = backendIng.nesseMultiplo
-              } else {
-                if (backendIng.preco) {
-                  valorIng = backendIng.preco * cartMult.quantidade
+            if (produto.combinacoes.length > 0) {
+              combinacoes = produto.combinacoes.map(c => {
+                const combinacao = this.store_produtos.find(pbe => pbe.id === c.id)
+                return {
+                  index: c.index,
+                  id: combinacao.id,
+                  nome: combinacao.nome,
+                  preco: combinacao.preco
                 }
-              }
+              })
 
-              valor += valorIng
-              detalhes = [...detalhes, {
-                multiplo: backendMult.nome,
-                ingrediente: backendIng.nome,
-                valor: valorIng,
-                quantidade: cartMult.quantidade
-              }]
-            })
-          }
+              valor = (valor + combinacoes.reduce((p, c) => {
+                return p + c.preco
+              }, 0)) / (combinacoes.length + 1)
+            }
 
-          produto = {
-            ...produto,
-            categoria,
-            detalhes,
-            intervalo,
-            imagem,
-            minimo_unidade,
-            nome,
-            unidade_medida,
-            valor,
-            combinacoes
-          }
-          return produto
+            if (produto.multiplos.length > 0) {
+              produto.multiplos.map(cartMult => {
+                let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+                if (!backendMult) {
+                  backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+                }
+                const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
+                let valorIng = 0
+                if (backendIng.nesseMultiplo) {
+                  valorIng = backendIng.nesseMultiplo
+                } else {
+                  if (backendIng.preco) {
+                    valorIng = backendIng.preco * cartMult.quantidade
+                  }
+                }
 
-        })
+                valor += valorIng
+                detalhes = [...detalhes, {
+                  multiplo: backendMult.nome,
+                  ingrediente: backendIng.nome,
+                  valor: valorIng,
+                  quantidade: cartMult.quantidade
+                }]
+              })
+            }
+
+            produto = {
+              ...produto,
+              categoria,
+              detalhes,
+              intervalo,
+              imagem,
+              minimo_unidade,
+              nome,
+              unidade_medida,
+              valor,
+              combinacoes
+            }
+            return produto
+
+          })
+        }
+        return []
       },
       subtotal () {
         return this.produtos.reduce(function (prev, cur) {
@@ -238,7 +243,7 @@
         'cliente/listMe',
         'fidelidade/listOne',
         'formapagamento/listAll',
-        'produto/listAllPaginated',
+        'produto/listAll',
         'mainbar/setQuantidade',
       ]),
       removeCartItem (time) {
@@ -367,7 +372,12 @@
           }
           return ids
         }, [])
-        this['produto/listAllPaginated']({ ids })
+        await this['produto/listAll']({
+          filters: [
+            ['id', 'IN', ids]
+          ]
+        })
+
       }
 
       this.mounted = true

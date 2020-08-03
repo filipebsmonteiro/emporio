@@ -7,6 +7,7 @@ import institucional from '@/routes/institucional'
 import painelCliente from '@/routes/painel/cliente'
 import painelCupom from '@/routes/painel/cupom'
 import painelIngrediente from '@/routes/painel/ingrediente'
+import painelLoja from '@/routes/painel/loja'
 import painelProduto from '@/routes/painel/produto'
 import painelPedido from '@/routes/painel/pedido'
 import painelUsuario from '@/routes/painel/usuario'
@@ -49,6 +50,7 @@ export default new Router({
         ...painelCliente,
         ...painelCupom,
         ...painelIngrediente,
+        ...painelLoja,
         ...painelProduto,
         ...painelPedido,
         ...painelUsuario

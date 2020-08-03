@@ -28,7 +28,7 @@
     },
     computed: {
       ...mapGetters({
-        produtos: 'produto/getAll',
+        produtos: 'produto/all',
         isLoadingProduto: 'produto/isLoading',
       }),
     },

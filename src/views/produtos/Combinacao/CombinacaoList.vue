@@ -54,7 +54,7 @@
     },
     computed: {
       ...mapGetters({
-        produtos: 'produto/getAll'
+        produtos: 'produto/all'
       }),
       combinacaoText () {
         if (this.list.length === 1) {

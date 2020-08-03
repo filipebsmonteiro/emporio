@@ -25,7 +25,7 @@
     <div class="row">
       <div class="col-12">
         <b-form-group label="Opções" label-class="text-white" class="mt-4 mb-0">
-          <SelectOpcao :model="opcao_model" @input="addOpcao" class="mb-2"/>
+          <SelectIngredientes :model="opcao_model" @input="addOpcao" class="mb-2"/>
         </b-form-group>
         <b-table :fields="fields" :items="variacao.ingredientes" class="subtable-variacao" responsive>
           <template v-slot:cell(nome)="{ item: { nome, nesseMultiplo, preco } }">
@@ -50,11 +50,11 @@
 </template>
 
 <script>
-  import SelectOpcao from '@/views/painel/ingrediente/SelectOpcao'
+  import SelectIngredientes from '@/views/painel/ingrediente/SelectIngredientes'
 
   export default {
-    name: 'Variacao',
-    components: { SelectOpcao },
+    name: 'SubIngredienteList',
+    components: { SelectIngredientes },
     props: {
       variacao: {
         type: Object,

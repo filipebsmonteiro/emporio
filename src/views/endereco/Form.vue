@@ -88,7 +88,7 @@
     directives: { mask },
     computed: {
       ...mapGetters({
-        endereco: 'endereco/getCurrent',
+        endereco: 'endereco/current',
         loadingEndereco: 'endereco/isLoading'
       })
     },
