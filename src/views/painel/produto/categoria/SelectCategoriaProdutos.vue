@@ -2,7 +2,7 @@
   <b-overlay :show="isLoading">
     <SelectComponent
       :model="local_model"
-      :options="produtos"
+      :options="categorias"
       :disabled="disabled"
       :searching="isLoading"
       @search="autocomplete"
@@ -24,10 +24,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import SelectComponent from '@/components/Select/SelectComponent'
-import ProdutoRepository from '@/repositories/Produto/Produto'
+import CategoriaRepository from '@/repositories/Produto/Categoria'
 
 export default {
-  name: 'SelectProdutos',
+  name: 'SelectCategoriaProdutos',
   components: { SelectComponent },
   props: {
     model: {
@@ -46,8 +46,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLoading: 'produto/isLoading',
-      produtos: 'produto/all',
+      isLoading: 'produto/categoria/isLoading',
+      categorias: 'produto/categoria/all',
     }),
   },
   data () {
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'produto/listAllPaginated',
+      'produto/categoria/listAllPaginated',
     ]),
     async autocomplete (string) {
       this.stringSearch = string
@@ -69,7 +69,7 @@ export default {
         }
 
         this.timer = await setTimeout(async () => {
-          await this['produto/listAllPaginated']({
+          await this['produto/categoria/listAllPaginated']({
             filters: [['nome', 'LIKE', '%' + string + '%']],
             per_page: 7
           })
@@ -77,31 +77,31 @@ export default {
       }
     },
     async addNew () {
-      ProdutoRepository.post({
+      CategoriaRepository.post({
         nome: this.stringSearch,
         status: true,
         preco: 0,
       }).then(() => {
         this.$notify({
           type: 'success',
-          title: `Produto criado com Sucesso!`
+          title: `Categoria criada com Sucesso!`
         })
         this.autocomplete(this.stringSearch)
       }).catch(() => {
         this.$notify({
           type: 'danger',
-          title: `Erro ao inserir Produto!`
+          title: `Erro ao inserir Categoria!`
         })
       })
     },
     inputMethod (id) {
-      const produto = this.produtos.find(i => i.id === id)
-      this.$emit('input', produto)
+      const categoria = this.categorias.find(i => i.id === id)
+      this.$emit('input', categoria)
     }
   },
   mounted () {
     this.local_model = this.model
-    this['produto/listAllPaginated']({per_page: 7})
+    this['produto/categoria/listAllPaginated']({per_page: 7})
   },
   beforeUpdate () {
     this.local_model = this.model

@@ -2,11 +2,11 @@
   <div class="row">
     <div v-for="(variacao, index) in list" :key="index" class="col-md-6 mt-3">
       <SubProdutoList :variacao="variacao"
-                      @update="evt => updateVariacao({index, ...evt})"
-                      @remove="removeVariacao(index)"/>
+                      @update="evt => updateProdMultiplo({index, ...evt})"
+                      @remove="removeProdMultiplos(index)"/>
     </div>
     <div class="col-md-6 mt-3">
-      <button type="button" class="btn btn-block btn-info" @click="addVariacao(variacao_exemplo)">
+      <button type="button" class="btn btn-block btn-info" @click="addProdMultiplos(variacao_exemplo)">
         Adicionar Variaçao
       </button>
     </div>
@@ -37,12 +37,12 @@
       }
     },
     methods: {
-      addVariacao (variacao) {
+      addProdMultiplos (variacao) {
         const copy = Object.assign({}, variacao)
         const multiplos = [...this.list, copy]
         this.$emit('update', multiplos)
       },
-      updateVariacao (variacao) {
+      updateProdMultiplo (variacao) {
         const multiplos = this.list.map((mult, idx) => {
           if (idx === variacao.index) {
             return variacao
@@ -51,7 +51,7 @@
         })
         this.$emit('update', multiplos)
       },
-      removeVariacao (index) {
+      removeProdMultiplos (index) {
         const multiplos = this.list.filter((mult, idx) => {
           if (idx !== index) {
             return mult

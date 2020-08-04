@@ -25,7 +25,7 @@
     <div class="row">
       <div class="col-12">
         <b-form-group label="Opções" label-class="text-white" class="mt-4 mb-0">
-          <SelectIngredientes :model="opcao_model" @input="addOpcao" class="mb-2"/>
+          <SelectIngredientes :model="opcao_model" @input="addSubingrediente" class="mb-2"/>
         </b-form-group>
         <b-table :fields="fields" :items="variacao.ingredientes" class="subtable-variacao" responsive>
           <template v-slot:cell(nome)="{ item: { nome, nesseMultiplo, preco } }">
@@ -37,11 +37,11 @@
           <template v-slot:cell(preco)="{ item: { id, nesseMultiplo } }">
             <b-input-group class="align-items-center">
               <b-form-input class="input-opcao" type="number" step="0.01" min="0" size="sm"
-                            v-model="nesseMultiplo" @change="evt => updateOpcao(id, 'nesseMultiplo', evt)"/>
+                            v-model="nesseMultiplo" @change="evt => updateSubingrediente(id, 'nesseMultiplo', evt)"/>
             </b-input-group>
           </template>
           <template v-slot:cell(id)="{ item }">
-            <i class="fas fa-times m-auto btn p-0 text-danger" @click="removeOpcao(item)"/>
+            <i class="fas fa-times m-auto btn p-0 text-danger" @click="removeSubingrediente(item)"/>
           </template>
         </b-table>
       </div>
@@ -73,7 +73,7 @@
       }
     },
     methods: {
-      addOpcao (opcao) {
+      addSubingrediente (opcao) {
         if (opcao) {
           if (!this.variacao.ingredientes.find(i => i.id === opcao.id)) {
             opcao = { id: opcao.id, nome: opcao.nome, preco: opcao.preco, nesseMultiplo: null }
@@ -89,7 +89,7 @@
           })
         }
       },
-      updateOpcao (id, key, value) {
+      updateSubingrediente (id, key, value) {
         this.variacao.ingredientes = this.variacao.ingredientes.map(ing => {
           if (ing.id === id) {
             ing[key] = value
@@ -98,7 +98,7 @@
         })
         this.$emit('update', this.variacao)
       },
-      removeOpcao (opcao) {
+      removeSubingrediente (opcao) {
         this.variacao.ingredientes = this.variacao.ingredientes.filter(i => i.id !== opcao.id)
         this.$emit('update', this.variacao)
       },

@@ -59,7 +59,10 @@
           if (this.timer) { clearTimeout(this.timer); this.timer = null;}
 
           this.timer = await setTimeout(async () => {
-            await this['ingrediente/listAllPaginated']([['nome', 'LIKE', '%' + string + '%']])
+            await this['ingrediente/listAllPaginated']({
+              filters: [['nome', 'LIKE', '%' + string + '%']],
+              per_page: 7
+            })
           }, 900) // delay 900 milsec
         }
       },
@@ -88,7 +91,7 @@
     },
     mounted () {
       this.local_model = this.model
-      this['ingrediente/listAllPaginated']()
+      this['ingrediente/listAllPaginated']({per_page: 7})
     },
     beforeUpdate(){
       this.local_model = this.model

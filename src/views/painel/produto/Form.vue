@@ -399,7 +399,7 @@
             await this.uploadImagem(response.data.data.id)
           }
 
-          this.$router.push({ name: 'painel.produto.index' })
+          //this.$router.push({ name: 'painel.produto.index' })
         }).catch(error => {
           this.validaRetornoErro(error)
         })
