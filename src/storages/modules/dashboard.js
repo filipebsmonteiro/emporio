@@ -17,7 +17,7 @@ export default {
     isLoading: false
   },
   getters: {
-    getAll (state) {
+    all (state) {
       return state.list
     },
     isLoading (state) {

@@ -61,6 +61,13 @@ axios.interceptors.response.use(response => {
       redirectLogin()
     }
 
+    /*if (
+      (error.response.status === 404 || error.response.status === 500) &&
+      APIService._getDomain() && APIService._getDomain() === 'painel'
+    ) {
+      window.location.href = `${window.location.origin}/painel`
+    }*/
+
     // return Error object with Promise
     return Promise.reject(error)
   }
