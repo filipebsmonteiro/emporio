@@ -37,7 +37,7 @@
               <i class="ni ni-single-02"></i>
               <span>My profile</span>
             </router-link>
-            <router-link to="/profile" class="dropdown-item">
+            <!--router-link to="/profile" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
               <span>Settings</span>
             </router-link>
@@ -48,12 +48,12 @@
             <router-link to="/profile" class="dropdown-item">
               <i class="ni ni-support-16"></i>
               <span>Support</span>
-            </router-link>
+            </router-link-->
             <div class="dropdown-divider"></div>
-            <a href="#!" class="dropdown-item">
+            <b-button variant="link" class="dropdown-item" @click="logout">
               <i class="ni ni-user-run"></i>
               <span>Logout</span>
-            </a>
+            </b-button>
           </base-dropdown>
         </ul>
       </slot>
@@ -108,6 +108,8 @@
 </template>
 <script>
   import NavbarToggleButton from '@/components/NavbarToggleButton'
+  import AuthPainel from '@/repositories/AuthPainel'
+  import APIService from '@/api/APIService'
 
   export default {
     name: 'sidebar',
@@ -137,6 +139,20 @@
       },
       showSidebar () {
         this.$sidebar.displaySidebar(true)
+      },
+      logout() {
+        AuthPainel.logout().then(() => {
+          APIService._clearToken()
+          localStorage.removeItem('perfil')
+          window.location.href = `${window.location.origin}/painel/login`
+        }).catch(() => {
+          this.$notify({
+            type: 'danger',
+            title: `Erro ao Sair!`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+        })
       }
     },
     beforeDestroy () {
