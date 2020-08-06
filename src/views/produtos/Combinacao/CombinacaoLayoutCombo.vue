@@ -2,7 +2,7 @@
   <div>
     <div v-for="(produtoMultiplo, k) in multiplos" :key="k">
       <div v-if="list.find(subProd => subProd.multiplo_id === produtoMultiplo.id)"
-           class="btn btn-white border-light">{{
+           class="btn btn-white border-light mt-3">{{
           list.find(subProd => subProd.multiplo_id === produtoMultiplo.id).nome
         }}
         <i class="fas fa-times p-1 text-danger position-absolute t-0 r-2" @click="removeSubProd(produtoMultiplo.id)"/>
