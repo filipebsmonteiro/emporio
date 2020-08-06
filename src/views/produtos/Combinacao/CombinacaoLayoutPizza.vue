@@ -12,11 +12,11 @@
           <i class="fas fa-times p-1 text-danger position-absolute t-0 r-2" @click="removeCombinacao(index)"/>
         </b-button>
       </div>
-
       {{/* Subtrai 1, pois a primeira combinação é o sabor inicial da Pizza */}}
       <b-button v-if="list.length < quantidadeMax-1" variant="white border-light w-50 m-1" @click="addCombinacao">
         <i class="fas fa-plus fa-2x"></i>
       </b-button>
+
       <b-modal id="modal-combinacoes-pizza" size="xl"
                @shown="$emit('loadCombinacoes')"
                @hidden="actualCombinacaoIndex = null"

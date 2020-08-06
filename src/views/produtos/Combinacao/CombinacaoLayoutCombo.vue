@@ -8,7 +8,8 @@
         <i class="fas fa-times p-1 text-danger position-absolute t-0 r-2" @click="removeSubProd(produtoMultiplo.id)"/>
       </div>
       <b-button v-else
-                variant="white border-light mt-3" @click="prod_multiplo_id = produtoMultiplo.id"
+                variant="white border-light mt-3"
+                @click="prod_multiplo_id = produtoMultiplo.id; prod_multiplo_name = produtoMultiplo.nome"
                 v-b-modal.modal-combinacoes-combo block>
         {{ `Escolha ${produtoMultiplo.nome}` }}
       </b-button>
@@ -17,11 +18,11 @@
     <b-modal id="modal-combinacoes-combo"
              size="xl"
              @shown="$emit('loadCombinacoes', prod_multiplo_id)"
-             @hidden="prod_multiplo_id = null; isCostumizingSubProd = false;"
+             @hidden="prod_multiplo_id = null; prod_multiplo_name = null; isCostumizingSubProd = false;"
              no-close-on-backdrop
              hide-footer>
       <template slot="modal-title">
-        <h1 class="modal-title">Escolha item</h1>
+        <h1 class="modal-title">Escolha {{ prod_multiplo_name }}</h1>
       </template>
       <div v-if="isCostumizingSubProd">
         <Customize :produto="SubProd"
@@ -43,11 +44,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import ListProducts from '@/views/produtos/layouts/ListProducts'
-import Customize from '@/views/produtos/Customize'
+
 
 export default {
   name: 'CombinacaoLayoutCombo',
-  components: { Customize, ListProducts },
+  components: {
+    /*
+    Importado dessa forma pois pode ser Importado como sub-componente
+     */
+    Customize: () => import('@/views/produtos/Customize'),
+    ListProducts
+  },
   props: {
     list: {
       type: Array,
@@ -66,11 +73,15 @@ export default {
   data () {
     return {
       prod_multiplo_id: null,
+      prod_multiplo_name: null,
       isCostumizingSubProd: false,
       SubProd: {},
       SubProdCombinacoes: [],
       SubProdIngMultiplos: [],
     }
+  },
+  beforeCreate: function () {
+    this.$options.components.TreeFolderContents = require('@/views/produtos/Customize').default
   },
   methods: {
     customizeSubProd (produto) {
