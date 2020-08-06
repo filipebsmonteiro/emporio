@@ -29,8 +29,8 @@
       return {
         variacao_exemplo: {
           nome: null,
-          quantidade_min: null,
-          quantidade_max: null,
+          quantidade_min: 1,
+          quantidade_max: 1,
           obrigatorio: true,
           produtos: []
         }

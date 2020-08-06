@@ -10,15 +10,16 @@
     <div class="row">
       <div class="col-md-4 col-sm-6 col-xs-6">
         <b-input v-model="variacao.quantidade_min" placeholder="Mínimo" type="number" min="0" class="font-weight-bold"
-                 @change="$emit('update', variacao)"/>
+                 :disabled="true" @change="$emit('update', variacao)"/>
       </div>
       <div class="col-md-4 col-sm-6 col-xs-6">
         <b-input v-model="variacao.quantidade_max" placeholder="Máximo" type="number" min="0" class="font-weight-bold"
+                 value="1" :disabled="true"
                  @change="$emit('update', variacao)"/>
       </div>
       <div class="col-md-4 d-flex align-items-center text-white">
         <b-check size="lg" v-model="variacao.obrigatorio" class="ml-md-4 p-md-0"
-                 @change="$emit('update', variacao)" switch>Obrigatório
+                 :disabled="true" @change="$emit('update', variacao)" switch>Obrigatório
         </b-check>
       </div>
     </div>
@@ -87,8 +88,6 @@ export default {
           filters: [['Cat_produtos_idCat_produtos', '=', categoria.id]]
         })
         if (confirm(`Deseja incluir todos produtos da categoria: ${categoria.nome} ?`)) {
-          // eslint-disable-next-line no-console
-          console.log(this.produtos)
           await this.produtos.map(p => {
             if (!this.variacao.produtos.find(exists => exists.id === p.id)) {
               const opcao = { id: p.id, nome: p.nome }

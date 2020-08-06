@@ -2,8 +2,6 @@
   <b-card
     :key="produto.id"
     :title="produto.nome"
-
-    tag="article"
     class="p-0 shadow product"
     body-class="p-3"
   >

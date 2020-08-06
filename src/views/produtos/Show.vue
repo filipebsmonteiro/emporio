@@ -18,18 +18,11 @@
           />
         </b-form-group>
 
-        <b-form-group v-if="produto.categoria && produto.categoria.permiteCombinacao"
-                      label="Combinações" label-size="lg" label-class="pt-0" class="mb-5">
-          <CombinacaoList :list="combinacoes"
-                          :quantidade-max="parseInt(produto.categoria.quantidadeCombinacoes)-1"
-                          @loadCombinacoes="loadProducts"
-                          @update="evt => {combinacoes = evt}"/>
-        </b-form-group>
-
-        <div v-for="(multiplo, i) in produto.multiplos" :key="i">
-          <MultipleChoice v-if="multiplo.isMultipleChoice" :multiplo="multiplo" @change="updateMultiplos"/>
-          <SimpleChoice v-else :multiplo="multiplo" @change="updateMultiplos"/>
-        </div>
+        <Customize :produto="produto"
+                   @changeCombinacoes="evt => {combinacoes = evt}"
+                   @changeMultiplos="evt => {multiplos = evt}"
+                   @loadProducts="loadProducts"
+        />
 
         <base-button type="success" @click="adicionarCarrinho" block>Adicionar ao carrinho</base-button>
       </b-card-body>
@@ -39,14 +32,12 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import MultipleChoice from '@/views/Ingredientes/Multiplos/MultipleChoice'
-import SimpleChoice from '@/views/Ingredientes/Multiplos/SimpleChoice'
 import moment from 'moment'
-import CombinacaoList from '@/views/produtos/Combinacao/CombinacaoList'
+import Customize from '@/views/produtos/Customize'
 
 export default {
   name: 'Show',
-  components: { CombinacaoList, SimpleChoice, MultipleChoice },
+  components: { Customize },
   computed: {
     ...mapGetters({
       isLoadingCategoria: 'produto/categoria/isLoading',
@@ -60,10 +51,6 @@ export default {
         intervalo: this.store_produto.intervalo ? this.store_produto.intervalo : 1,
         minimo_unidade: this.store_produto.minimo_unidade ? this.store_produto.minimo_unidade : 1,
         preco: this.store_produto.promocionar ? this.store_produto.valorPromocao : this.store_produto.preco,
-        multiplos: this.store_produto.categoria ? [
-          ...this.store_produto.categoria.multiplos,
-          ...this.store_produto.multiplos
-        ] : [],
       }
     }
   },
@@ -86,27 +73,11 @@ export default {
       }
       return value
     },
-    updateMultiplos (multiplo) {
-      const exists = this.multiplos.find(m => m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente)
-      if (exists) {
-        if (multiplo.quantidade === 0) {
-          this.multiplos = this.multiplos.filter(m => m.multiplo !== multiplo.multiplo && m.ingrediente !== multiplo.ingrediente)
-          return
-        }
-        this.multiplos.map(m => {
-          if (m.multiplo === multiplo.multiplo && m.ingrediente === multiplo.ingrediente) {
-            m.quantidade = multiplo.quantidade
-          }
-        })
-        return
-      }
-
-      this.multiplos = [...this.multiplos, multiplo]
-    },
-    adicionarCarrinho () {
+    isValid() {
       let isValid = true
-      if (this.produto.multiplos) {
-        this.produto.multiplos.map(multBackEnd => {
+      const multiplos = [...this.produto.categoria.multiplos, ...this.produto.multiplos]
+      if (multiplos) {
+        multiplos.map(multBackEnd => {
           if (multBackEnd.obrigatorio) {
             let soma = 0
             this.multiplos.map(multSelected => {
@@ -125,8 +96,10 @@ export default {
           }
         })
       }
-
-      if (!isValid) {
+      return isValid
+    },
+    adicionarCarrinho () {
+      if (!this.isValid()) {
         return
       }
 
@@ -176,11 +149,11 @@ export default {
         }
       })
     },
-    async loadProducts () {
+    async loadProducts (filters=null) {
       await this['produto/listAll']({
         filters: [
-          ['Cat_produtos_idCat_produtos', '=', this.produto.categoria.id],
-          ['status', '=', 'Disponível']
+          ['status', '=', 'Disponível'],
+          filters
         ]
       })
     }
@@ -189,6 +162,10 @@ export default {
     window.scrollTo(0, 0)
     await this['produto/listOne'](this.$route.params.id)
     this.quantidade = this.produto.minimo_unidade
+
+    this.produto.combinacoes.map(c => {
+      this.combinacoes[c.id] = []
+    })
 
     if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED)) {
       this.$analytics.fbq.init(process.env.VUE_APP_FACEBOOK_CODE, {
