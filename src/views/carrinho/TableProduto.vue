@@ -34,11 +34,11 @@
       </div>
       <div v-else>
         {{ item.nome }}
-        <pre>{{ item }}</pre>
       </div>
     </template>
     <template v-slot:cell(detalhes)="linha">
-      <base-button v-if="linha.item.multiplos.length > 0" type="link" @click="linha.toggleDetails">
+      <base-button v-if="linha.item.multiplos.length > 0 || linha.item.detalhes.length > 0"
+                   type="link" @click="linha.toggleDetails">
         <u>Detalhes</u>
       </base-button>
     </template>

@@ -145,16 +145,40 @@
             let combinacoes = []
 
             if (produto.combinacoes.length > 0) {
-              combinacoes = produto.combinacoes.map(c => {
-                const combinacao = this.store_produtos.find(pbe => pbe.id === c.id)
-                return {
-                  index: c.index,
-                  id: combinacao.id,
-                  nome: combinacao.nome,
-                  preco: combinacao.preco
+              produto.combinacoes.reduce((prevValue, currentValue) => {
+                if (backendProd.categoria.layout === 'Pizza') {
+                  // Fração Layout Pizza
+                  const combinacao = this.store_produtos.find(pbe => pbe.id === currentValue.id)
+                  return [...prevValue, {
+                    index: currentValue.index,
+                    id: combinacao.id,
+                    nome: combinacao.nome,
+                    preco: combinacao.preco
+                  }]
                 }
-              })
+                if (currentValue.multiplo_id) {
+                  // SubProduto Layout Combo
+                  const prodMult = backendProd.combinacoes.find(pbec => pbec.id === currentValue.multiplo_id)
+                  const combinacao = this.store_produtos.find(pbe => pbe.id === currentValue.id)
+                  detalhes = [...detalhes, {
+                    multiplo: prodMult.nome,
+                    produto: combinacao.nome,
+                    valor: null,
+                    combinacoes: currentValue.combinacoes.map(subC => {
+                      // Fração Subproduto Layout Pizza
+                      const subCombinacao = this.store_produtos.find(pbe => pbe.id === subC.id)
+                      return {
+                        index: currentValue.index,
+                        id: subCombinacao.id,
+                        nome: subCombinacao.nome,
+                        preco: subCombinacao.preco
+                      }
+                    })
+                  }]
+                }
+              }, combinacoes)
 
+              // Particiona o valor Layout Pizza
               valor = (valor + combinacoes.reduce((p, c) => {
                 return p + c.preco
               }, 0)) / (combinacoes.length + 1)
@@ -354,6 +378,28 @@
           }
 
         })
+      },
+      async getIdsAndLoadProducts() {
+        if (this.carrinho.length > 0) {
+          const ids = this.carrinho.reduce((previousValue, currentValue) => {
+            // Adiciona ID produto selecionado
+            let ids = [...previousValue, currentValue.produto]
+
+            currentValue.combinacoes.reduce((prevValue, currValue) => {
+              // Adiciona ID Fração Layout Pizza ou ID SubProduto Layout Combo
+              ids = [...ids, currValue.id]
+              if (currValue.multiplo_id) {
+                // Adiciona ID Fração Layout Pizza dentro do SubProduto
+                ids = [...ids, ...currValue.combinacoes.map(c => c.id)]
+              }
+            }, [])
+
+            return ids
+          }, [])
+
+          // Load Products
+          await this['produto/listAll']({filters: [['id', 'IN', ids]]})
+        }
       }
     },
     async mounted () {
@@ -364,22 +410,8 @@
       }
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
-      if (this.carrinho.length > 0) {
-        const ids = this.carrinho.reduce((previousValue, currentValue) => {
-          let ids = [...previousValue, currentValue.produto]
-          if (currentValue.combinacoes.length > 0) {
-            ids = [...ids, ...currentValue.combinacoes.map(c => c.id)]
-          }
-          return ids
-        }, [])
-        await this['produto/listAll']({
-          filters: [
-            ['id', 'IN', ids]
-          ]
-        })
 
-      }
-
+      await this.getIdsAndLoadProducts()
       this.mounted = true
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED) && this.carrinho.length > 0) {

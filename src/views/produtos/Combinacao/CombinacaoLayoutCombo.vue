@@ -93,6 +93,8 @@ export default {
       }
       this.selectSubProd()
       this.SubProd = {}
+      this.SubProdCombinacoes = []
+      this.SubProdIngMultiplos = []
     },
     isValid () {
       let isValid = true
@@ -133,6 +135,10 @@ export default {
       this.$bvModal.hide('modal-combinacoes-combo')
       this.$emit('change', [...this.list, sub_produto])
       this.isCostumizingSubProd = false
+      this.SubProd = {}
+      this.SubProdCombinacoes = []
+      this.SubProdIngMultiplos = []
+      alert('oba')
     },
     removeSubProd (prodMult) {
       const list = this.list.filter(subProd => subProd.multiplo_id === prodMult.id)
