@@ -164,16 +164,8 @@
                     multiplo: prodMult.nome,
                     produto: combinacao.nome,
                     valor: null,
-                    combinacoes: currentValue.combinacoes.map(subC => {
-                      // Fração Subproduto Layout Pizza
-                      const subCombinacao = this.store_produtos.find(pbe => pbe.id === subC.id)
-                      return {
-                        index: currentValue.index,
-                        id: subCombinacao.id,
-                        nome: subCombinacao.nome,
-                        preco: subCombinacao.preco
-                      }
-                    })
+                    multiplos: this.mountMultiploDetails(currentValue.multiplos, combinacao),
+                    combinacoes: currentValue.combinacoes
                   }]
                 }
               }, combinacoes)
@@ -184,31 +176,13 @@
               }, 0)) / (combinacoes.length + 1)
             }
 
-            if (produto.multiplos.length > 0) {
-              produto.multiplos.map(cartMult => {
-                let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
-                if (!backendMult) {
-                  backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
-                }
-                const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
-                let valorIng = 0
-                if (backendIng.nesseMultiplo) {
-                  valorIng = backendIng.nesseMultiplo
-                } else {
-                  if (backendIng.preco) {
-                    valorIng = backendIng.preco * cartMult.quantidade
-                  }
-                }
+            const mainDetails = this.mountMultiploDetails(produto.multiplos, backendProd)
+            detalhes = [
+              ...detalhes,
+              ...mainDetails
+            ]
 
-                valor += valorIng
-                detalhes = [...detalhes, {
-                  multiplo: backendMult.nome,
-                  ingrediente: backendIng.nome,
-                  valor: valorIng,
-                  quantidade: cartMult.quantidade
-                }]
-              })
-            }
+            valor += mainDetails.reduce((acumulador, valorAtual) => acumulador.valor + valorAtual.valor, 0)
 
             produto = {
               ...produto,
@@ -299,6 +273,18 @@
             })
           }
         }
+        // eslint-disable-next-line no-console
+        console.log({
+          endereco_id: this.$localStorage.get('endereco_id'),
+          loja_id: this.$localStorage.get('loja_id'),
+          agendamento: this.agendamento,
+          cupom_field: this.cupom_field,
+          fidelidade_field: this.fidelidade_field,
+          forma_pagamento: this.forma_pagamento,
+          troco: this.troco,
+          observacoes: this.observacoes,
+          produtos: this.carrinho
+        })
         await Pedido.post({
           endereco_id: this.$localStorage.get('endereco_id'),
           loja_id: this.$localStorage.get('loja_id'),
@@ -334,7 +320,7 @@
             confirmButtonText: 'Acompanhar!',
           }).then((result, referencia = referencia) => {
             if (result.value) {
-              // this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
+              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
             }
           })
 
@@ -400,6 +386,30 @@
           // Load Products
           await this['produto/listAll']({filters: [['id', 'IN', ids]]})
         }
+      },
+      mountMultiploDetails(multiploCart, backendProd) {
+        return multiploCart.map(cartMult => {
+          let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+          if (!backendMult) {
+            backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+          }
+          const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
+          let valorIng = 0
+          if (backendIng.nesseMultiplo) {
+            valorIng = backendIng.nesseMultiplo
+          } else {
+            if (backendIng.preco) {
+              valorIng = backendIng.preco * cartMult.quantidade
+            }
+          }
+
+          return {
+            multiplo: backendMult.nome,
+            ingrediente: backendIng.nome,
+            valor: valorIng,
+            quantidade: cartMult.quantidade
+          }
+        })
       }
     },
     async mounted () {

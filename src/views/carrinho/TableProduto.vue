@@ -36,9 +36,9 @@
         {{ item.nome }}
       </div>
     </template>
-    <template v-slot:cell(detalhes)="linha">
-      <base-button v-if="linha.item.multiplos.length > 0 || linha.item.detalhes.length > 0"
-                   type="link" @click="linha.toggleDetails">
+    <template v-slot:cell(detalhes)="{ item: {multiplos, detalhes}, toggleDetails}">
+      <base-button v-if="(multiplos && multiplos.length > 0) || (detalhes && detalhes.length > 0)"
+                   type="link" @click="toggleDetails">
         <u>Detalhes</u>
       </base-button>
     </template>
@@ -97,7 +97,7 @@ export default {
       }
       return ''
     }
-  },
+  }
 }
 </script>
 
