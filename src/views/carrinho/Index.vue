@@ -145,46 +145,44 @@
             let combinacoes = []
 
             if (produto.combinacoes.length > 0) {
-              combinacoes = produto.combinacoes.map(c => {
-                const combinacao = this.store_produtos.find(pbe => pbe.id === c.id)
-                return {
-                  index: c.index,
-                  id: combinacao.id,
-                  nome: combinacao.nome,
-                  preco: combinacao.preco
+              produto.combinacoes.reduce((prevValue, currentValue) => {
+                if (backendProd.categoria.layout === 'Pizza') {
+                  // Fração Layout Pizza
+                  const combinacao = this.store_produtos.find(pbe => pbe.id === currentValue.id)
+                  return [...prevValue, {
+                    index: currentValue.index,
+                    id: combinacao.id,
+                    nome: combinacao.nome,
+                    preco: combinacao.preco
+                  }]
                 }
-              })
+                if (currentValue.multiplo_id) {
+                  // SubProduto Layout Combo
+                  const prodMult = backendProd.combinacoes.find(pbec => pbec.id === currentValue.multiplo_id)
+                  const combinacao = this.store_produtos.find(pbe => pbe.id === currentValue.id)
+                  detalhes = [...detalhes, {
+                    multiplo: prodMult.nome,
+                    produto: combinacao.nome,
+                    valor: null,
+                    multiplos: this.mountMultiploDetails(currentValue.multiplos, combinacao),
+                    combinacoes: currentValue.combinacoes
+                  }]
+                }
+              }, combinacoes)
 
+              // Particiona o valor Layout Pizza
               valor = (valor + combinacoes.reduce((p, c) => {
                 return p + c.preco
               }, 0)) / (combinacoes.length + 1)
             }
 
-            if (produto.multiplos.length > 0) {
-              produto.multiplos.map(cartMult => {
-                let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
-                if (!backendMult) {
-                  backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
-                }
-                const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
-                let valorIng = 0
-                if (backendIng.nesseMultiplo) {
-                  valorIng = backendIng.nesseMultiplo
-                } else {
-                  if (backendIng.preco) {
-                    valorIng = backendIng.preco * cartMult.quantidade
-                  }
-                }
+            const mainDetails = this.mountMultiploDetails(produto.multiplos, backendProd)
+            detalhes = [
+              ...detalhes,
+              ...mainDetails
+            ]
 
-                valor += valorIng
-                detalhes = [...detalhes, {
-                  multiplo: backendMult.nome,
-                  ingrediente: backendIng.nome,
-                  valor: valorIng,
-                  quantidade: cartMult.quantidade
-                }]
-              })
-            }
+            valor += mainDetails.reduce((acumulador, valorAtual) => acumulador.valor + valorAtual.valor, 0)
 
             produto = {
               ...produto,
@@ -275,6 +273,18 @@
             })
           }
         }
+        // eslint-disable-next-line no-console
+        console.log({
+          endereco_id: this.$localStorage.get('endereco_id'),
+          loja_id: this.$localStorage.get('loja_id'),
+          agendamento: this.agendamento,
+          cupom_field: this.cupom_field,
+          fidelidade_field: this.fidelidade_field,
+          forma_pagamento: this.forma_pagamento,
+          troco: this.troco,
+          observacoes: this.observacoes,
+          produtos: this.carrinho
+        })
         await Pedido.post({
           endereco_id: this.$localStorage.get('endereco_id'),
           loja_id: this.$localStorage.get('loja_id'),
@@ -310,7 +320,7 @@
             confirmButtonText: 'Acompanhar!',
           }).then((result, referencia = referencia) => {
             if (result.value) {
-              // this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
+              this.$router.push({ name: 'pedido.show', params: { referencia: response.data.data.referencia } })
             }
           })
 
@@ -354,6 +364,52 @@
           }
 
         })
+      },
+      async getIdsAndLoadProducts() {
+        if (this.carrinho.length > 0) {
+          const ids = this.carrinho.reduce((previousValue, currentValue) => {
+            // Adiciona ID produto selecionado
+            let ids = [...previousValue, currentValue.produto]
+
+            currentValue.combinacoes.reduce((prevValue, currValue) => {
+              // Adiciona ID Fração Layout Pizza ou ID SubProduto Layout Combo
+              ids = [...ids, currValue.id]
+              if (currValue.multiplo_id) {
+                // Adiciona ID Fração Layout Pizza dentro do SubProduto
+                ids = [...ids, ...currValue.combinacoes.map(c => c.id)]
+              }
+            }, [])
+
+            return ids
+          }, [])
+
+          // Load Products
+          await this['produto/listAll']({filters: [['id', 'IN', ids]]})
+        }
+      },
+      mountMultiploDetails(multiploCart, backendProd) {
+        return multiploCart.map(cartMult => {
+          let backendMult = backendProd.categoria.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+          if (!backendMult) {
+            backendMult = backendProd.multiplos.find(mbe => mbe.id === cartMult.multiplo)
+          }
+          const backendIng = backendMult.ingredientes.find(ibe => ibe.id === cartMult.ingrediente)
+          let valorIng = 0
+          if (backendIng.nesseMultiplo) {
+            valorIng = backendIng.nesseMultiplo
+          } else {
+            if (backendIng.preco) {
+              valorIng = backendIng.preco * cartMult.quantidade
+            }
+          }
+
+          return {
+            multiplo: backendMult.nome,
+            ingrediente: backendIng.nome,
+            valor: valorIng,
+            quantidade: cartMult.quantidade
+          }
+        })
       }
     },
     async mounted () {
@@ -364,22 +420,8 @@
       }
       const prods = this.$localStorage.get('carrinho', '[]')
       this.carrinho = JSON.parse(prods)
-      if (this.carrinho.length > 0) {
-        const ids = this.carrinho.reduce((previousValue, currentValue) => {
-          let ids = [...previousValue, currentValue.produto]
-          if (currentValue.combinacoes.length > 0) {
-            ids = [...ids, ...currentValue.combinacoes.map(c => c.id)]
-          }
-          return ids
-        }, [])
-        await this['produto/listAll']({
-          filters: [
-            ['id', 'IN', ids]
-          ]
-        })
 
-      }
-
+      await this.getIdsAndLoadProducts()
       this.mounted = true
 
       if (parseInt(process.env.VUE_APP_FB_PIXEL_ENABLED) && this.carrinho.length > 0) {

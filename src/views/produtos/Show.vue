@@ -21,7 +21,6 @@
         <Customize :produto="produto"
                    @changeCombinacoes="evt => {combinacoes = evt}"
                    @changeMultiplos="evt => {multiplos = evt}"
-                   @loadProducts="loadProducts"
         />
 
         <base-button type="success" @click="adicionarCarrinho" block>Adicionar ao carrinho</base-button>
@@ -147,14 +146,6 @@ export default {
         if (result.value) {
           this.$router.push({ name: 'produtos.categoria', params: { id: this.store_produto.categoria.id } })
         }
-      })
-    },
-    async loadProducts (filters=null) {
-      await this['produto/listAll']({
-        filters: [
-          ['status', '=', 'Disponível'],
-          filters
-        ]
       })
     }
   },

@@ -4,8 +4,6 @@ export const isAuthenticatedPainel = ($to, $from, $next) => {
   if (APIService._isAuthenticated() && APIService._getDomain() && APIService._getDomain() === 'painel') {
     return $next()
   }
-  // eslint-disable-next-line no-console
-  console.log('opa')
   $next({ name: 'painel.login' })
 }
 export const isAuthenticatedSite = ($to, $from, $next) => {

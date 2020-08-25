@@ -26,13 +26,19 @@
 
     </template>
     <template v-slot:cell(nome)="{ item }">
-      {{ `${combinacoesPrefix(item)} ${item.nome}` }}
-      <span v-for="(combinacao, i) in item.combinacoes" :key="i">
-        <br>{{ `${combinacoesPrefix(item)} ${combinacao.nome}` }}
-      </span>
+      <div v-if="item.categoria && item.categoria.layout === 'Pizza'">
+        {{ `${combinacoesPrefix(item)} ${item.nome}` }}
+        <span v-for="(combinacao, i) in item.combinacoes" :key="i">
+          <br>{{ `${combinacoesPrefix(item)} ${combinacao.nome}` }}
+        </span>
+      </div>
+      <div v-else>
+        {{ item.nome }}
+      </div>
     </template>
-    <template v-slot:cell(detalhes)="linha">
-      <base-button v-if="linha.item.multiplos.length > 0" type="link" @click="linha.toggleDetails">
+    <template v-slot:cell(detalhes)="{ item: {multiplos, detalhes}, toggleDetails}">
+      <base-button v-if="(multiplos && multiplos.length > 0) || (detalhes && detalhes.length > 0)"
+                   type="link" @click="toggleDetails">
         <u>Detalhes</u>
       </base-button>
     </template>
@@ -51,68 +57,68 @@
 </template>
 
 <script>
-  import DetalhesProduto from '@/views/carrinho/DetalhesProduto'
+import DetalhesProduto from '@/views/carrinho/DetalhesProduto'
 
-  export default {
-    name: 'TableProduto',
-    components: { DetalhesProduto },
-    props: {
-      produtos: {
-        type: Array,
-        default: () => []
-      }
+export default {
+  name: 'TableProduto',
+  components: {DetalhesProduto},
+  props: {
+    produtos: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      fields: [
+        {key: 'imagem', label: ''},
+        {key: 'quantidade', label: 'Quantidade'},
+        {key: 'nome', label: 'Produto'},
+        {key: 'categoria', label: 'Tipo'},
+        {key: 'detalhes', label: 'Detalhes'},
+        {key: 'valor', label: 'Valor'},
+        {key: 'id', label: 'Remover'},
+      ]
+    }
+  },
+  methods: {
+    getImageUrl(imageName) {
+      return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
     },
-    data () {
-      return {
-        fields: [
-          { key: 'imagem', label: '' },
-          { key: 'quantidade', label: 'Quantidade' },
-          { key: 'nome', label: 'Produto' },
-          { key: 'categoria', label: 'Tipo' },
-          { key: 'detalhes', label: 'Detalhes' },
-          { key: 'valor', label: 'Valor' },
-          { key: 'id', label: 'Remover' },
-        ]
+    combinacoesPrefix(produto) {
+      if (produto.combinacoes.length === 1) {
+        return 'Metade'
       }
-    },
-    methods: {
-      getImageUrl (imageName) {
-        return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
-      },
-      combinacoesPrefix (produto) {
-        if (produto.combinacoes.length === 1) {
-          return 'Metade'
-        }
-        if (produto.combinacoes.length === 2) {
-          return 'Um terço'
-        }
-        if (produto.combinacoes.length === 3) {
-          return 'Um quarto'
-        }
-        return ''
+      if (produto.combinacoes.length === 2) {
+        return 'Um terço'
       }
-    },
+      if (produto.combinacoes.length === 3) {
+        return 'Um quarto'
+      }
+      return ''
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .size-5 {
-    width: 5rem;
-    height: 5rem;
-  }
+.size-5 {
+  width: 5rem;
+  height: 5rem;
+}
 
-  /deep/ th {
-    &:last-child {
-      text-align: center !important;
-    }
+/deep/ th {
+  &:last-child {
+    text-align: center !important;
   }
+}
 
-  /deep/ td {
-    padding: 0.5rem !important;
-    vertical-align: middle !important;
+/deep/ td {
+  padding: 0.5rem !important;
+  vertical-align: middle !important;
 
-    &:last-child {
-      text-align: center !important;
-    }
+  &:last-child {
+    text-align: center !important;
   }
+}
 </style>

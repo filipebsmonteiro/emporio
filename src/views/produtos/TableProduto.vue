@@ -12,9 +12,9 @@
       {{ item.quantidade }}<strong v-if="item.unidade_medida"> {{ item.unidade_medida }}</strong>
     </template>
     <template v-slot:cell(nome)="{ item }">
-      {{ `${combinacoesPrefix(item)} ${item.nome}` }}
+      <b class="border-bottom">{{ item.nome }}</b>
       <span v-for="(combinacao, i) in item.combinacoes" :key="i">
-        <br>{{ `${combinacoesPrefix(item)} ${combinacao.nome}` }}
+        <br><b v-if="combinacao.produto_multiplo">{{ combinacao.produto_multiplo.nome }}: </b>{{ combinacao.nome }}
       </span>
     </template>
     <template v-slot:cell(detalhes)="linha">
@@ -66,15 +66,16 @@
         return `${process.env.VUE_APP_DOMAIN_URL}/imagens/produtos/${imageName}`
       },
       combinacoesPrefix (produto) {
-        if (produto.combinacoes.length === 1) {
-          return 'Metade'
-        }
-        if (produto.combinacoes.length === 2) {
-          return 'Um terço'
-        }
-        if (produto.combinacoes.length === 3) {
-          return 'Um quarto'
-        }
+        // if (produto.combinacoes.length === 1) {
+        //   return 'Metade'
+        // }
+        // if (produto.combinacoes.length === 2) {
+        //   return 'Um terço'
+        // }
+        // if (produto.combinacoes.length === 3) {
+        //   return 'Um quarto'
+        // }
+        produto
         return ''
       }
     },

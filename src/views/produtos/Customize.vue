@@ -1,5 +1,5 @@
 <template>
-  <b-card class="m-auto">
+  <b-card class="m-auto border-0">
     <template v-if="showName" v-slot:header>
       <div class="d-flex justify-content-between ml-3 mr-3">
         <h2 class="mb-0">{{ produto.nome }}</h2>
@@ -20,7 +20,7 @@
       />
 
       <CombinacaoLayoutPizza
-        v-else-if="produto.categoria && produto.categoria.permiteCombinacao"
+        v-if="produto.categoria && produto.categoria.permiteCombinacao"
         :list="combinacoes"
         :quantidade-max="parseInt(produto.categoria.quantidadeCombinacoes)"
         @loadCombinacoes="loadProducts(['Cat_produtos_idCat_produtos', '=', produto.categoria.id])"
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 import CombinacaoLayoutCombo from '@/views/produtos/Combinacao/CombinacaoLayoutCombo'
 import CombinacaoLayoutPizza from '@/views/produtos/Combinacao/CombinacaoLayoutPizza'
 import IngredienteMultiploList from '@/views/Ingredientes/Multiplos/IngredienteMultiploList'
@@ -68,6 +69,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+        'produto/listAll'
+    ]),
     updateCombinacoes(combinacoes){
       this.combinacoes = combinacoes
       this.$emit('changeCombinacoes', this.combinacoes)
@@ -76,8 +80,13 @@ export default {
       this.multiplos = multiplos
       this.$emit('changeMultiplos', this.multiplos)
     },
-    loadProducts (filter) {
-      this.$emit('loadProducts', filter)
+    async loadProducts (filters=null) {
+      await this['produto/listAll']({
+        filters: [
+          ['status', '=', 'Disponível'],
+          filters
+        ]
+      })
     },
   }
 }
