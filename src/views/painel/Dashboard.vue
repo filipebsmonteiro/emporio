@@ -90,7 +90,7 @@
       <!--End charts-->
 
       <!--Cards Bottom-->
-      <div class="row mt-5">
+      <div v-if="minimumPerfil('Lojista')" class="row mt-5">
         <div class="col-md-4">
           <b-overlay :show="isLoading">
             <stats-card title="Faturamento no período"
@@ -256,6 +256,19 @@
         }
 
         await this['dashboard/listAll'](params)
+      },
+      minimumPerfil (perfil) {
+        const PERFIL = localStorage.getItem('perfil')
+        if (perfil === 'Admin' && PERFIL !== 'Admin'){
+          return false
+        }
+        if (perfil === 'Lojista' && !['Admin', 'Lojista'].includes(PERFIL) ){
+          return false
+        }
+        if (perfil === 'Gerente' && !['Admin', 'Lojista', 'Gerente'].includes(PERFIL) ){
+          return false
+        }
+        return true
       }
     },
     async mounted () {
