@@ -1,5 +1,10 @@
 export default [
   {
+    path: 'profile',
+    name: 'painel.profile',
+    component: () => import('@/views/painel/usuario/Form')
+  },
+  {
     path: 'usuarios',
     name: 'painel.usuario.index',
     component: () => import('@/views/painel/usuario/Index')

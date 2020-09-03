@@ -78,7 +78,8 @@
     methods: {
       ...mapActions([
         'usuario/listOne',
-        'perfil/listAll'
+        'perfil/listAll',
+        'usuario/listMe'
       ]),
       validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
@@ -133,7 +134,13 @@
     },
     async mounted () {
       this['perfil/listAll']()
-      await this['usuario/listOne'](this.$route.params.id)
+
+      if (this.$route.name === 'painel.profile'){
+        await this['usuario/listMe']()
+      }else {
+        await this['usuario/listOne'](this.$route.params.id)
+      }
+
       this.model = {
         ...this.model,
         ...this.usuario,
