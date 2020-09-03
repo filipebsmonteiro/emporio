@@ -64,8 +64,8 @@
               <p v-if="pedidos.length === 0" class="m-auto">Ops... não temos nada aqui ainda!</p>
               <b-overlay :show="isLoadingPedidos">
                 <b-table :fields="fields" :items="pedidos">
-                  <template v-slot:cell(data)="{ item: { created_at: date } }">
-                    {{ date.date | formatDate }}
+                  <template v-slot:cell(data)="{ item: { created_at } }">
+                    {{ created_at | formatDate }}
                   </template>
                   <template v-slot:cell(valor)="{ item }">
                     {{ item.valor | formatMoney }}

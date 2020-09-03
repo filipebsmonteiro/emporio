@@ -32,7 +32,7 @@
           {{ valor + taxa_entrega | formatMoney }}
         </template>
         <template v-slot:cell(created_at)="{ item: { created_at } }">
-          {{ created_at.date | formatDate }}
+          {{ created_at | formatDate }}
         </template>
         <template v-slot:row-details="{ item }">
           <Pedido :pedido="item" @update="$store.dispatch('pedido/listAllPaginated')" class="shadow"/>

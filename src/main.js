@@ -57,7 +57,10 @@ Vue.use(VuePusher, {
 Vue.use(VueHtmlToPaper, {
   name: '_blank',
   specs: ['fullscreen=yes'],
-  styles: ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css']
+  styles: [
+    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+    'https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css',
+  ]
 })
 /*router.beforeEach(async ($to, $from, $next) => {
   if ( Object.keys( $to.meta ).length > 0){

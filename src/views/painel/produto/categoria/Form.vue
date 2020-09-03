@@ -40,7 +40,7 @@
                     <b-select placeholder="Layout"
                               class="form-control-alternative"
                               v-model="model.layout"
-                              :options="['Padrão', 'Pizza']"
+                              :options="['Padrão', 'Pizza', 'Combo']"
                     />
                   </b-form-group>
                 </div>

@@ -1,9 +1,9 @@
 <template>
   <b-table :items="produtos" :fields="fields" tbody-tr-class="p-2" striped borderless responsive>
     <template v-if="!hideImg" v-slot:cell(imagem)="linha">
-      <span class="b-avatar rounded size-5">
+      <span class="b-avatar rounded">
         <span class="b-avatar-custom">
-          <img v-if="linha.item.imagem" :src="getImageUrl(linha.item.imagem)"/>
+          <img v-if="linha.item.imagem" :src="getImageUrl(linha.item.imagem)" width="100"/>
           <i v-else class="fas fa-camera-retro fa-2x m-auto"/>
         </span>
       </span>
