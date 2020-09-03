@@ -11,13 +11,15 @@
         disable-filters
         @list="evt => $store.dispatch('pedido/listAllPaginated', evt)">
         <template v-slot:table-data-filters>
-          <b-btn size="sm" variant="outline" @click="listPedidos">Todos</b-btn>
-          <b-btn size="sm" variant="outline-primary"
-                 @click="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])">Abertos</b-btn>
-          <b-btn size="sm" variant="outline-success"
-                 @click="listPedidos([['status', '!=', 'Concluido']])">Finalizados</b-btn>
-          <b-btn size="sm" variant="outline-danger"
-                 @click="listPedidos([['status', '!=', 'Cancelado']])">Cancelados</b-btn>
+          <div v-if="isLoading || pedidos.length > 0">
+            <b-btn size="sm" variant="outline" @click="listPedidos()">Todos</b-btn>
+            <b-btn size="sm" variant="outline-primary"
+                   @click="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])">Abertos</b-btn>
+            <b-btn size="sm" variant="outline-success"
+                   @click="listPedidos([['status', '!=', 'Concluido']])">Finalizados</b-btn>
+            <b-btn size="sm" variant="outline-danger"
+                   @click="listPedidos([['status', '!=', 'Cancelado']])">Cancelados</b-btn>
+          </div>
         </template>
         <template v-slot:cell(referencia)="{ item: { referencia }, toggleDetails }">
           <router-link :to="{ name: 'painel.pedido.show', params: { referencia } }">
