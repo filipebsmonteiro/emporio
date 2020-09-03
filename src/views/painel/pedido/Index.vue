@@ -10,6 +10,15 @@
         text-empty="Nenhum pedido Localizado"
         disable-filters
         @list="evt => $store.dispatch('pedido/listAllPaginated', evt)">
+        <template v-slot:table-data-filters>
+          <b-btn size="sm" variant="outline" @click="listPedidos">Todos</b-btn>
+          <b-btn size="sm" variant="outline-primary"
+                 @click="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])">Abertos</b-btn>
+          <b-btn size="sm" variant="outline-success"
+                 @click="listPedidos([['status', '!=', 'Concluido']])">Finalizados</b-btn>
+          <b-btn size="sm" variant="outline-danger"
+                 @click="listPedidos([['status', '!=', 'Cancelado']])">Cancelados</b-btn>
+        </template>
         <template v-slot:cell(referencia)="{ item: { referencia }, toggleDetails }">
           <router-link :to="{ name: 'painel.pedido.show', params: { referencia } }">
             {{ referencia }}
@@ -71,14 +80,21 @@ export default {
   methods: {
     ...mapActions([
       'pedido/listAllPaginated'
-    ])
+    ]),
+    async listPedidos(filters=null) {
+      let params = this.pagination
+
+      if (filters)
+        params = {...params, filters}
+
+      await this['pedido/listAllPaginated'](params)
+    }
   },
-  mounted () {
+  async mounted () {
     if (!parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO)) {
       this.fields = this.fields.filter(f => f.key !== 'agendamento')
     }
-    this['pedido/listAllPaginated'](this.pagination)
-
+    await this.listPedidos()
     this.pusher.subscribe(`novo-pedido`, channel => {
       channel.bind('pedidoEvent', () => {
         this.$notify({
