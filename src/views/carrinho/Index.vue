@@ -274,17 +274,17 @@
           }
         }
         // eslint-disable-next-line no-console
-        console.log({
-          endereco_id: this.$localStorage.get('endereco_id'),
-          loja_id: this.$localStorage.get('loja_id'),
-          agendamento: this.agendamento,
-          cupom_field: this.cupom_field,
-          fidelidade_field: this.fidelidade_field,
-          forma_pagamento: this.forma_pagamento,
-          troco: this.troco,
-          observacoes: this.observacoes,
-          produtos: this.carrinho
-        })
+        // console.log({
+        //   endereco_id: this.$localStorage.get('endereco_id'),
+        //   loja_id: this.$localStorage.get('loja_id'),
+        //   agendamento: this.agendamento,
+        //   cupom_field: this.cupom_field,
+        //   fidelidade_field: this.fidelidade_field,
+        //   forma_pagamento: this.forma_pagamento,
+        //   troco: this.troco,
+        //   observacoes: this.observacoes,
+        //   produtos: this.carrinho
+        // })
         await Pedido.post({
           endereco_id: this.$localStorage.get('endereco_id'),
           loja_id: this.$localStorage.get('loja_id'),
@@ -310,8 +310,8 @@
             })
           }
 
-          // await this.$localStorage.remove('carrinho')
-          // this['mainbar/setQuantidade'](0)
+          await this.$localStorage.remove('carrinho')
+          this['mainbar/setQuantidade'](0)
           await this.$swal({
             icon: 'success',
             title: `Pedido realizado com sucesso!`,
