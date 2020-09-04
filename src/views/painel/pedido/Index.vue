@@ -17,7 +17,7 @@
         :items="pedidos"
         :loading="isLoading"
         :paginator="pagination"
-        text-empty="Nenhum pedido Localizado"
+        text-empty="Nenhum pedido localizado"
         disable-filters
         @list="evt => $store.dispatch('pedido/listAllPaginated', evt)">
         <template v-slot:cell(referencia)="{ item: { referencia }, toggleDetails }">
