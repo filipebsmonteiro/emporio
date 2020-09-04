@@ -1,6 +1,16 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8"/>
+    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-7">
+      <div>
+        <b-btn size="sm" @click="listPedidos()">Todos</b-btn>
+        <b-btn size="sm" variant="primary"
+               @click="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])">Abertos</b-btn>
+        <b-btn size="sm" variant="success"
+               @click="listPedidos([['status', '=', 'Concluido']])">Finalizados</b-btn>
+        <b-btn size="sm" variant="danger"
+               @click="listPedidos([['status', '=', 'Cancelado']])">Cancelados</b-btn>
+      </div>
+    </base-header>
     <b-card no-body class="m-3 mt-n5">
       <TableData
         :fields="fields"
@@ -10,17 +20,6 @@
         text-empty="Nenhum pedido Localizado"
         disable-filters
         @list="evt => $store.dispatch('pedido/listAllPaginated', evt)">
-        <template v-slot:table-data-filters>
-          <div v-if="isLoading || pedidos.length > 0">
-            <b-btn size="sm" variant="outline" @click="listPedidos()">Todos</b-btn>
-            <b-btn size="sm" variant="outline-primary"
-                   @click="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])">Abertos</b-btn>
-            <b-btn size="sm" variant="outline-success"
-                   @click="listPedidos([['status', '!=', 'Concluido']])">Finalizados</b-btn>
-            <b-btn size="sm" variant="outline-danger"
-                   @click="listPedidos([['status', '!=', 'Cancelado']])">Cancelados</b-btn>
-          </div>
-        </template>
         <template v-slot:cell(referencia)="{ item: { referencia }, toggleDetails }">
           <router-link :to="{ name: 'painel.pedido.show', params: { referencia } }">
             {{ referencia }}
