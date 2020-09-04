@@ -23,7 +23,8 @@
                   <base-input label="Nome" input-classes="form-control-alternative" v-model="model.name"/>
                 </div>
                 <div class="col-lg-6">
-                  <b-form-group label="Perfil" label-class="form-control-label">
+                  <b-form-group label="Perfil" label-class="form-control-label"
+                  :disabled="this.$route.name === 'painel.profile'">
                     <b-form-select v-model="model.perfil" :options="perfils"/>
                   </b-form-group>
                 </div>
@@ -135,11 +136,13 @@
     async mounted () {
       this['perfil/listAll']()
 
+      let id = this.$route.params.id
       if (this.$route.name === 'painel.profile'){
         await this['usuario/listMe']()
-      }else {
-        await this['usuario/listOne'](this.$route.params.id)
+        id = this.usuario.id
       }
+      await this['usuario/listOne'](id)
+
 
       this.model = {
         ...this.model,
