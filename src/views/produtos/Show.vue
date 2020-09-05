@@ -1,31 +1,33 @@
 <template>
   <div class="container mt-5">
-    <b-card class="shadow col-md-8 m-auto">
-      <template v-slot:header>
-        <div class="d-flex justify-content-between ml-3 mr-3">
-          <h2 class="mb-0">{{ produto.nome }}</h2>
-          <h2 class="mb-0">{{ (produto.preco / produto.minimo_unidade) * quantidade | formatMoney }}</h2>
-        </div>
-      </template>
-      <b-card-body>
-        <b-form-group label="Quantidade" label-cols-lg="8" label-size="lg" label-class="pt-0" class="mb-5">
-          <b-form-spinbutton
-            v-model="quantidade"
-            :min="produto.minimo_unidade"
-            :step="produto.intervalo"
-            max="500"
-            :formatter-fn="quantidadeFormatter"
+    <b-overlay :show="isLoadingCategoria || isLoadingProduto">
+      <b-card class="shadow col-md-8 m-auto">
+        <template v-slot:header>
+          <div class="d-flex justify-content-between ml-3 mr-3">
+            <h2 class="mb-0">{{ produto.nome }}</h2>
+            <h2 class="mb-0">{{ (produto.preco / produto.minimo_unidade) * quantidade | formatMoney }}</h2>
+          </div>
+        </template>
+        <b-card-body>
+          <b-form-group label="Quantidade" label-cols-lg="8" label-size="lg" label-class="pt-0" class="mb-5">
+            <b-form-spinbutton
+              v-model="quantidade"
+              :min="produto.minimo_unidade"
+              :step="produto.intervalo"
+              max="500"
+              :formatter-fn="quantidadeFormatter"
+            />
+          </b-form-group>
+
+          <Customize :produto="produto"
+                     @changeCombinacoes="evt => {combinacoes = evt}"
+                     @changeMultiplos="evt => {multiplos = evt}"
           />
-        </b-form-group>
 
-        <Customize :produto="produto"
-                   @changeCombinacoes="evt => {combinacoes = evt}"
-                   @changeMultiplos="evt => {multiplos = evt}"
-        />
-
-        <base-button type="success" @click="adicionarCarrinho" block>Adicionar ao carrinho</base-button>
-      </b-card-body>
-    </b-card>
+          <base-button type="success" @click="adicionarCarrinho" block>Adicionar ao carrinho</base-button>
+        </b-card-body>
+      </b-card>
+    </b-overlay>
   </div>
 </template>
 

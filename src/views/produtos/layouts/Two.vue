@@ -1,11 +1,12 @@
 <template>
   <b-card class="overflow-hidden product shadow" no-body>
-    <b-row no-gutters>
+    <b-row class="flex-fill" no-gutters>
+      <span v-if="produto.promocionar" class="ribbon">Promoção</span>
       <b-col md="6" class="product__image">
         <b-card-img v-if="produto.imagem"
                     :src="getImageUrl(produto.imagem)"
                     class="rounded-0"/>
-        <span v-else class="b-avatar rounded">
+        <span v-else class="b-avatar rounded ml-6">
           <span class="b-avatar-custom">
             <i class="fas fa-camera-retro fa-2x m-auto"/>
           </span>
@@ -14,10 +15,24 @@
       <b-col md="6" class="d-flex">
         <b-card-body :title="produto.nome" class="d-flex flex-column p-3">
           <b-card-text class="flex-fill">
-            {{ produto.ingredientes }}
+            <div class="w-100 d-flex justify-content-between align-items-end">
+              <span class="product__preco">{{ produto.preco | formatMoney }}</span>
+              <small class="ml-3">
+                {{ produto.unidade_medida ? ` ${produto.minimo_unidade} ${produto.unidade_medida}` : null }}
+              </small>
+            </div>
+            <b-collapse :id="`ingredientes-${produto.id}`">{{ produto.ingredientes }}</b-collapse>
           </b-card-text>
 
-          <b-button variant="success product__button" @click="$emit('select', produto)" block>Pedir</b-button>
+          <b-btn-group>
+            <b-button variant="success product__button" @click="$emit('select', produto)" block>Pedir</b-button>
+            <b-btn v-if="produto.ingredientes"
+                   variant="outline-success"
+                   class="text-sm ml-auto pt-0 pb-0 pl-1 pr-1"
+                   v-b-toggle="`ingredientes-${produto.id}`">
+              <b-icon icon="plus-circle"/>
+            </b-btn>
+          </b-btn-group>
         </b-card-body>
       </b-col>
     </b-row>
@@ -52,6 +67,21 @@
 <style lang="scss" scoped>
   .product {
     max-width: 540px;
+
+    overflow: hidden;
+    /deep/ .ribbon{
+      width: 200px;
+      background: linear-gradient(#2EB62C, #57C84D);
+      position: absolute;
+      top: 20px;
+      left: -63px;
+      text-align: center;
+      line-height: 20px;
+      font-weight: bold;
+      color: #f0f0f0;
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+    }
 
     &__ {
       &image {

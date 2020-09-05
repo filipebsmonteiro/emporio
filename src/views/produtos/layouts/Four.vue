@@ -17,14 +17,25 @@
       </div>
     </template>
     <b-card-text class="flex-fill">
+      <span v-if="produto.promocionar" class="ribbon">Promoção</span>
       <div class="w-100 d-flex justify-content-between align-items-end">
         <span class="product__preco">{{ produto.preco | formatMoney }}</span>
-        <small class="ml-3"> {{ produto.unidade_medida ? ` ${produto.minimo_unidade} ${produto.unidade_medida}` : null
-          }}</small>
+        <small class="ml-3">
+          {{ produto.unidade_medida ? ` ${produto.minimo_unidade} ${produto.unidade_medida}` : null }}
+        </small>
       </div>
+      <b-collapse :id="`ingredientes-${produto.id}`">{{ produto.ingredientes }}</b-collapse>
     </b-card-text>
 
-    <b-button variant="success product__button" @click="$emit('select', produto)" block>Pedir</b-button>
+    <b-btn-group>
+      <b-button variant="success product__button" @click="$emit('select', produto)" block>Pedir</b-button>
+      <b-btn v-if="produto.ingredientes"
+             variant="outline-success"
+             class="text-sm ml-auto pt-0 pb-0 pl-1 pr-1"
+             v-b-toggle="`ingredientes-${produto.id}`">
+        <b-icon icon="plus-circle"/>
+      </b-btn>
+    </b-btn-group>
   </b-card>
 </template>
 
@@ -73,6 +84,21 @@
     @media (max-width: 576px) {
       margin-left: 1.5rem !important;
       margin-right: 1.5rem !important;
+    }
+
+    overflow: hidden;
+    /deep/ .ribbon{
+      width: 200px;
+      background: linear-gradient(#2EB62C, #57C84D);
+      position: absolute;
+      top: 20px;
+      left: -63px;
+      text-align: center;
+      line-height: 20px;
+      font-weight: bold;
+      color: #f0f0f0;
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
     }
 
     /deep/ .card-header {
