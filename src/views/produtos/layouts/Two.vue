@@ -3,9 +3,7 @@
     <b-row class="flex-fill" no-gutters>
       <span v-if="produto.promocionar" class="ribbon">Promoção</span>
       <b-col md="6" class="product__image">
-        <b-card-img v-if="produto.imagem"
-                    :src="getImageUrl(produto.imagem)"
-                    class="rounded-0"/>
+        <b-card-img v-if="produto.imagem" :src="getImageUrl(produto.imagem)" class="rounded-0"/>
         <span v-else class="b-avatar rounded ml-6">
           <span class="b-avatar-custom">
             <i class="fas fa-camera-retro fa-2x m-auto"/>
@@ -67,6 +65,7 @@
 <style lang="scss" scoped>
   .product {
     max-width: 540px;
+    padding: 0px;
 
     overflow: hidden;
     /deep/ .ribbon{
@@ -81,11 +80,12 @@
       color: #f0f0f0;
       transform: rotate(-45deg);
       -webkit-transform: rotate(-45deg);
+      z-index: 1;
     }
 
     &__ {
       &image {
-        margin-top: auto;
+        //margin-top: auto;
         margin-bottom: auto;
       }
 

@@ -99,6 +99,7 @@
       color: #f0f0f0;
       transform: rotate(-45deg);
       -webkit-transform: rotate(-45deg);
+      z-index: 1;
     }
 
     /deep/ .card-header {
