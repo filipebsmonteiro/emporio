@@ -37,7 +37,14 @@
         'produto/listAll'
       ]),
       async loadProducts (id) {
-        await this['produto/listAll']([['Cat_produtos_idCat_produtos', '=', id]])
+        const loja_id = this.$localStorage.get('loja_id', 1)
+        await this['produto/listAll']({
+          'filters': [
+            ['Lojas_idLojas', '=', loja_id],
+            ['Cat_produtos_idCat_produtos', '=', id],
+            ['status', '=', 'Disponível']
+          ]
+        })
       }
     },
     async mounted () {

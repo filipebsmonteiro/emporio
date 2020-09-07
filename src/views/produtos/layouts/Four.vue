@@ -91,8 +91,8 @@
       width: 200px;
       background: linear-gradient(#2EB62C, #57C84D);
       position: absolute;
-      top: 20px;
-      left: -63px;
+      top: 21px;
+      left: -67px;
       text-align: center;
       line-height: 20px;
       font-weight: bold;
