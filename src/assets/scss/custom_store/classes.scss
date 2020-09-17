@@ -103,6 +103,10 @@ footer.footer-site{
       src: url($font-file + '.svg#aller') format('svg');
     }
 
+    @if $extension == 'otf' {
+      src: url($font-file + '.otf') format('truetype');
+    }
+
     font-weight: normal;
     font-style: normal;
   }
