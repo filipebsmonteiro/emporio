@@ -17,7 +17,7 @@
       </div>
     </template>
     <b-card-text class="flex-fill">
-      <span v-if="produto.promocionar" class="ribbon">Promoção</span>
+      <div v-if="produto.promocionar" class="ribbon-side"><span>Promoção</span></div>
       <div class="w-100 d-flex justify-content-between align-items-end">
         <span class="product__preco">{{ produto.preco | formatMoney }}</span>
         <small class="ml-3">
@@ -86,20 +86,55 @@
       margin-right: 1.5rem !important;
     }
 
-    overflow: hidden;
-    /deep/ .ribbon{
-      width: 200px;
-      background: linear-gradient(#2EB62C, #57C84D);
+    /deep/ .ribbon-side {
       position: absolute;
-      top: 21px;
-      left: -67px;
-      text-align: center;
-      line-height: 20px;
-      font-weight: bold;
-      color: #f0f0f0;
-      transform: rotate(-45deg);
-      -webkit-transform: rotate(-45deg);
+      left: -5px;
+      top: -5px;
       z-index: 1;
+      overflow: hidden;
+      width: 75px;
+      height: 75px;
+      text-align: right;
+      span {
+        font-size: 10px;
+        font-weight: bold;
+        color: #FFF;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 20px;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        width: 100px;
+        display: block;
+        background: #79A70A;
+        background: linear-gradient(#9BC90D 0%, #79A70A 100%);
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 19px;
+        left: -21px;
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0px;
+          top: 100%;
+          z-index: -1;
+          border-left: 3px solid #79A70A;
+          border-right: 3px solid transparent;
+          border-bottom: 3px solid transparent;
+          border-top: 3px solid #79A70A;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0%;
+          top: 100%;
+          z-index: -1;
+          border-right: 3px solid #79A70A;
+          border-left: 3px solid transparent;
+          border-bottom: 3px solid transparent;
+          border-top: 3px solid #79A70A;
+        }
+      }
     }
 
     /deep/ .card-header {

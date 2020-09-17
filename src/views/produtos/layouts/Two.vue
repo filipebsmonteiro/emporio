@@ -1,7 +1,7 @@
 <template>
-  <b-card class="overflow-hidden product shadow" no-body>
+  <b-card class="product shadow" no-body>
     <b-row class="flex-fill" no-gutters>
-      <span v-if="produto.promocionar" class="ribbon">Promoção</span>
+      <div v-if="produto.promocionar" class="ribbon-side"><span>Promoção</span></div>
       <b-col md="6" class="product__image">
         <b-card-img v-if="produto.imagem" :src="getImageUrl(produto.imagem)" class="rounded-0"/>
         <span v-else class="b-avatar rounded ml-6">
@@ -67,20 +67,55 @@
     max-width: 540px;
     padding: 0px;
 
-    overflow: hidden;
-    /deep/ .ribbon{
-      width: 200px;
-      background: linear-gradient(#2EB62C, #57C84D);
+    /deep/ .ribbon-side {
       position: absolute;
-      top: 21px;
-      left: -67px;
-      text-align: center;
-      line-height: 20px;
-      font-weight: bold;
-      color: #f0f0f0;
-      transform: rotate(-45deg);
-      -webkit-transform: rotate(-45deg);
+      left: -5px;
+      top: -5px;
       z-index: 1;
+      overflow: hidden;
+      width: 75px;
+      height: 75px;
+      text-align: right;
+      span {
+        font-size: 10px;
+        font-weight: bold;
+        color: #FFF;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 20px;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        width: 100px;
+        display: block;
+        background: #79A70A;
+        background: linear-gradient(#9BC90D 0%, #79A70A 100%);
+        box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+        position: absolute;
+        top: 19px;
+        left: -21px;
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0px;
+          top: 100%;
+          z-index: -1;
+          border-left: 3px solid #79A70A;
+          border-right: 3px solid transparent;
+          border-bottom: 3px solid transparent;
+          border-top: 3px solid #79A70A;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0%;
+          top: 100%;
+          z-index: -1;
+          border-right: 3px solid #79A70A;
+          border-left: 3px solid transparent;
+          border-bottom: 3px solid transparent;
+          border-top: 3px solid #79A70A;
+        }
+      }
     }
 
     &__ {
