@@ -32,8 +32,9 @@
           <b-badge variant="success">{{ status }}</b-badge>
         </template>
         <template v-slot:cell(status)="{ item: { agendamento, status } }">
-          <b-badge v-if="agendamento" variant="warning">Agendado</b-badge>
+          <b-badge v-if="status === 'Cancelado'" variant="danger">{{ status }}</b-badge>
           <b-badge v-else variant="success">{{ status }}</b-badge>
+          <b-badge v-if="agendamento" variant="warning">Agendado</b-badge>
         </template>
         <template v-slot:cell(cliente)="{ item: { cliente } }">
           {{ cliente.nome }}
