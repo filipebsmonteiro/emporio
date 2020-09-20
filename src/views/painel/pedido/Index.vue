@@ -2,13 +2,13 @@
   <div>
     <base-header type="gradient-success" class="pb-6 pt-5 pt-md-7">
       <div>
-        <b-btn size="sm" @click="listPedidos()">Todos</b-btn>
         <b-btn size="sm" variant="primary"
                @click="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])">Abertos</b-btn>
         <b-btn size="sm" variant="success"
                @click="listPedidos([['status', '=', 'Concluido']])">Finalizados</b-btn>
         <b-btn size="sm" variant="danger"
                @click="listPedidos([['status', '=', 'Cancelado']])">Cancelados</b-btn>
+        <b-btn size="sm" @click="listPedidos()">Todos</b-btn>
       </div>
     </base-header>
     <b-card no-body class="m-3 mt-n5">
@@ -46,7 +46,9 @@
           {{ created_at | formatDate }}
         </template>
         <template v-slot:row-details="{ item }">
-          <Pedido :pedido="item" @update="$store.dispatch('pedido/listAllPaginated')" class="shadow"/>
+          <Pedido :pedido="item"
+                  @update="listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])"
+                  class="shadow"/>
         </template>
       </TableData>
     </b-card>
@@ -96,7 +98,7 @@ export default {
     if (!parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO)) {
       this.fields = this.fields.filter(f => f.key !== 'agendamento')
     }
-    await this.listPedidos()
+    await this.listPedidos([['status', '!=', 'Concluido'],['status', '!=', 'Cancelado']])
     this.pusher.subscribe(`novo-pedido`, channel => {
       channel.bind('pedidoEvent', () => {
         this.$notify({
