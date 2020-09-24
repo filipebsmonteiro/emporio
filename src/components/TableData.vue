@@ -4,7 +4,7 @@
       <div class="col-md-10">
         <slot name="table-data-filters">
           <b-form v-if="(!disableFilters && filters.length > 0) || (!disableFilters && items.length > 0)"
-                  class="row" inline>
+                  class="row" @submit="filtrar" inline>
             <b-input-group v-for="(filter, k) in filters" :key="k" class="filter-input-group col-md-3 col-sm-6 mb-3">
               <b-form-select :options="fields_filter_local" v-model="filter.key"/>
               <b-input v-model="filter.value" id="inline-form-input-name" placeholder="Valor"/>
@@ -164,6 +164,7 @@ export default {
         this.initial_local
     },
     filtrar (evt) {
+      evt.preventDefault()
       let evento = {}
       if (evt.page && evt.per_page) {
         evento = { ...evento, ...evt }
