@@ -1,16 +1,10 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8"/>
+    <base-header type="gradient-success" class="pb-8 pt-5">
+      <h1>Clientes</h1>
+    </base-header>
     <div class="container-fluid mt--7">
       <div class="card">
-        <div v-if="clientes.length > 0" class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">Lista de Clientes</h3>
-            </div>
-          </div>
-        </div>
-
         <TableData
           :fields="fields"
           :items="clientes"
@@ -18,9 +12,10 @@
           :loading="isLoading"
           text-empty="Nenhum cliente localizado"
           @list="evt => $store.dispatch('cliente/listAllPaginated', evt)">
+          <template v-slot:head(id)>{{ null }}</template>
           <template v-slot:cell(id)="{ item: { id } }">
             <router-link class="btn btn-link btn-sm p-0" :to="{ name: 'painel.cliente.edit', params: { id } }">
-              <i class="fas fa-edit"/>
+              <i class="fas fa-pencil-alt"/>
             </router-link>
           </template>
         </TableData>

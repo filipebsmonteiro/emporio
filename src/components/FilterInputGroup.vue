@@ -32,8 +32,6 @@ export default {
   watch: {
     options: function (newValue) {
       if (newValue.length > 0) {
-        // eslint-disable-next-line no-console
-        console.log(newValue)
         this.textSelected = newValue[0].text
         this.field = newValue[0].value
         this.value = ''

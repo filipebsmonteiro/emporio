@@ -1,27 +1,36 @@
 <template>
   <div>
-    <div class="row ml-3 mr-3 mb-3">
-      <b-dropdown
-        v-if="items.length > 0"
-        :text="`Gerenciar colunas`"
-        class="col-md-7"
-        block
-        variant="link"
-        no-caret>
-        <b-dropdown-form>
-          <b-form-checkbox v-model="allSelected" @change="toggleAll">
-            {{ allSelected ? 'Desmarcar todas' : 'Selecionar Todas' }}
-          </b-form-checkbox>
-          <b-form-checkbox-group v-model="selected" :options="fields_checkbox" stacked/>
-        </b-dropdown-form>
-      </b-dropdown>
-      <div class="col-md-5">
+    <div v-show="(items.length === 0 && filters.length > 0) || items.length > 0" class="row m-2">
+      <div class="col-md-7">
+        <router-link
+          v-if="routeNew && textNew"
+          size="sm"
+          class="btn btn-primary btn-sm-block"
+          :to="{ name: routeNew }">
+          {{ textNew }}
+        </router-link>
+      </div>
+      <div class="col-md-3">
         <slot name="table-data-filters">
           <FilterInputGroup
             :options="fields_filter_local"
             @search="evt => filtrar({ filters: [[evt.field, 'LIKE', `%${evt.value}%`]] })"
           />
         </slot>
+      </div>
+      <div class="col-md-2 d-flex justify-content-center">
+        <b-dropdown
+          :text="`Gerenciar colunas`"
+          block
+          variant="link"
+          no-caret>
+          <b-dropdown-form>
+            <b-form-checkbox v-model="allSelected" @change="toggleAll">
+              {{ allSelected ? 'Desmarcar todas' : 'Selecionar Todas' }}
+            </b-form-checkbox>
+            <b-form-checkbox-group v-model="selected" :options="fields_checkbox" stacked/>
+          </b-dropdown-form>
+        </b-dropdown>
       </div>
     </div>
     <TableSimple
@@ -115,26 +124,6 @@ export default {
     }
   },
   methods: {
-    /*addFilter () {
-      let index = 0
-      if (this.filters.length > 0) {
-        const value = this.filters.reduce((prev, current) => {
-          return (prev.index > current.index) ? prev.index : current.index
-        })
-
-        if (Object.keys(value).length > 0) {
-          index = parseInt(value.index) + 1
-        } else {
-          index = parseInt(value) + 1
-        }
-      }
-
-      this.filters = [...this.filters, {
-        index,
-        key: '',
-        value: ''
-      }]
-    },*/
     toggleAll (checked) {
       this.selected = checked ?
         this.fields_checkbox.map(f => {
@@ -143,11 +132,15 @@ export default {
         this.initial_local
     },
     filtrar (evt) {
+      let evento = {}
+
       try {
         evt.preventDefault()
-      }catch (e) {evt}
+      }catch (e) {
+        this.filters = evt.filters ? evt.filters : []
+        evento = evt
+      }
 
-      let evento = evt.filters ? evt : {}
       if (evt.page && evt.per_page) {
         evento = { ...evento, ...evt }
       } else {
@@ -157,16 +150,6 @@ export default {
           per_page: this.paginator.per_page
         }
       }
-
-      /*if (this.filters.length > 0) {
-        let filters_list = []
-        this.filters.map(f => {
-          let condition = 'LIKE'
-          let value = '%' + f.value + '%'
-          filters_list = [...filters_list, [f.key, condition, value]]
-        })
-        evento = { ...evento, filters: filters_list }
-      }*/
       this.$emit('list', evento)
     }
   },
@@ -224,7 +207,11 @@ export default {
   transform: initial !important;
 }
 
-table#table-transition-example .flip-list-move {
-  transition: transform 1s;
+@media all and (max-width:768px) {
+  .btn-sm-block {
+    width: 100%;
+    display:block;
+    border-radius: 50rem!important;
+  }
 }
 </style>

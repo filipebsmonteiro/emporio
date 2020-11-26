@@ -1,20 +1,10 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8"/>
+    <base-header type="gradient-success" class="pb-8 pt-5">
+      <h1>Cupons</h1>
+    </base-header>
     <div class="container-fluid mt--7">
       <div class="card">
-
-        <div v-if="cupons.length > 0" class="card-header border-0">
-          <div class="row align-items-center">
-            <div class="col">
-              <h3 class="mb-0">Lista de Cupons</h3>
-            </div>
-            <div class="col text-right">
-              <router-link :to="{ name: 'painel.cupom.create' }" class="btn btn-primary">Novo</router-link>
-            </div>
-          </div>
-        </div>
-
         <TableData
           :fields="fields"
           :fields-filter="filter"
@@ -32,9 +22,10 @@
             {{ valor | formatMoney }}
             {{ porcentagem ? `${porcentagem}%` : null }}
           </template>
+          <template v-slot:head(id)>{{ null }}</template>
           <template v-slot:cell(id)="{ item: { id } }">
             <router-link class="btn btn-link btn-sm p-0" :to="{ name: 'painel.cupom.edit', params: { id } }">
-              <i class="fas fa-edit"/>
+              <i class="fas fa-pencil-alt"/>
             </router-link>
           </template>
         </TableData>

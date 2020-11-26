@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
       <!--Toggler-->
-      <navbar-toggle-button @click.native="showSidebar"><span class="navbar-toggler-icon"/></navbar-toggle-button>
+      <navbar-toggle-button @click.native="showSidebar"><span class="nav-link fa fa-bars"/></navbar-toggle-button>
       <router-link class="navbar-brand" :to="{ name: 'painel.dashboard' }">
         <img :src="logo" class="navbar-brand-img" alt="...">
       </router-link>

@@ -1,21 +1,11 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8"/>
+    <base-header type="gradient-success" class="pb-8 pt-5">
+      <h1>Produtos</h1>
+    </base-header>
     <div class="container-fluid mt--7">
       <b-overlay :show="isLoading">
         <div class="card">
-          <div class="card-header border-0">
-            <div class="row align-items-center">
-              <div class="col">
-                <h3 class="mb-0">Produtos</h3>
-              </div>
-              <div class="col text-right">
-                <router-link size="sm" class="btn btn-primary" :to="{ name: 'painel.produto.create' }">Novo
-                </router-link>
-              </div>
-            </div>
-          </div>
-
           <TableData
             :fields="fields"
             :fields-filter="filter"
@@ -23,31 +13,42 @@
             :loading="isLoading"
             :paginator="pagination"
             route-new="painel.produto.create"
-            text-new="Novo"
+            text-new="Novo produto"
             text-empty="Nenhum produto encontrado"
             @list="evt => $store.dispatch('produto/listAllPaginated', evt)">
+            <template v-slot:cell(status)="{ item: { id, status } }">
+              <b-btn v-if="status==='Desabilitado'"
+                       variant="warning"
+                       size="sm"
+                       title="Desabilitado por falta de Ingrediente Essencial"
+                       v-b-tooltip
+                       pill>
+                {{ status }}
+              </b-btn>
+              <b-btn v-else-if="status==='Disponível'" variant="success" size="sm" pill>
+                {{ status }}
+                <b-badge variant="success ml-2" @click="changeStatus(id, 'Indisponível')" pill>
+                  <i class="fas fa-pause"/>
+                </b-badge>
+              </b-btn>
+              <b-btn v-else-if="status==='Indisponível'" variant="danger" size="sm" pill>
+                {{ status }}
+                <b-badge variant="danger ml-2" @click="changeStatus(id, 'Disponível')" pill>
+                  <i class="fas fa-play"/>
+                </b-badge>
+              </b-btn>
+            </template>
             <template v-slot:cell(preco)="{ item: { preco } }">
               {{ preco | formatMoney }}
             </template>
             <template v-slot:cell(category)="{ item: { categoria } }">
               <span v-if="categoria.grupo"><b>Grupo: </b> {{ categoria.grupo }}</span><br>
-              <span><b>Nome: </b> {{ categoria.nome }}</span>
+              <span><b v-if="categoria.grupo">Nome: </b> {{ categoria.nome }}</span>
             </template>
+            <template v-slot:head(id)>{{ null }}</template>
             <template v-slot:cell(id)="{ item: { id, status } }">
-              <b-btn v-if="status==='Desabilitado'" variant="outline-warning" size="sm"
-                     title="Desabilitado por falta de Ingrediente Essencial" disabled>
-                <i class="fas fa-exclamation"/>
-              </b-btn>
-              <b-btn v-else-if="status==='Disponível'" variant="white" size="sm"
-                     @click="changeStatus(id, 'Indisponível')">
-                <i class="fas fa-pause"/>
-              </b-btn>
-              <b-btn v-else-if="status==='Indisponível'" variant="danger" size="sm"
-                     @click="changeStatus(id, 'Disponível')">
-                <i class="fas fa-play"/>
-              </b-btn>
               <router-link class="btn btn-link btn-sm p-0" :to="{ name: 'painel.produto.edit', params: { id } }">
-                <i class="fas fa-edit"/>
+                <i class="fas fa-pencil-alt"/>
               </router-link>
             </template>
           </TableData>
