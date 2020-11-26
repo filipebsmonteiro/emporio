@@ -1,50 +1,59 @@
 @import '../custom/variables';
 
-$primary-font-custom: "Damion-regular";
-$primary-font-extension: "ttf";
+$primary-custom-font: "Damion-regular";
+$primary-extension-font: "ttf";
 
-$secondary-font-custom: "Mawns Serif";
-$secondary-font-extension: "ttf";
+$secondary-custom-font: "Mawns Serif";
+$secondary-extension-font: "ttf";
 
-$font-title: '';
-$font-text: '';
+$third-custom-font: "Mawns Serif";
+$third-extension-font: "ttf";
 
-$body-bg-start: #f8f9fe;
-$body-bg-end: #f8f9fe;
-$body-fonts: #525f7f;
+$body-bg-start: black;
+$body-bg-end: black;
+$body-text-color: white;
+$body-text-font: '';
 
 // NavBar
-$navbar-bg-start: transparent;
-$navbar-bg-end: transparent;
-$navbar-text-color: #272522;
+$navbar-bg-start: blue;
+$navbar-bg-end: red;
+$navbar-text-color: white;
 $navbar-border-color: #272522;
 $navbar-border-left-px: 0px;
 $navbar-border-top-px: 0px;
 $navbar-border-right-px: 0px;
-$navbar-border-bottom-px: 2px;
+$navbar-border-bottom-px: 0px;
 $navbar-border-type: solid;
+$navbar-radius: 0.365rem;
 $navbar-cart-color: rgba(255, 255, 255, 0.8);;
 $navbar-font: '';
 $navbar-font-size: '';
 
+// Footer
+$footer-bg-start: blue;
+$footer-bg-end: red;
+$footer-text-color: rgba(255, 255, 255, 0.8);
+
 // NavCat
-$navcat-bg-start: rgba(0, 0, 0, 0.85);
-$navcat-bg-end: rgba(0, 0, 0, 0.85);
+$navcat-bg-start: red;
+$navcat-bg-end: blue;
 $navcat-text-color: rgba(255, 255, 255, 0.8);
 $navcat-border-color: transparent;
-$navcat-border-left-px: 1px;
-$navcat-border-top-px: 1px;
-$navcat-border-right-px: 1px;
-$navcat-border-bottom-px: 1px;
+$navcat-border-left-px: 0px;
+$navcat-border-top-px: 0px;
+$navcat-border-right-px: 0px;
+$navcat-border-bottom-px: 0px;
 $navcat-border-type: solid;
-$navcat-font: $primary-font-custom;
+$navcat-radius: 50rem;
+$navcat-font: '';
 $navcat-font-size: x-large;
 
 //Produto
-$btn-prod-bg-color: $success;
-$btn-prod-color: $white;
+$btn-prod-bg: linear-gradient(blue 0, red 100%);
+$btn-prod-color: white;
 
-// Footer
-$footer-bg-start: #272522;
-$footer-bg-end: #444;
-$footer-text-color: rgba(255, 255, 255, 0.8);
+//Institucional
+//$sobre-text-color: linear-gradient(red 0, blue 100%);
+$sobre-text-color: '';
+$sobre-font: $primary-custom-font;
+$sobre-font-size: xxx-large;

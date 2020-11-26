@@ -1,7 +1,7 @@
 <template>
-  <div :class="{'container rounded': sidebar.container}">
+  <div :class="{'container': config.container}">
     <div id="navbar-main">
-      <Component :is="sidebar.logo" :class="` logo-${sidebar.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
+      <Component :is="config.logo" :class="` logo-${config.logoSize}`" @toggle="sidebarShow = !sidebarShow" >
         <template  v-slot:brand>
           <router-link to="/home">
             <img ref="logo" src="/img/brand/logo.png"/>
@@ -34,7 +34,7 @@
       LogoRight
     },
     props: {
-      sidebar: {
+      config: {
         type: Object,
         default: () => {
           return {

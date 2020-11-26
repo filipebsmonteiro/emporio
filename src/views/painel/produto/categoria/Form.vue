@@ -116,25 +116,6 @@
       ...mapActions([
         'produto/categoria/listOne'
       ]),
-      addVariacao (variacao) {
-        const copy = Object.assign({}, variacao)
-        this.model.multiplos = [...this.model.multiplos, copy]
-      },
-      updateVariacao (variacao) {
-        this.model.multiplos = this.model.multiplos.map((mult, idx) => {
-          if (idx === variacao.index) {
-            return variacao
-          }
-          return mult
-        })
-      },
-      removeVariacao (index) {
-        this.model.multiplos = this.model.multiplos.filter((mult, idx) => {
-          if (idx !== index) {
-            return mult
-          }
-        })
-      },
       validaRetornoErro (error) {
         const data = error.response ? error.response.data : null
         if (data.errors && data.message === 'The given data was invalid.') {
@@ -193,6 +174,7 @@
           ...this.model,
           ...this.categoria,
           permiteCombinacao: !!this.categoria.permiteCombinacao,
+          quantidadeCombinacoes: this.categoria.quantidadeCombinacoes < 2 ? 2 : this.categoria.quantidadeCombinacoes
         }
       }
     }

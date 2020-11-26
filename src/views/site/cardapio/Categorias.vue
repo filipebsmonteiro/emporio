@@ -1,32 +1,36 @@
 <template>
   <b-overlay :show="isLoading" class="w-100">
-  <base-nav
-    id="navbar-categorias"
-    :class="{'navbar-top rounded': true, 'sticky-top': flexColumn }" :flex-column="flexColumn" expand>
-      <ul class="navbar-nav mr-auto" v-for="grupo in Object.keys(categoriasAgrupadas)" :key="grupo">
-        <li v-if="grupo !== ''" class="nav-item dropdown">
-          <base-dropdown class="nav-link">
+    <base-nav
+      id="navbar-categorias"
+      :class="{'navbar-top': true, 'sticky-top': flexColumn }"
+      :flex-column="flexColumn"
+      expand>
+      <ul class="navbar-nav w-100 d-flex justify-content-around">
+
+        <li v-for="grupo in Object.keys(categoriasAgrupadas).filter(c => c !== '')" :key="grupo" class="nav-item">
+          <base-dropdown tag="button" class="btn btn-link nav-link">
             <template slot="title">{{ grupo }}</template>
             <template>
               <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="dropdown-item">
-                <span @click="loadProducts(categoria.id)">
-                  {{ categoria.nome }}
-                </span>
+                    <span @click="loadProducts(categoria.id)">
+                      {{ categoria.nome }}
+                    </span>
               </b-button>
             </template>
           </base-dropdown>
         </li>
-        <li v-else class="nav-item">
-          <b-button variant="link" v-for="categoria in categoriasAgrupadas[grupo]" :key="categoria.id" class="nav-link d-inline-flex">
-            <span @click="loadProducts(categoria.id)">
-              {{ categoria.nome }}
-            </span>
+
+        <li v-for="categoria in categoriasAgrupadas['']" :key="categoria.id" class="nav-item">
+          <b-button variant="link" class="nav-link">
+              <span @click="loadProducts(categoria.id)">
+                {{ categoria.nome }}
+              </span>
           </b-button>
         </li>
+
       </ul>
     </base-nav>
   </b-overlay>
-
 </template>
 
 <script>
@@ -82,4 +86,5 @@
 </script>
 
 <style lang="scss" scoped>
+.btn{will-change: inherit;}
 </style>

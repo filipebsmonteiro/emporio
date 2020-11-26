@@ -25,7 +25,7 @@
           <b-btn-group>
             <b-button variant="success product__button" @click="$emit('select', produto)" block>Pedir</b-button>
             <b-btn v-if="produto.ingredientes"
-                   variant="outline-success"
+                   variant="outline-success product__detail-button"
                    class="text-sm ml-auto pt-0 pb-0 pl-1 pr-1"
                    v-b-toggle="`ingredientes-${produto.id}`">
               <b-icon icon="plus-circle"/>

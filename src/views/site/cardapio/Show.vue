@@ -24,7 +24,7 @@
                      @changeMultiplos="evt => {multiplos = evt}"
           />
 
-          <base-button type="success" @click="adicionarCarrinho" block>Adicionar ao carrinho</base-button>
+          <b-button variant="success product__button" @click="adicionarCarrinho" block>Adicionar ao carrinho</b-button>
         </b-card-body>
       </b-card>
     </b-overlay>
@@ -95,6 +95,16 @@ export default {
               })
             }
           }
+        })
+      }
+
+      if (this.produto.combinacoes > this.combinacoes) {
+        isValid = false
+        this.$notify({
+          type: 'danger',
+          title: `Todos itens são obrigados no Combo`,
+          verticalAlign: 'bottom',
+          horizontalAlign: 'center'
         })
       }
       return isValid

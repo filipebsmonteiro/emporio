@@ -40,12 +40,11 @@
         <li :class="{'nav-item mt--1 mb--2': true, 'mr-5': !logged}">
           <router-link class="nav-link p-0" :to="{name: 'carrinho'}">
             <span v-if="quantidade > 0"
-              :class="{
-                'nav-link badge position-absolute': true,
-                'ml--1': quantidade < 10,
-                'ml--2': quantidade >= 10
+                  :class="{
+                'nav-link position-absolute': true,
+                'ml-1': quantidade < 10,
               }">{{ quantidade }}</span>
-            <i class="ni ni-cart ni-2x"/>
+            <IconShoppingCart/>
           </router-link>
         </li>
       </ul>
@@ -58,9 +57,11 @@
   import { mapActions, mapGetters } from 'vuex'
   import Auth from '@/repositories/Auth'
   import APIService from '@/api/APIService'
+  import IconShoppingCart from "@/components/IconShoppingCart";
 
   export default {
     name: 'LinksSidebar',
+    components: {IconShoppingCart},
     props: {
       itemsClasses: {
         type: String,
@@ -104,11 +105,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .nav-item {
-    .badge {
-      color: black !important;
-      z-index: 1;
-      font-size: 0.9rem;
-    }
-  }
+.position-absolute{
+  margin-top: 0.15rem;
+}
 </style>

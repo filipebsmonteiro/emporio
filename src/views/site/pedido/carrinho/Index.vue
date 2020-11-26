@@ -6,7 +6,7 @@
         <p>Não tem problema!</p>
         <router-link :to="{name: 'produtos'}">Compre algum de nossos produtos agora!</router-link>
       </div>
-      <div v-else>
+      <div v-else class="card p-3">
         <div class="row">
           <div class="col-lg-4 col-md-6">
             <Endereco/>
@@ -156,7 +156,7 @@
                     preco: combinacao.preco
                   }]
                 }
-                if (currentValue.multiplo_id) {
+                if (currentValue && currentValue.multiplo_id) {
                   // SubProduto Layout Combo
                   const prodMult = backendProd.combinacoes.find(pbec => pbec.id === currentValue.multiplo_id)
                   const combinacao = this.store_produtos.find(pbe => pbe.id === currentValue.id)
@@ -373,8 +373,11 @@
 
             currentValue.combinacoes.reduce((prevValue, currValue) => {
               // Adiciona ID Fração Layout Pizza ou ID SubProduto Layout Combo
-              ids = [...ids, currValue.id]
-              if (currValue.multiplo_id) {
+              if(currValue && currValue.id) {
+                ids = [...ids, currValue.id]
+                  }
+
+              if (currValue && currValue.multiplo_id) {
                 // Adiciona ID Fração Layout Pizza dentro do SubProduto
                 ids = [...ids, ...currValue.combinacoes.map(c => c.id)]
               }
