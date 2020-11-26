@@ -31,8 +31,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import ListProducts from '@/views/produtos/layouts/ListProducts'
-import Categorias from '@/views/produtos/Categorias'
+import ListProducts from '@/views/site/cardapio/layouts/ListProducts'
+import Categorias from '@/views/site/cardapio/Categorias'
 
 export default {
   name: 'Index',

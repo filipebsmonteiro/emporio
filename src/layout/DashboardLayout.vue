@@ -5,32 +5,28 @@
         <sidebar-item :link="{ text: 'Dashboard', icon: 'ni ni-tv-2 text-primary', name: 'painel.dashboard' }"/>
 
         <sidebar-item v-if="minimumPerfil('Gerente')">
-          <base-dropdown tag="a" class="nav-link">
-            <template v-slot:title>
-              <i class="ni ni-collection text-red"/>
-              <span class="nav-link-text">Produtos</span>
-            </template>
-            <template>
-              <sidebar-item :link="{text: 'Lista de Produtos', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.produto.index'}"/>
-              <sidebar-item :link="{text: 'Categorias de Produtos', icon: 'ni ni-collection text-red', name: 'painel.produto.categoria.index'}"/>
-            </template>
-          </base-dropdown>
+          <a v-b-toggle.produto-sidebar class="nav-link">
+            <i class="ni ni-collection text-red"/>
+            <span class="nav-link-text">Produtos</span>
+          </a>
+          <b-collapse id="produto-sidebar">
+            <sidebar-item :link="{text: 'Lista de Produtos', icon: 'ni ni-bullet-list-67 text-blue', name: 'painel.produto.index'}"/>
+            <sidebar-item :link="{text: 'Categorias', icon: 'ni ni-collection text-red', name: 'painel.produto.categoria.index'}"/>
+          </b-collapse>
         </sidebar-item>
         <sidebar-item :link="{text: 'Ingredientes', icon: 'ni ni-bullet-list-67 text-success', name: 'painel.ingrediente.index'}"/>
 
         <sidebar-item :link="{text: 'Atendimento', icon: 'ni ni-active-40 text-indigo', name: 'painel.pedido.index'}"/>
 
         <sidebar-item v-if="minimumPerfil('Gerente')">
-          <base-dropdown tag="a" class="nav-link">
-            <template v-slot:title>
-              <i class="ni ni-planet text-red"/>
-              <span class="nav-link-text">Marketing</span>
-            </template>
-            <template>
-              <sidebar-item :link="{text: 'Clientes', icon: 'fas fa-users text-green', name: 'painel.cliente.index'}"/>
-              <sidebar-item :link="{text: 'Cupons', icon: 'fas fa-ticket-alt', name: 'painel.cupom.index'}"/>
-            </template>
-          </base-dropdown>
+          <a v-b-toggle.marketing-sidebar class="nav-link">
+            <i class="ni ni-planet text-red"/>
+            <span class="nav-link-text">Marketing</span>
+          </a>
+          <b-collapse id="marketing-sidebar">
+            <sidebar-item :link="{text: 'Clientes', icon: 'fas fa-users text-green', name: 'painel.cliente.index'}"/>
+            <sidebar-item :link="{text: 'Cupons', icon: 'fas fa-ticket-alt', name: 'painel.cupom.index'}"/>
+          </b-collapse>
         </sidebar-item>
 
         <sidebar-item v-if="minimumPerfil('Admin')"
@@ -92,8 +88,36 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
-.nav-item {
+::v-deep.nav-item {
   cursor: pointer;
+
+  .nav-link {
+    border-radius: 20rem;
+
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.5);
+    }
+
+    .nav-link-text{
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .collapse {
+    margin-left: 2rem !important;
+    border-radius: 0 0 22px 22px;
+    box-shadow: -2px 1px 0px 1px #aaaaaa;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-vertical.navbar-expand-md .navbar-nav .nav-link {
+    margin: 0rem 1rem !important;
+    padding: 0.5rem !important;
+  }
 }
 </style>

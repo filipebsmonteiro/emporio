@@ -10,7 +10,7 @@ export const isAuthenticatedSite = ($to, $from, $next) => {
   if (APIService._isAuthenticated()) {
     return $next()
   }
-  $next({ name: 'cliente.login' })
+  $next({ name: 'site.login' })
 }
 
 export const redirectLogin = () => {

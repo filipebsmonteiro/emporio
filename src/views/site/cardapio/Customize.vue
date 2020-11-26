@@ -36,8 +36,8 @@
 
 <script>
 import {mapActions} from 'vuex'
-import CombinacaoLayoutCombo from '@/views/produtos/Combinacao/CombinacaoLayoutCombo'
-import CombinacaoLayoutPizza from '@/views/produtos/Combinacao/CombinacaoLayoutPizza'
+import CombinacaoLayoutCombo from '@/views/site/cardapio/Combinacao/CombinacaoLayoutCombo'
+import CombinacaoLayoutPizza from '@/views/site/cardapio/Combinacao/CombinacaoLayoutPizza'
 import IngredienteMultiploList from '@/views/Ingredientes/Multiplos/IngredienteMultiploList'
 
 export default {

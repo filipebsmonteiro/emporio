@@ -40,7 +40,7 @@
           </form>
           <div class="row mt-3">
             <div class="col-6">
-              <router-link :to="{ name: 'cliente.login' }" class="text-light"><small>Login</small></router-link>
+              <router-link :to="{ name: 'site.login' }" class="text-light"><small>Login</small></router-link>
             </div>
             <div class="col-6 text-right">
               <router-link :to="{ name: 'cliente.create' }" class="text-light"><small>Criar uma Conta</small></router-link>

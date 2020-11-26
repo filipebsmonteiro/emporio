@@ -33,7 +33,7 @@
           </router-link>
         </li>
         <li v-else class="nav-item">
-          <router-link class="nav-link" :to="{name: 'cliente.login'}">
+          <router-link class="nav-link" :to="{name: 'site.login'}">
             <span class="heading">Login</span>
           </router-link>
         </li>
@@ -81,7 +81,7 @@
       logout() {
         Auth.logout().then(() => {
           APIService._clearToken()
-          this.$router.push({ name: 'cliente.login' })
+          this.$router.push({ name: 'site.login' })
         }).catch(() => {
             this.$notify({
               type: 'danger',

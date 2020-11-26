@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import DetalhesProduto from '@/views/carrinho/DetalhesProduto'
+import DetalhesProduto from '@/views/site/pedido/carrinho/DetalhesProduto'
 
 export default {
   name: 'TableProduto',

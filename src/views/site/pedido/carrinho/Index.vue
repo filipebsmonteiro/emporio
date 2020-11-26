@@ -97,12 +97,12 @@
 </template>
 
 <script>
-  import Endereco from '@/views/carrinho/Endereco'
-  import Agendamento from '@/views/carrinho/Agendamento'
-  import Cupom from '@/views/carrinho/Cupom'
+  import Endereco from '@/views/site/pedido/carrinho/Endereco'
+  import Agendamento from '@/views/site/pedido/carrinho/Agendamento'
+  import Cupom from '@/views/site/pedido/carrinho/Cupom'
   import { mapActions, mapGetters } from 'vuex'
   import Pedido from '@/repositories/Pedido'
-  import TableProduto from '@/views/carrinho/TableProduto'
+  import TableProduto from '@/views/site/pedido/carrinho/TableProduto'
   import moment from 'moment'
   import APIService from '@/api/APIService'
 

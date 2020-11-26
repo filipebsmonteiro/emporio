@@ -112,7 +112,7 @@
 </template>
 
 <script>
-  import TableProduto from '@/views/produtos/TableProduto'
+  import TableProduto from '@/views/site/cardapio/TableProduto'
   import Pedido from '@/repositories/Pedido'
   import moment from 'moment'
 

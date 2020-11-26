@@ -1,32 +1,27 @@
 export default [
   {
-    path: 'cliente',
+    path: 'conta',
     name: 'cliente',
-    component: () => import('@/views/cliente/Detalhes')
+    component: () => import('@/views/site/cliente/Detalhes')
   },
   {
-    path: 'cliente/create',
+    path: 'conta/create',
     name: 'cliente.create',
-    component: () => import('@/views/cliente/Form')
+    component: () => import('@/views/site/cliente/Form')
   },
   {
-    path: 'cliente/editar',
+    path: 'conta/edit',
     name: 'cliente.auto_editar',
-    component: () => import('@/views/cliente/Form')
+    component: () => import('@/views/site/cliente/Form')
   },
   {
-    path: 'cliente/fidelidades',
+    path: 'fidelidade',
     name: 'fidelidade.index',
-    component: () => import('@/views/fidelidade/Index')
+    component: () => import('@/views/site/cliente/fidelidade/Index')
   },
   {
     path: 'esqueceu',
     name: 'cliente.esqueceu',
-    component: () => import('@/views/cliente/Esqueceu')
-  },
-  {
-    path: 'login',
-    name: 'cliente.login',
-    component: () => import('@/views/cliente/Login')
+    component: () => import('@/views/site/cliente/Esqueceu')
   },
 ]

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import DetalhesProduto from '@/views/produtos/DetalhesProduto'
+  import DetalhesProduto from '@/views/site/cardapio/DetalhesProduto'
 
   export default {
     name: 'TableProduto',

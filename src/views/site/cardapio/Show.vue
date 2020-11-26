@@ -34,7 +34,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
-import Customize from '@/views/produtos/Customize'
+import Customize from '@/views/site/cardapio/Customize'
 
 export default {
   name: 'Show',

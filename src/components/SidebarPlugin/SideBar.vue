@@ -106,6 +106,7 @@
     </div>
   </nav>
 </template>
+
 <script>
   import NavbarToggleButton from '@/components/NavbarToggleButton'
   import AuthPainel from '@/repositories/AuthPainel'

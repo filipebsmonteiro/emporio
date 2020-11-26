@@ -1,40 +1,10 @@
 <template>
   <div>
-    <div class="row ml-3 mr-3">
-      <div class="col-md-10">
-        <slot name="table-data-filters">
-          <b-form v-if="(!disableFilters && filters.length > 0) || (!disableFilters && items.length > 0)"
-                  class="row" @submit="filtrar" inline>
-            <b-input-group v-for="(filter, k) in filters" :key="k" class="filter-input-group col-md-3 col-sm-6 mb-3">
-              <b-form-select :options="fields_filter_local" v-model="filter.key"/>
-              <b-input v-model="filter.value" id="inline-form-input-name" placeholder="Valor"/>
-              <b-input-group-append>
-                <b-btn variant="input"
-                       class="text-danger bg-white"
-                       @click="evt => {filters = filters.filter(f => f.index !== filter.index);
-                                           filters.length === 0 ? filtrar(evt) : null;}">
-                  <i class="fa fa-times"/></b-btn>
-              </b-input-group-append>
-            </b-input-group>
-            <b-button v-if="filters.length === 0" variant="outline-dark" class="ml-2 mb-3 border-0"
-                      @click="addFilter" pill>
-              {{ `Filtros` }}<i class="fa fa-plus ml-2"/>
-            </b-button>
-            <div v-else class="ml-2 mb-3">
-              <b-button variant="outline-dark" class="border-0" @click="addFilter" pill>
-                <i class="fa fa-plus"/>
-              </b-button>
-              <b-button variant="outline-primary" class="border-0" @click="filtrar" pill>
-                <i class="fa fa-search"/>
-              </b-button>
-            </div>
-          </b-form>
-        </slot>
-      </div>
+    <div class="row ml-3 mr-3 mb-3">
       <b-dropdown
         v-if="items.length > 0"
         :text="`Gerenciar colunas`"
-        class="col-md-2"
+        class="col-md-7"
         block
         variant="link"
         no-caret>
@@ -45,6 +15,14 @@
           <b-form-checkbox-group v-model="selected" :options="fields_checkbox" stacked/>
         </b-dropdown-form>
       </b-dropdown>
+      <div class="col-md-5">
+        <slot name="table-data-filters">
+          <FilterInputGroup
+            :options="fields_filter_local"
+            @search="evt => filtrar({ filters: [[evt.field, 'LIKE', `%${evt.value}%`]] })"
+          />
+        </slot>
+      </div>
     </div>
     <TableSimple
       :items="items"
@@ -67,10 +45,11 @@
 
 <script>
 import TableSimple from '@/components/TableSimple'
+import FilterInputGroup from '@/components/FilterInputGroup'
 
 export default {
   name: 'TableData',
-  components: { TableSimple },
+  components: { FilterInputGroup, TableSimple },
   props: {
     fields: {
       type: Array,
@@ -136,7 +115,7 @@ export default {
     }
   },
   methods: {
-    addFilter () {
+    /*addFilter () {
       let index = 0
       if (this.filters.length > 0) {
         const value = this.filters.reduce((prev, current) => {
@@ -155,7 +134,7 @@ export default {
         key: '',
         value: ''
       }]
-    },
+    },*/
     toggleAll (checked) {
       this.selected = checked ?
         this.fields_checkbox.map(f => {
@@ -164,8 +143,11 @@ export default {
         this.initial_local
     },
     filtrar (evt) {
-      evt.preventDefault()
-      let evento = {}
+      try {
+        evt.preventDefault()
+      }catch (e) {evt}
+
+      let evento = evt.filters ? evt : {}
       if (evt.page && evt.per_page) {
         evento = { ...evento, ...evt }
       } else {
@@ -176,7 +158,7 @@ export default {
         }
       }
 
-      if (this.filters.length > 0) {
+      /*if (this.filters.length > 0) {
         let filters_list = []
         this.filters.map(f => {
           let condition = 'LIKE'
@@ -184,7 +166,7 @@ export default {
           filters_list = [...filters_list, [f.key, condition, value]]
         })
         evento = { ...evento, filters: filters_list }
-      }
+      }*/
       this.$emit('list', evento)
     }
   },

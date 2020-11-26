@@ -36,7 +36,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ListProducts from '@/views/produtos/layouts/ListProducts'
+import ListProducts from '@/views/site/cardapio/layouts/ListProducts'
 
 export default {
   name: 'CombinacaoLayoutPizza',

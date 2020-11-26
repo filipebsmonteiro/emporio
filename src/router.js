@@ -58,13 +58,14 @@ export default new Router({
     },
 
 
-    { path: '/home', name: 'homepage', component: () => import('@/views/HomePage') },
-    { path: '/home-slide', name: 'homepage-slide', component: () => import('@/views/HomePageSlide') },
+    { path: '/home', name: 'homepage', component: () => import('@/views/site/HomePage') },
+    { path: '/home-slide', name: 'homepage-slide', component: () => import('@/views/site/HomePageSlide') },
     {
       path: '/',
       redirect: '/produtos',
       component: SiteLayout,
       children: [
+        { path: '/login', name: 'site.login', component: () => import('@/views/site/Login') },
         ...cliente,
         ...endereco,
         ...pedido,

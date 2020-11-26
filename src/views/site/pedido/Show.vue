@@ -105,7 +105,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import TableProduto from '@/views/produtos/TableProduto'
+  import TableProduto from '@/views/site/cardapio/TableProduto'
 
   export default {
     name: 'Show',

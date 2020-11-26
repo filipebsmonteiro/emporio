@@ -43,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ListProducts from '@/views/produtos/layouts/ListProducts'
+import ListProducts from '@/views/site/cardapio/layouts/ListProducts'
 
 
 export default {
@@ -52,7 +52,7 @@ export default {
     /*
     Importado dessa forma pois pode ser Importado como sub-componente
      */
-    Customize: () => import('@/views/produtos/Customize'),
+    Customize: () => import('@/views/site/cardapio/Customize'),
     ListProducts
   },
   props: {
@@ -81,7 +81,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.$options.components.TreeFolderContents = require('@/views/produtos/Customize').default
+    this.$options.components.TreeFolderContents = require('@/views/site/cardapio/Customize').default
   },
   methods: {
     customizeSubProd (produto) {
