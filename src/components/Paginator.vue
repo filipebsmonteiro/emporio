@@ -1,15 +1,14 @@
 <template>
-    <div class="d-flex justify-content-around m-1">
+    <div class="paginator d-flex justify-content-around m-1">
         <b-btn variant="link" @click="changePage(page-1)">Anterior</b-btn>
         <div class="d-flex">
             <span class="m-auto pr-2">Página</span>
             <b-input :max="totalPages" type="number" v-model="local_page" @change="changePage(local_page)" />
-            <span class="m-auto pl-2" style="white-space: nowrap;">{{ `de ${totalPages}`  }}</span>
+            <span class="m-auto pl-2 order-3" style="white-space: nowrap;">{{ `de ${totalPages}`  }}</span>
         </div>
         <b-btn variant="link" @click="changePage(page+1)">Próxima</b-btn>
         <div class="d-inline-flex">
             <b-select :options="perPageOptions" v-model="per_page" @change="changePerPage(per_page)" />
-            <!-- <span>{{ total }}</span>-->
         </div>
     </div>
 </template>
@@ -101,4 +100,11 @@
 </script>
 
 <style lang="scss" scoped>
+@media all and (max-width: 768px) {
+  .paginator {
+    flex-wrap: wrap !important;
+    div.d-flex { order: 3; }
+    div.d-inline-flex { order: 4; margin-top: 1rem; }
+  }
+}
 </style>

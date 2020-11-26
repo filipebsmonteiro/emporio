@@ -2,7 +2,7 @@
   <div>
     <base-header type="gradient-success" class="pb-6 pt-5 pt-md-8"/>
     <div class="container-fluid mt--7">
-      <card shadow type="secondary">
+      <card shadow type="secondary" footer-classes="d-flex">
         <div slot="header" class="bg-white border-0">
           <div class="row align-items-center">
             <div class="col-8">
@@ -14,6 +14,9 @@
             </div>
           </div>
         </div>
+        <template slot="footer">
+          <b-btn variant="primary ml-auto" @click="onSubmit">Salvar</b-btn>
+        </template>
         <template>
           <form ref="form" @submit.prevent>
 
