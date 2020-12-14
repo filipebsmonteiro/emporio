@@ -3,10 +3,11 @@
     <b-card v-if="loading || items.length > 0" body-class="p-0">
       <b-overlay :show="loading">
         <b-table
+          :filter="filter"
+          :fields="localFields"
+          :items="items"
           :ref="ref"
           head-variant="light"
-          :items="items"
-          :fields="localFields"
           responsive
           hover
         >
@@ -89,6 +90,10 @@ export default {
       type: String,
       default: null
     },
+    filter: {
+      type: String,
+      default: null
+    }
   },
   computed: {
     localFields () {

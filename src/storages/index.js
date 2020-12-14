@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import mainbar from '@/storages/modules/mainbar'
+import cep from '@/storages/modules/cep'
 import cliente from '@/storages/modules/cliente'
 import cupom from '@/storages/modules/cupom'
 import dashboard from '@/storages/modules/dashboard'
@@ -20,6 +21,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     mainbar,
+    cep,
     cliente,
     cupom,
     dashboard,

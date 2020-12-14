@@ -53,7 +53,8 @@ export default new Router({
         ...painelLoja,
         ...painelProduto,
         ...painelPedido,
-        ...painelUsuario
+        ...painelUsuario,
+        { path: 'ceps', name: 'painel.ceps', component: () => import('@/views/painel/cep/Index') },
       ]
     },
 

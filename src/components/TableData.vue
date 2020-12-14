@@ -34,13 +34,14 @@
       </div>
     </div>
     <TableSimple
+      :fields="fieldsToShow"
+      :filter="filter"
       :items="items"
       :loading="loading"
       :selectable="selectable"
       :paginator="paginator"
-      :fields="fieldsToShow"
-      :text-empty="textEmpty"
       :route-new="routeNew"
+      :text-empty="textEmpty"
       :text-new="textNew"
       @select="evt => $emit('select', evt)"
       @list="filtrar"
@@ -98,6 +99,10 @@ export default {
     },
     textNew: {
       type: String
+    },
+    filter: {
+      type: String,
+      default: null
     }
     /* END Props TableSimple */
   },
