@@ -35,6 +35,9 @@
         <sidebar-item v-if="minimumPerfil('Lojista')"
                       :link="{text: 'Lojas', icon: 'ni ni-building text-orange', name: 'painel.loja.index'}"/>
 
+        <sidebar-item v-if="minimumPerfil('Lojista')"
+                      :link="{text: 'CEPs', icon: 'ni ni-square-pin text-pink', name: 'painel.ceps'}"/>
+
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">

@@ -38,10 +38,24 @@
         </b-row>
 
         <b-overlay :show="isLoading">
-          <b-table :items="ceps" :filter="table.filter"
-                   :fields="table.fields" show-empty
+          <b-pagination
+            v-if="ceps.length > 0"
+            v-model="table.currentPage"
+            :total-rows="totalRows"
+            :per-page="table.perPage"
+            align="center"
+            aria-controls="ceps-table"
+          />
+          <b-table id="ceps-table"
+                   :items="ceps"
+                   :filter="table.filter"
+                   :fields="table.fields"
                    :filter-included-fields="['Logradouro']"
-                   empty-filtered-text="Nenhum CEP localizado">
+                   :current-page="table.currentPage"
+                   :per-page="table.perPage"
+                   empty-filtered-text="Nenhum CEP localizado"
+                   show-empty
+                   responsive>
             <template v-slot:head(id)>
               <b-checkbox v-model="header.checked" @change="changeHeader('checked')" />
             </template>
@@ -100,7 +114,17 @@
               />
             </template>
           </b-table>
-          <b-pagination v-model="table.currentPage" :total-rows="table.totalRows" :per-page="table.perPage" align="center"/>
+          <b-pagination
+            v-if="ceps.length > 0"
+            v-model="table.currentPage"
+            :total-rows="totalRows"
+            :per-page="table.perPage"
+            align="center"
+            aria-controls="ceps-table"
+          />
+          <div class="d-flex m-3">
+            <b-btn variant="success m-auto w-75" @click="onSubmit">Salvar</b-btn>
+          </div>
         </b-overlay>
       </div>
     </div>
@@ -118,6 +142,9 @@ export default {
       isLoading: 'cep/isLoading',
       pagination: 'cep/pagination'
     }),
+    totalRows() {
+      return this.ceps.length
+    }
   },
   data () {
     return {
@@ -128,7 +155,6 @@ export default {
       },
       table: {
         filter: null,
-        totalRows: 1,
         currentPage: 1,
         perPage: 10,
         pageOptions: [10, 25, 50, { value: 100, text: "Máximo" }],
@@ -136,8 +162,7 @@ export default {
           {key: 'id', value: 'ID'},
           {key: 'taxaEntrega', value: 'Taxa de Entrega'},
           {key: 'vlr_minimo_pedido', value: 'vlr_minimo_pedido'},
-          {key: 'Logradouro', value: 'Logradouro'},
-          {key: 'Local', value: 'Local'},
+          {key: 'Logradouro', value: 'Logradouro'}
         ]
       },
       model: {
@@ -155,6 +180,13 @@ export default {
     changeHeader(property) {
       if (property === 'checked') {
         this.ceps.map((c) => {
+          if (this.table.filter && this.table.filter !== ''){
+            if ( c.Logradouro.toLowerCase().includes(this.table.filter.toLowerCase()) ) {
+              this.model.checked[c.id] = !this.header.checked
+            }
+            return false; //skip
+          }
+
           this.model.checked[c.id] = !this.header.checked
         })
       }
@@ -175,11 +207,13 @@ export default {
         })
       }
       this.$forceUpdate()
-
-      // this.header[property] = value
+    },
+    onSubmit(){
+      alert('EM CONTRUção')
     }
   },
   mounted () {
+    this.$store.commit('cep/setAll',[])
     this['cep/listBairros']()
   }
 }
