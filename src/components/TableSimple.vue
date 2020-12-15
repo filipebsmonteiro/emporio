@@ -6,6 +6,8 @@
           :filter="filter"
           :fields="localFields"
           :items="items"
+          :per-page="3"
+          :current-page="1"
           :ref="ref"
           head-variant="light"
           responsive
@@ -24,15 +26,16 @@
           </template>
         </b-table>
       </b-overlay>
-      <!--Loading v-else/-->
-      <Paginator
-        v-if="paginator.total > paginator.per_page"
-        :page="paginator.page"
-        :per-page="paginator.per_page"
-        :total="paginator.total"
-        class="mt-3"
-        @change="evt => $emit('list', evt)"
-      />
+      <slot name="paginator">
+        <Paginator
+          v-if="paginator.total > paginator.per_page"
+          :page="paginator.page"
+          :per-page="paginator.per_page"
+          :total="paginator.total"
+          class="mt-3"
+          @change="evt => $emit('list', evt)"
+        />
+      </slot>
     </b-card>
     <EmptyData v-else :title="textEmpty">
       <router-link v-if="routeNew && textNew" :to="{name: routeNew}" class="btn btn-primary">
