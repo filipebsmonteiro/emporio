@@ -13,7 +13,7 @@
           </div>
           <div class="col-lg-4 d-sm-none d-md-block"/>
           <div class="col-lg-4 col-md-6">
-            <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }"/>
+            <Agendamento v-if="allowed.agendameto" @change="evt => { agendamento = evt }" :collapse-open="allowed.apenasAgendameto"/>
           </div>
         </div>
         <b-overlay :show="produtos_loading">
@@ -120,6 +120,7 @@
       allowed () {
         return {
           agendameto: parseInt(process.env.VUE_APP_PERMITE_AGENDAMENTO),
+          apenasAgendameto: parseInt(process.env.VUE_APP_APENAS_AGENDAMENTO),
           cupom: parseInt(process.env.VUE_APP_PERMITE_CUPONS),
           fidelidade: parseInt(process.env.VUE_APP_PERMITE_FIDELIDADE)
         }
@@ -257,6 +258,15 @@
         })
       },
       async persist () {
+        if (this.allowed.apenasAgendameto && !this.agendamento){
+          this.$notify({
+            type: 'danger',
+            title: `Informe dados para de agendamento.`,
+            verticalAlign: 'bottom',
+            horizontalAlign: 'center'
+          })
+          return
+        }
         if (this.agendamento) {
           let minimumMinutes = 0
           try {
@@ -271,6 +281,7 @@
               verticalAlign: 'bottom',
               horizontalAlign: 'center'
             })
+            return
           }
         }
         // eslint-disable-next-line no-console

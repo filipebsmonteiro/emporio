@@ -5,7 +5,7 @@
      <b-card-header header-tag="header" class="p-1" role="tab">
        <b-button variant="link" block v-b-toggle.accordion-agendamento>Agendar</b-button>
      </b-card-header>
-     <b-collapse id="accordion-agendamento" accordion="my-accordion" role="tabpanel">
+     <b-collapse id="accordion-agendamento" accordion="my-accordion" role="tabpanel" visible="collapseOpen">
        <b-card-body>
          <b-form-datepicker v-model="date" :min="minDate" :date-disabled-fn="dateDisabled"
                             placeholder="Selecione o Dia" class="mb-2" @input="changed" hide-header/>
@@ -20,6 +20,12 @@
 <script>
   export default {
     name: 'Agendamento',
+    props: {
+      collapseOpen: {
+        type: Boolean,
+        default: false
+      }
+    },
     computed: {
       allowed () {
         try {
