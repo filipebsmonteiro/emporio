@@ -6,8 +6,8 @@
           :filter="filter"
           :fields="localFields"
           :items="items"
-          :per-page="3"
-          :current-page="1"
+          :per-page="paginator.per_page"
+          :current-page="paginator.page"
           :ref="ref"
           head-variant="light"
           responsive
