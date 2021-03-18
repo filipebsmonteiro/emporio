@@ -28,7 +28,7 @@
             <i class="fas fa-print"/>
           </b-btn>
         </div>
-        <span v-if="pedido.created_at"><strong>Data: </strong>{{ pedido.created_at.date | formatDate }}</span><br>
+        <span v-if="pedido.created_at"><strong>Data: </strong>{{ pedido.created_at | formatDate }}</span><br>
         <strong v-if="pedido.agendamento">
           Encomendado para: {{ moment(pedido.agendamento).format('h:mm a - DD, MMMM, YYYY (dddd)') }}
         </strong>
