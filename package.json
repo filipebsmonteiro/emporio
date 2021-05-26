@@ -12,7 +12,7 @@
     "axios": "^0.19.2",
     "bootstrap": "4.3.1",
     "bootstrap-vue": "2.14.0",
-    "chart.js": "2.8.0",
+    "chart.js": "2.9.4",
     "core-js": "2.6.5",
     "flatpickr": "4.5.7",
     "jquery": "^1.12.4",
