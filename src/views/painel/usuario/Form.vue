@@ -33,8 +33,11 @@
                 <div class="col-lg-6">
                   <base-input label="Email" input-classes="form-control-alternative" v-model="model.email"/>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-3">
                   <base-input label="Senha" input-classes="form-control-alternative" v-model="model.password"/>
+                </div>
+                <div v-if="!this.$route.params.id" class="col-lg-3">
+                  <base-input label="id Loja" input-classes="form-control-alternative" v-model="model.Lojas_idLojas"/>
                 </div>
               </div>
             </div>
@@ -73,6 +76,7 @@
           nome: null,
           email: null,
           password: null,
+          Lojas_idLojas: null
         }
       }
     },

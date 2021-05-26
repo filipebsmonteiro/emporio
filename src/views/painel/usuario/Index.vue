@@ -16,6 +16,8 @@
           :items="usuarios"
           :paginator="pagination"
           :loading="isLoading"
+          route-new="painel.usuario.create"
+          text-new="Novo usuário"
           text-empty="Nenhum usuário localizado"
           @list="evt => $store.dispatch('usuario/listAllPaginated', evt)">
           <template v-slot:cell(id)="{ item: { id } }">

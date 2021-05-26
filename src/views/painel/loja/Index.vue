@@ -11,6 +11,8 @@
           :items="lojas"
           :paginator="pagination"
           :loading="isLoading"
+          route-new="painel.loja.create"
+          text-new="Nova Loja"
           text-empty="Nenhuma loja localizada"
           @list="evt => $store.dispatch('loja/listAllPaginated', evt)">
           <template v-slot:cell(agendamentos)="{ item: { agendamentos } }">
