@@ -11,6 +11,7 @@ import painelLoja from '@/routes/painel/loja'
 import painelProduto from '@/routes/painel/produto'
 import painelPedido from '@/routes/painel/pedido'
 import painelUsuario from '@/routes/painel/usuario'
+import painelCEP from '@/routes/painel/cep'
 import pedido from '@/routes/pedido'
 import produto from '@/routes/produto'
 import SiteLayout from '@/layout/SiteLayout'
@@ -54,7 +55,7 @@ export default new Router({
         ...painelProduto,
         ...painelPedido,
         ...painelUsuario,
-        { path: 'ceps', name: 'painel.ceps', component: () => import('@/views/painel/cep/Index') },
+        ...painelCEP
       ]
     },
 

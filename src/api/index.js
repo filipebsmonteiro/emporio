@@ -6,6 +6,7 @@ axiosPackage.defaults.headers.common['Accept'] = 'application/json'
 axiosPackage.defaults.headers.common['Content-Type'] = 'application/json'
 axiosPackage.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 axiosPackage.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+// axiosPackage.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
 
 // Set config defaults when creating the instance
 export const axios = axiosPackage.create({

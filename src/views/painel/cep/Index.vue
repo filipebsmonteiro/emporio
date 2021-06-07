@@ -11,8 +11,10 @@
               <b-select :options="bairros" class="rounded-pill" size="sm" @change="listCeps"/>
             </b-form-group>
           </b-col>
+          <b-col md="2" sm="12">
+            CEP's já da loja
+          </b-col>
           <b-col md="5" sm="12"/>
-          <b-col md="2" sm="12"/>
           <b-col md="3" sm="12">
             <b-form-group v-if="ceps.length > 0" label="Filtro">
               <b-form-input
@@ -86,26 +88,28 @@
             </template>
 
             <template v-slot:cell(id)="{item: { id, isChecked }}">
-              <b-checkbox v-model="isChecked" size="sm" @change="evt => changeUnique(id, evt)"/>
+              <b-checkbox v-model="isChecked" size="sm" @change="evt => changeUnique(id, 'checkbox', evt)"/>
             </template>
-            <template v-slot:cell(taxa_entrega)="{ item: { isChecked, taxa_entrega } }">
+            <template v-slot:cell(taxa_entrega)="{ item: { id, isChecked, taxa_entrega } }">
               <b-input
-                size="sm form-control-alternative form-control-plaintext"
-                type="number"
-                min="0"
-                step="0.01"
                 v-model="taxa_entrega"
                 :disabled="!isChecked"
-              />
-            </template>
-            <template v-slot:cell(vlr_minimo_pedido)="{ item: { isChecked, vlr_minimo_pedido } }">
-              <b-input
+                @change="evt => changeUnique(id, 'taxa_entrega', evt)"
                 size="sm form-control-alternative form-control-plaintext"
                 type="number"
                 min="0"
                 step="0.01"
+              />
+            </template>
+            <template v-slot:cell(vlr_minimo_pedido)="{ item: { id, isChecked, vlr_minimo_pedido } }">
+              <b-input
                 v-model="vlr_minimo_pedido"
                 :disabled="!isChecked"
+                @change="evt => changeUnique(id, 'vlr_minimo_pedido', evt)"
+                size="sm form-control-alternative form-control-plaintext"
+                type="number"
+                min="0"
+                step="0.01"
               />
             </template>
           </b-table>
@@ -138,6 +142,7 @@
 </template>
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import Cep from "../../../repositories/Cep";
 
 export default {
   name: 'Index',
@@ -184,7 +189,7 @@ export default {
       'cep/listBairros',
     ]),
     async listCeps(evt) {
-      await this.$store.dispatch('cep/listAll', {filters: [['Bairro', '=', evt]]})
+      await this.$store.dispatch('cep/listAll', {filters: [['bairro', '=', evt]]})
       await this.$store.commit('cep/setAll', this.ceps.map(c => {
         return {...c, isChecked: false}
       }))
@@ -230,21 +235,39 @@ export default {
           .filter(c => c.isChecked)
           .map(c => c.vlr_minimo_pedido = value)
       }
-      this.$forceUpdate()
     },
-    changeUnique(id, value) {
-      this.ceps
-        .filter(c => c.id === id)
-        .map(c => c.isChecked = value)
+    changeUnique(id, property, value) {
+      if (property === 'checkbox') {
+        this.ceps
+          .filter(c => c.id === id)
+          .map(c => c.isChecked = value)
+      }
+      if (property === 'taxa_entrega') {
+        this.ceps
+          .filter(c => c.id === id)
+          .map(c => c.taxa_entrega = value)
+      }
+      if (property === 'vlr_minimo_pedido') {
+        this.ceps
+          .filter(c => c.id === id)
+          .map(c => c.vlr_minimo_pedido = value)
+      }
     },
-    onSubmit() {
-      // if (this.table.checkFiltered === )
-      // eslint-disable-next-line no-console
-      console.log('ENVIOU')
-
-      this.ceps.map(c => {
-        return {id: c.id, taxa_entrega: c.taxa_entrega, vlr_minimo_pedido: c.vlr_minimo_pedido}
+    async onSubmit() {
+      await this.$store.commit('cep/setLoading', true)
+      await Cep.attachCEPs(
+        this.ceps.map(c => {
+          return {id: c.id, taxa_entrega: c.taxa_entrega, vlr_minimo_pedido: c.vlr_minimo_pedido}
+        })
+      ).then(() => {
+        this.$notify({
+          type: 'success',
+          title: 'Ceps Vinculados / Atualizados com Sucesso!',
+          verticalAlign: 'bottom',
+          horizontalAlign: 'center'
+        })
       })
+      this.$store.commit('cep/setLoading', false)
     }
   },
   mounted() {
