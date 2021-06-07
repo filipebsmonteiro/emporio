@@ -69,8 +69,6 @@
       ])
     },
     mounted () {
-      // eslint-disable-next-line no-console
-      console.log(this.pagination)
       this['ingrediente/listAllPaginated'](this.pagination)
     }
   }

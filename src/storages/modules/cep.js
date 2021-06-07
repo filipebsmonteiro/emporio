@@ -24,11 +24,6 @@ store.mutations = {
 
 store.actions = {
   ...store.actions,
-  // eslint-disable-next-line no-unused-vars
-  // async listAll ({ commit }, params) {
-    // eslint-disable-next-line no-console
-    // console.log(params)
-  // },
   async listBairros ({ commit }) {
     commit('setLoading', true)
     await CepRepository.fetchAllBairros().then(response => {
