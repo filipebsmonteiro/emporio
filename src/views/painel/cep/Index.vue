@@ -12,7 +12,16 @@
             </b-form-group>
           </b-col>
           <b-col md="2" sm="12">
-            CEP's já da loja
+            <b-form-group label="Vínculo">
+              <b-select
+                v-model="filter.available"
+                class="rounded-pill"
+                size="sm"
+                :options="[
+                  {text: 'Disponíveis', value: 'available'},
+                  {text: 'Vinculados', value: 'attached'}
+                ]" />
+            </b-form-group>
           </b-col>
           <b-col md="5" sm="12"/>
           <b-col md="3" sm="12">
@@ -165,6 +174,7 @@ export default {
   data() {
     return {
       filter: {
+        available: 'available',
         text: '',
         oldText: ''
       },
@@ -189,7 +199,8 @@ export default {
       'cep/listBairros',
     ]),
     async listCeps(evt) {
-      await this.$store.dispatch('cep/listAll', {filters: [['bairro', '=', evt]]})
+      const filters = this.filter.available === 'available' ? { bairro: evt, available: true } : { bairro: evt, attached: true }
+      await this.$store.dispatch('cep/listAll', { filters })
       await this.$store.commit('cep/setAll', this.ceps.map(c => {
         return {...c, isChecked: false}
       }))
@@ -255,7 +266,8 @@ export default {
     },
     async onSubmit() {
       await this.$store.commit('cep/setLoading', true)
-      await Cep.attachCEPs(
+      await Cep.put(
+        null,
         this.ceps.map(c => {
           return {id: c.id, taxa_entrega: c.taxa_entrega, vlr_minimo_pedido: c.vlr_minimo_pedido}
         })
