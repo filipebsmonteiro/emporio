@@ -16,7 +16,7 @@
     "core-js": "2.6.5",
     "flatpickr": "4.5.7",
     "jquery": "^1.12.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "nouislider": "13.1.4",
     "register-service-worker": "1.6.2",
     "vue": "2.6.6",
